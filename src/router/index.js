@@ -38,6 +38,44 @@ export const constantRouterMap = [
   },
 
   {
+    path: '/schedule',
+    component: Layout,
+    redirect: '/schedule/overall',
+    name: 'Schedule',
+    meta: { title: '计划', icon: 'example' },
+    children: [
+      {
+        path: 'overall',
+        name: 'ScheduleAll',
+        hidden: false,
+        component: () => import('@/views/schedule/index'),
+        meta: { title: '查看', icon: 'schedule' }
+      },
+      {
+        path: 'new_schedule',
+        name: 'ScheduleNew',
+        hidden: false,
+        component: () => import('@/views/schedule/newSchedule/index'),
+        meta: { title: '新增', icon: 'plus' },
+        children: [
+          { path: '', hidden: true, component: () => import('@/views/schedule/newSchedule/step1') },
+          { path: 'step1', hidden: true, component: () => import('@/views/schedule/newSchedule/step1') },
+          { path: 'step2', hidden: true, component: () => import('@/views/schedule/newSchedule/step2') },
+          { path: 'step3', hidden: true, component: () => import('@/views/schedule/newSchedule/step3') }
+
+        ]
+      },
+      {
+        path: ':id',
+        name: 'ScheduleOne',
+        hidden: true,
+        component: () => import('@/views/schedule/OneSchedule'),
+        meta: { title: '详情' }
+      }
+    ]
+  },
+
+  {
     path: '/example',
     component: Layout,
     redirect: '/example/table',
