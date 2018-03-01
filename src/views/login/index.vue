@@ -36,7 +36,6 @@
 
 <script>
 import { isvalidUsername } from '@/utils/validate'
-import { test_link } from '../../api/test'
 
 export default {
   name: 'login',
@@ -111,9 +110,6 @@ export default {
       this.loginForm.username = ''
       this.loginForm.password = ''
       // this.bgColor = '#2d3a4b'
-    },
-    test() {
-      return test_link()
     }
   }
 }

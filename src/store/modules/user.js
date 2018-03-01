@@ -30,7 +30,7 @@ const user = {
       const username = userInfo.username.trim()
       return new Promise((resolve, reject) => {
         login(username, userInfo.password, userInfo.userType).then(response => {
-          const token = response.object
+          const token = JSON.parse(response.object)
           console.log(token)
           setToken(token)
           commit('SET_TOKEN', token)
@@ -46,7 +46,7 @@ const user = {
     GetInfo({ commit, state }) {
       return new Promise((resolve, reject) => {
         getInfo(state.token).then(response => {
-          const data = response.object
+          const data = JSON.parse(response.object)
           console.log(data)
           commit('SET_ROLES', data.role)
           commit('SET_NAME', data.user.id)

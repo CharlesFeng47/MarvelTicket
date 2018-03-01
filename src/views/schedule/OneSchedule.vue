@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>2018徐佳莹心理学音乐会</h1>
+    <h1>{{ basicInfo.scheduleName }}</h1>
 
     <!--基本信息-->
     <el-row class="basic_info">
@@ -37,7 +37,7 @@
       </el-col>
       <el-col :span="23">
         <!--<el-tag type="info" class="basic_content">{{ textArea }}</el-tag>-->
-        <el-input type="textarea" autosize disabled v-model="basicInfo.textArea"></el-input>
+        <el-input type="textarea" autosize disabled v-model="basicInfo.textArea" style="margin-top: 13px"></el-input>
       </el-col>
     </el-row>
 
@@ -48,74 +48,106 @@
       </el-col>
     </el-row>
     <el-row class="basic_info" type="flex" justify="space-around">
-      <el-col>
-        <template>
-          <el-table :data="seatPriceMap" style="width: 500px">
-            <el-table-column prop="seatName" label="坐席名称" width="180"></el-table-column>
-            <el-table-column prop="seatNum" label="坐席数量" width="180"></el-table-column>
-            <el-table-column prop="seatPrice" label="此次价格"></el-table-column>
-          </el-table>
-        </template>
+      <el-col :offset="2">
+        <el-table :data="seatPriceMap" style="width: 500px" stripe>
+          <el-table-column
+            v-for="{ prop, label } in colConfigs"
+            :key="prop"
+            :prop="prop"
+            :label="label">
+          </el-table-column>
+        </el-table>
       </el-col>
     </el-row>
+
+    <!--可进行的操作-->
+    <el-row type="flex" justify="space-around" style="margin-top: 47px">
+      <div class="but-group">
+        <el-button @click.native.prevent="goToModify" type="primary" round>修改</el-button>
+        <el-button @click.native.prevent="deleteSchedule" type="danger" round>删除</el-button>
+      </div>
+    </el-row>
+
+    <div>{{ fetchData() }}</div>
   </div>
 </template>
 
 <script>
-  // import { getSchedule } from '@/api/schedule'
+  import { getSchedule } from '@/api/schedule'
 
   export default {
     data() {
+      this.colConfigs = [
+        { prop: 'seatName', label: '坐席名称' },
+        { prop: 'seatNum', label: '坐席数量' },
+        { prop: 'seatPrice', label: '此次价格' }
+      ]
+
       return {
         basicInfo: {
-          spotName: '南京市江苏大剧院',
-          type: '演唱会',
-          startTime: '2018-03-17 19:30',
-          textArea: '这是一场精彩的演唱会这是一场精彩的演唱会这是一场精彩的演唱会这是一场精彩的演唱会这是一场精彩的演唱会这是一场精彩的演唱会这是一场精彩的演唱会这是一场精彩的演唱会这是一场精彩的演唱会这是一场精彩的演唱会这是一场精彩的演唱会这是一场精彩的演唱会这是一场精彩的演唱会这是一场精彩的演唱会这是一场精彩的演唱会这是一场精彩的演唱会这是一场精彩的演唱会这是一场精彩的演唱会这是一场精彩的演唱会这是一场精彩的演唱会这是一场精彩的演唱会这是一场精彩的演唱会这是一场精彩的演唱会这是一场精彩的演唱会这是一场精彩的演唱会这是一场精彩的演唱会这是一场精彩的演唱会这是一场精彩的演唱会这是一场精彩的演唱会这是一场精彩的演唱会这是一场精彩的演唱会这是一场精彩的演唱会这是一场精彩的演唱会这是一场精彩的演唱会这是一场精彩的演唱会这是一场精彩的演唱会'
+          scheduleName: '',
+          spotName: '',
+          type: '',
+          startTime: '',
+          textArea: ''
         },
-        seatPriceMap: [
-          {
-            seatName: '一等座',
-            seatNum: '100',
-            seatPrice: '1000'
-          }, {
-            seatName: '二等座',
-            seatNum: '200',
-            seatPrice: '500'
-          }, {
-            seatName: '三等座',
-            seatNum: '400',
-            seatPrice: '200'
-          }, {
-            seatName: '四等座',
-            seatNum: '600',
-            seatPrice: '1200'
-          }
-        ]
+        seatPriceMap: []
       }
     },
-    created: {
+    mounted: function() {
+      this.fetchData()
     },
     methods: {
+      // 修改日程数据，跳转页面
+      goToModify() {
+
+      },
+      // 删除此日程 TODO 先进行提示
+      deleteSchedule() {
+
+      },
       fetchData() {
-        // console.log(this.$route.params)
-        // getSchedule(this.$route.params.scheduleId)
-        // if (result.state === 'OK') {
-        //   const scheduleDetail = result.object
-        //   this.basicInfo.spotName = scheduleDetail.name
-        //   this.basicInfo.type = scheduleDetail.type
-        //   this.basicInfo.startTime = scheduleDetail.startDateTime
-        //   this.basicInfo.textArea = scheduleDetail.description
-        //
-        //   var seatPriceMapNew = []
-        //   for (var i = 0; i < scheduleDetail.seatPrices.length; i++) {
-        //     var curMap = scheduleDetail.seatPrices[i]
-        //     seatPriceMapNew[i].seatPrice = curMap.value
-        //     seatPriceMapNew[i].seatName = curMap.key.seatName
-        //     seatPriceMapNew[i].seatNum = curMap.key.num
-        //   }
-        //   this.seatPriceMap = seatPriceMapNew
-        // }
+        console.log(this.$route.params.scheduleId)
+        new Promise((resolve, reject) => {
+          getSchedule(this.$route.params.scheduleId).then(response => {
+            console.log(response)
+            if (response.state === 'OK') {
+              const scheduleDetail = JSON.parse(response.object)
+              this.basicInfo.scheduleName = scheduleDetail.name
+              this.basicInfo.spotName = scheduleDetail.spotName
+              this.basicInfo.type = this.getRelativeScheduleType(scheduleDetail.type)
+              this.basicInfo.startTime = scheduleDetail.startDateTime
+              this.basicInfo.textArea = scheduleDetail.description
+
+              var seatPriceMapNew = []
+              var all_prices = scheduleDetail.all_prices
+              var all_seats = scheduleDetail.all_seats
+              for (var i = 0; i < all_prices.length; i++) {
+                console.log('index: ' + i)
+                seatPriceMapNew[i] = {}
+                seatPriceMapNew[i].seatPrice = all_prices[i]
+                seatPriceMapNew[i].seatName = all_seats[i].seatName
+                seatPriceMapNew[i].seatNum = all_seats[i].num
+              }
+              this.seatPriceMap = seatPriceMapNew
+              console.log(seatPriceMapNew)
+              console.log(this.seatPriceMap)
+            }
+            resolve()
+          }).catch(error => {
+            reject(error)
+          })
+        }).then(() => {
+        }).catch(() => {
+        })
+      },
+      getRelativeScheduleType(type) {
+        switch (type) {
+          case 'CONCERT': return '音乐会'
+          case 'DANCE': return '舞蹈'
+          case 'DRAMA': return '话剧'
+          case 'SPORT': return '体育比赛'
+        }
       }
     }
   }
