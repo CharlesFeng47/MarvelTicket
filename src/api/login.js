@@ -1,27 +1,31 @@
 import request from '@/utils/request'
 
-export function login(username, password) {
+var qs = require('qs')
+
+export function login(username, password, userType) {
   return request({
-    url: '/user/login',
+    url: '/login',
     method: 'post',
-    data: {
+    data: qs.stringify({
       username,
-      password
-    }
+      password,
+      userType
+    })
   })
 }
 
 export function getInfo(token) {
   return request({
-    url: '/user/info',
-    method: 'get',
-    params: { token }
+    url: '/login/info',
+    method: 'post',
+    data: qs.stringify({ token: token })
   })
 }
 
-export function logout() {
+export function logout(token) {
   return request({
-    url: '/user/logout',
-    method: 'post'
+    url: '/login/logout',
+    method: 'post',
+    data: qs.stringify({ token: token })
   })
 }

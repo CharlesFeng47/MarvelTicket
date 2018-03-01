@@ -10,12 +10,14 @@
       <router-view class="view"></router-view>
     </transition>
 
-    <div class="but-group">
-      <el-button @click.native.prevent="handlePreStep" v-show="stepControl.preStep" type="info" round>上一步</el-button>
-      <el-button @click.native.prevent="handleNextStep" v-show="stepControl.nextStep" type="primary" round>下一步</el-button>
-      <el-button @click.native.prevent="handlePublish" v-show="stepControl.publish" type="danger" round>发布活动</el-button>
-      <el-tag v-show="stepControl.step==3" type="success">已成功发布</el-tag>
-    </div>
+    <el-row type="flex" justify="space-around">
+      <div class="but-group">
+        <el-button @click.native.prevent="handlePreStep" v-show="stepControl.preStep" type="info" round>上一步</el-button>
+        <el-button @click.native.prevent="handleNextStep" v-show="stepControl.nextStep" type="primary" round>下一步</el-button>
+        <el-button @click.native.prevent="handlePublish" v-show="stepControl.publish" type="danger" round>发布活动</el-button>
+        <el-tag v-show="stepControl.step==3" type="success">已成功发布</el-tag>
+      </div>
+    </el-row>
   </div>
 </template>
 
@@ -89,6 +91,10 @@
 
   .new-schedule .but-group .el-button {
     margin-right: 20px
+  }
+
+  .but-group{
+    align-content: center;
   }
 </style>
 

@@ -66,7 +66,7 @@ export const constantRouterMap = [
         ]
       },
       {
-        path: ':id',
+        path: ':scheduleId',
         name: 'ScheduleOne',
         hidden: true,
         component: () => import('@/views/schedule/OneSchedule'),

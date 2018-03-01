@@ -1,37 +1,42 @@
 <template>
-  <div class="login-container">
+  <!--TODO 整体颜色根据用户不同而修改 -->
+  <div class="login-container" :style="{ 'background-color': bgColor}">
     <el-form autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left" label-width="0px"
       class="card-box login-form">
-      <h3 class="title">vue-element-admin</h3>
+      <h3 class="title">Marvel Ticket</h3>
       <el-form-item prop="username">
         <span class="svg-container svg-container_login">
           <svg-icon icon-class="user" />
         </span>
-        <el-input name="username" type="text" v-model="loginForm.username" autoComplete="on" placeholder="username" />
+        <el-input name="username" type="text" v-model="loginForm.username" autoComplete="on" placeholder="请输入用户名" />
       </el-form-item>
       <el-form-item prop="password">
         <span class="svg-container">
           <svg-icon icon-class="password"></svg-icon>
         </span>
         <el-input name="password" :type="pwdType" @keyup.enter.native="handleLogin" v-model="loginForm.password" autoComplete="on"
-          placeholder="password"></el-input>
+          placeholder="请输入密码"></el-input>
           <span class="show-pwd" @click="showPwd"><svg-icon icon-class="eye" /></span>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" style="width:100%;" :loading="loading" @click.native.prevent="handleLogin">
-          Sign in
+          登录
         </el-button>
       </el-form-item>
-      <div class="tips">
-        <span style="margin-right:20px;">username: admin</span>
-        <span> password: admin</span>
-      </div>
     </el-form>
+
+    <el-button-group>
+      <el-button v-if="loginForm.userType!=='member'" type="success" @click.native="changeToMamber">转为会员登录</el-button>
+      <el-button v-if="loginForm.userType!=='spot'" type="info" @click.native="changeToSpot">转为场馆登录</el-button>
+      <el-button v-if="loginForm.userType!=='manager'" type="danger" @click.native="changeToManager">转为管理员登录</el-button>
+    </el-button-group>
+
   </div>
 </template>
 
 <script>
 import { isvalidUsername } from '@/utils/validate'
+import { test_link } from '../../api/test'
 
 export default {
   name: 'login',
@@ -45,22 +50,24 @@ export default {
     }
     const validatePass = (rule, value, callback) => {
       if (value.length < 6) {
-        callback(new Error('密码不能小于6位'))
+        callback(new Error('密码不能少于6位'))
       } else {
         callback()
       }
     }
     return {
       loginForm: {
-        username: 'admin',
-        password: 'administer'
+        username: '',
+        password: '',
+        userType: 'spot'
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
         password: [{ required: true, trigger: 'blur', validator: validatePass }]
       },
       loading: false,
-      pwdType: 'password'
+      pwdType: 'password',
+      bgColor: '#2d3a4b'
     }
   },
   methods: {
@@ -86,13 +93,33 @@ export default {
           return false
         }
       })
+    },
+    changeToMamber() {
+      this.loginForm.userType = 'member'
+      this.loginForm.username = ''
+      this.loginForm.password = ''
+      // this.bgColor = '#fedba7'
+    },
+    changeToSpot() {
+      this.loginForm.userType = 'spot'
+      this.loginForm.username = ''
+      this.loginForm.password = ''
+      // this.bgColor = '#fedba7'
+    },
+    changeToManager() {
+      this.loginForm.userType = 'manager'
+      this.loginForm.username = ''
+      this.loginForm.password = ''
+      // this.bgColor = '#2d3a4b'
+    },
+    test() {
+      return test_link()
     }
   }
 }
 </script>
 
 <style rel="stylesheet/scss" lang="scss">
-  $bg:#2d3a4b;
   $dark_gray:#889aa4;
   $light_gray:#eee;
 
@@ -100,7 +127,6 @@ export default {
     position: fixed;
     height: 100%;
     width:100%;
-    background-color: $bg;
     input:-webkit-autofill {
       -webkit-box-shadow: 0 0 0px 1000px #293444 inset !important;
       -webkit-text-fill-color: #fff !important;
@@ -118,11 +144,6 @@ export default {
       display: inline-block;
       height: 47px;
       width: 85%;
-    }
-    .tips {
-      font-size: 14px;
-      color: #fff;
-      margin-bottom: 10px;
     }
     .svg-container {
       padding: 6px 5px 6px 15px;

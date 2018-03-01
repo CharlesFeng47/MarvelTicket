@@ -4,6 +4,7 @@
 
     <el-tree class="filter-tree" :data="data2" :props="defaultProps" default-expand-all :filter-node-method="filterNode" ref="tree2"></el-tree>
 
+    <!--<div>User {{ $route.params.id }}</div>-->
   </div>
 </template>
 
