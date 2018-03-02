@@ -14,7 +14,7 @@
       </el-col>
       <el-col :span="8">
         <el-col :span="6">
-          <h3>日程类型</h3>
+          <h3>计划类型</h3>
         </el-col>
         <el-col :span="18">
           <el-tag type="warning" class="basic_content">{{ basicInfo.type }}</el-tag>
@@ -73,7 +73,8 @@
 </template>
 
 <script>
-  import { getSchedule } from '@/api/schedule'
+  import { getSchedule } from '../../api/schedule'
+  import { getRelativeScheduleType } from '../../utils/schedule'
 
   export default {
     data() {
@@ -94,7 +95,7 @@
         seatPriceMap: []
       }
     },
-    mounted: function() {
+    created: function() {
       this.fetchData()
     },
     methods: {
@@ -115,7 +116,7 @@
               const scheduleDetail = JSON.parse(response.object)
               this.basicInfo.scheduleName = scheduleDetail.name
               this.basicInfo.spotName = scheduleDetail.spotName
-              this.basicInfo.type = this.getRelativeScheduleType(scheduleDetail.type)
+              this.basicInfo.type = getRelativeScheduleType(scheduleDetail.type)
               this.basicInfo.startTime = scheduleDetail.startDateTime
               this.basicInfo.textArea = scheduleDetail.description
 
@@ -140,14 +141,6 @@
         }).then(() => {
         }).catch(() => {
         })
-      },
-      getRelativeScheduleType(type) {
-        switch (type) {
-          case 'CONCERT': return '音乐会'
-          case 'DANCE': return '舞蹈'
-          case 'DRAMA': return '话剧'
-          case 'SPORT': return '体育比赛'
-        }
       }
     }
   }
