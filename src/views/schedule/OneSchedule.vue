@@ -73,7 +73,7 @@
 </template>
 
 <script>
-  import { getSchedule } from '../../api/schedule'
+  import { getSchedule, deleteSchedule } from '../../api/schedule'
   import { getRelativeScheduleType } from '../../utils/schedule'
 
   export default {
@@ -86,6 +86,7 @@
 
       return {
         basicInfo: {
+          id: '',
           scheduleName: '',
           spotName: '',
           type: '',
@@ -96,16 +97,32 @@
       }
     },
     created: function() {
+      console.log('to fetch')
       this.fetchData()
     },
     methods: {
       // 修改日程数据，跳转页面
       goToModify() {
-
+        this.$router.push('/schedule/modify/' + this.basicInfo.id)
       },
       // 删除此日程 TODO 先进行提示
+      // TODO 界面提示报错500是因为删除之后，前端又发了一个请求当前页面到后端，后端此数据已删除，所以报错
       deleteSchedule() {
-
+        alert('删除计划：' + this.basicInfo.id)
+        new Promise((resolve, reject) => {
+          deleteSchedule(this.$route.params.scheduleId).then(response => {
+            console.log(response)
+            if (response.state === 'OK') {
+              alert('已删除')
+              this.$router.push('/schedule')
+            }
+            resolve()
+          }).catch(error => {
+            reject(error)
+          })
+        }).then(() => {
+        }).catch(() => {
+        })
       },
       fetchData() {
         console.log(this.$route.params.scheduleId)
@@ -114,6 +131,7 @@
             console.log(response)
             if (response.state === 'OK') {
               const scheduleDetail = JSON.parse(response.object)
+              this.basicInfo.id = scheduleDetail.id
               this.basicInfo.scheduleName = scheduleDetail.name
               this.basicInfo.spotName = scheduleDetail.spotName
               this.basicInfo.type = getRelativeScheduleType(scheduleDetail.type)
@@ -131,8 +149,6 @@
                 seatPriceMapNew[i].seatNum = all_seats[i].num
               }
               this.seatPriceMap = seatPriceMapNew
-              console.log(seatPriceMapNew)
-              console.log(this.seatPriceMap)
             }
             resolve()
           }).catch(error => {

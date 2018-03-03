@@ -58,10 +58,23 @@ export const constantRouterMap = [
         component: () => import('@/views/schedule/newSchedule/index'),
         meta: { title: '新增', icon: 'plus' },
         children: [
-          { path: '', hidden: true, component: () => import('@/views/schedule/newSchedule/step1') },
-          { path: 'step1', hidden: true, component: () => import('@/views/schedule/newSchedule/step1') },
-          { path: 'step2', hidden: true, component: () => import('@/views/schedule/newSchedule/step2') },
-          { path: 'step3', hidden: true, component: () => import('@/views/schedule/newSchedule/step3') }
+          { path: '', hidden: true, component: () => import('@/views/schedule/newSchedule/step1'), meta: { isNew: true }},
+          { path: 'step1', hidden: true, component: () => import('@/views/schedule/newSchedule/step1'), meta: { isNew: true }},
+          { path: 'step2', hidden: true, component: () => import('@/views/schedule/newSchedule/step2'), meta: { isNew: true }},
+          { path: 'step3', hidden: true, component: () => import('@/views/schedule/newSchedule/step3'), meta: { isNew: true }}
+
+        ]
+      },
+      {
+        path: 'modify/:scheduleId',
+        name: 'ScheduleModify',
+        hidden: true,
+        component: () => import('@/views/schedule/newSchedule/index'),
+        children: [
+          { path: '', hidden: true, component: () => import('@/views/schedule/newSchedule/step1'), meta: { isNew: false }},
+          { path: 'step1', hidden: true, component: () => import('@/views/schedule/newSchedule/step1'), meta: { isNew: false }},
+          { path: 'step2', hidden: true, component: () => import('@/views/schedule/newSchedule/step2'), meta: { isNew: false }},
+          { path: 'step3', hidden: true, component: () => import('@/views/schedule/newSchedule/step3'), meta: { isNew: false }}
 
         ]
       },
@@ -114,7 +127,7 @@ export const constantRouterMap = [
 ]
 
 export default new Router({
-  // mode: 'history', //后端支持可开
+  mode: 'history', // 后端支持可开
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRouterMap
 })

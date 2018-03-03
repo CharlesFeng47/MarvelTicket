@@ -1,7 +1,10 @@
 import request from '@/utils/request'
 
-var qs = require('qs')
+const qs = require('qs')
 
+/**
+ * 登录
+ */
 export function login(username, password, userType) {
   return request({
     url: '/login',
@@ -14,6 +17,9 @@ export function login(username, password, userType) {
   })
 }
 
+/**
+ * 通过token定时获取用户信息
+ */
 export function getInfo(token) {
   return request({
     url: '/login/info',
@@ -22,6 +28,9 @@ export function getInfo(token) {
   })
 }
 
+/**
+ * 登出
+ */
 export function logout(token) {
   return request({
     url: '/login/logout',

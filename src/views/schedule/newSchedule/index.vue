@@ -1,9 +1,9 @@
 <template>
-  <div class="new-schedule">
+  <div class="new-schedule" :key="">
     <el-steps :active="stepControl.step" simple finish-status="success">
       <el-step title="基本信息" icon="el-icon-edit"></el-step>
       <el-step title="坐席价位" icon="el-icon-star-on"></el-step>
-      <el-step title="发布" icon="el-icon-upload"></el-step>
+      <el-step title="完成" icon="el-icon-upload"></el-step>
     </el-steps>
 
     <transition name="fade">
@@ -14,8 +14,10 @@
       <div class="but-group">
         <el-button @click.native.prevent="handlePreStep" v-show="stepControl.preStep" type="info" round>上一步</el-button>
         <el-button @click.native.prevent="handleNextStep" v-show="stepControl.nextStep" type="primary" round>下一步</el-button>
-        <el-button @click.native.prevent="handlePublish" v-show="stepControl.publish" type="danger" round>发布活动</el-button>
-        <el-tag v-show="stepControl.step==3" type="success">已成功发布</el-tag>
+        <el-button @click.native.prevent="handlePublish" v-if="this.$route.meta.isNew&&stepControl.publish" type="danger" round>发布计划</el-button>
+        <el-button @click.native.prevent="handlePublish" v-if="!this.$route.meta.isNew&&stepControl.publish" type="danger" round>修改计划</el-button>
+        <el-tag v-if="this.$route.meta.isNew&&stepControl.step==3" type="success">已成功发布</el-tag>
+        <el-tag v-if="!this.$route.meta.isNew&&stepControl.step==3" type="success">已成功修改</el-tag>
       </div>
     </el-row>
   </div>
@@ -36,6 +38,11 @@
       }
     },
     methods: {
+      generateKey() {
+        var a = new Date().toDateString()
+        console.log('key: ' + a)
+        return a
+      },
       handlePreStep: function() {
         this.$router.go(-1)
         this.stepControl.step--
@@ -43,7 +50,11 @@
         $('html,body').animate({ scrollTop: 0 }, 500)
       },
       handleNextStep: function() {
-        this.$router.push('/schedule/new_schedule/step' + (this.stepControl.step + 2))
+        if (this.$route.meta.isNew) {
+          this.$router.push('/schedule/new_schedule/step' + (this.stepControl.step + 2))
+        } else {
+          this.$router.push('/schedule/modify/' + this.$route.params.scheduleId + '/step' + (this.stepControl.step + 2))
+        }
         var _this = this
         this.stepControl.step++
         this.goStep(_this.stepControl.step)
@@ -78,6 +89,18 @@
             this.stepControl.nextStep = false
             this.stepControl.publish = false
             break
+        }
+      }
+    },
+    watch: {
+      $route: function(newRoute, oldRoute) {
+        // watch 当前路由和之前的路由的isNew是否相同，不同则将路由按钮初始化为默认值
+        if (newRoute.meta.isNew !== oldRoute.meta.isNew) {
+          this.stepControl.preStep = false
+          this.stepControl.nextStep = true
+          this.stepControl.publish = false
+          this.stepControl.step = 0
+          console.log('meta.isNew has changed, reset the stepControl data')
         }
       }
     }
