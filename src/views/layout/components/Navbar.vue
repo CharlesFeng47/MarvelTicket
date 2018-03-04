@@ -33,13 +33,13 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'sidebar',
-      'avatar'
+      'sidebar'
+      // 'avatar'
     ])
   },
   methods: {
     toggleSideBar() {
-      this.$store.dispatch('ToggleSideBar')
+      this.$store.dispatch('ToggleSideBar').then()
     },
     logout() {
       this.$store.dispatch('LogOut').then(() => {

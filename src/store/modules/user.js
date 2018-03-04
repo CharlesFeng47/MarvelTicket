@@ -34,6 +34,8 @@ const user = {
           console.log(token)
           setToken(token)
           commit('SET_TOKEN', token)
+          // 因为是根据token再使用GetInfo()获取的用户编号，但是因为一开始刚登录还未根据token去获取，所以先设置一下。。
+          commit('SET_NAME', username)
           console.log('login finish')
           resolve()
         }).catch(error => {
