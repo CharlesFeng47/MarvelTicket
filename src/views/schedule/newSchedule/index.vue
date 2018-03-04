@@ -26,8 +26,16 @@
 
 <script>
   import $ from 'jquery'
+  import { mapGetters } from 'vuex'
+  import { getUser } from '../../../api/user'
+
   export default {
     name: 'new-schedule',
+    computed: {
+      ...mapGetters([
+        'token'
+      ])
+    },
     data: function() {
       return {
         curStep: 0,
@@ -97,6 +105,35 @@
       var lastStartIndex = path.lastIndexOf('step')
       if (lastStartIndex < 0) this.curStep = 0
       else this.curStep = parseInt(path.substring(lastStartIndex + 4)) - 1
+
+      // 同时向后端发出请求获取此场馆的座位信息初始化store
+      new Promise((resolve, reject) => {
+        getUser(this.token).then(response => {
+          console.log(response)
+          if (response.state === 'OK') {
+            const curSpot = JSON.parse(response.object)
+
+            var seatMapForPrice = []
+            var curSpotSeats = curSpot.seatInfos
+            for (var i = 0; i < curSpotSeats.length; i++) {
+              var curSeat = curSpotSeats[i]
+              seatMapForPrice[i] = {}
+              seatMapForPrice[i].seatName = curSeat.seatName
+              seatMapForPrice[i].seatNum = curSeat.num
+              seatMapForPrice[i].seatPrice = ''
+            }
+
+            this.$store.dispatch('ChangeSeatPriceMap', seatMapForPrice).then(() => {
+            }).catch(() => {
+            })
+          }
+          resolve()
+        }).catch(error => {
+          reject(error)
+        })
+      }).then(() => {
+      }).catch(() => {
+      })
     },
     watch: {
       $route: function(newRoute, oldRoute) {

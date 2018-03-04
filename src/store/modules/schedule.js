@@ -7,10 +7,8 @@ const schedule = {
       type: '',
       description: ''
     },
-    seat_price_map: [
-      { seatName: '一', seatNum: '100', seatPrice: '23' },
-      { seatName: '二', seatNum: '200', seatPrice: '10' }
-    ]
+    // 默认读取本场馆的座位
+    seat_price_map: []
   },
 
   mutations: {

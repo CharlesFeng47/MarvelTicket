@@ -18,7 +18,7 @@ export function login(username, password, userType) {
 }
 
 /**
- * 通过token定时获取用户信息
+ * 通过token定时获取指定用户信息
  */
 export function getInfo(token) {
   return request({
