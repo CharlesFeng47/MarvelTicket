@@ -1,23 +1,24 @@
 <template>
-  <div class="new-schedule" :key="">
-    <el-steps :active="stepControl.step" simple finish-status="success">
+  <div class="new-schedule">
+    <el-steps :active="curStep" simple finish-status="success">
       <el-step title="基本信息" icon="el-icon-edit"></el-step>
       <el-step title="坐席价位" icon="el-icon-star-on"></el-step>
       <el-step title="完成" icon="el-icon-upload"></el-step>
     </el-steps>
 
     <transition name="fade">
-      <router-view class="view"></router-view>
+      <router-view :cur-step.sync="curStep" ref="child" v-on:next="handleNextStep" class="view"></router-view>
     </transition>
 
     <el-row type="flex" justify="space-around">
       <div class="but-group">
+        <el-button @click="resetData" v-show="curStep===0||curStep===1" type="danger" round>重置</el-button>
         <el-button @click.native.prevent="handlePreStep" v-show="stepControl.preStep" type="info" round>上一步</el-button>
-        <el-button @click.native.prevent="handleNextStep" v-show="stepControl.nextStep" type="primary" round>下一步</el-button>
+        <el-button @click.native.prevent="validateCurData" v-show="stepControl.nextStep" type="primary" round>下一步</el-button>
         <el-button @click.native.prevent="handlePublish" v-if="this.$route.meta.isNew&&stepControl.publish" type="danger" round>发布计划</el-button>
         <el-button @click.native.prevent="handlePublish" v-if="!this.$route.meta.isNew&&stepControl.publish" type="danger" round>修改计划</el-button>
-        <el-tag v-if="this.$route.meta.isNew&&stepControl.step==3" type="success">已成功发布</el-tag>
-        <el-tag v-if="!this.$route.meta.isNew&&stepControl.step==3" type="success">已成功修改</el-tag>
+        <el-tag v-if="this.$route.meta.isNew&&curStep==3" type="success">已成功发布</el-tag>
+        <el-tag v-if="!this.$route.meta.isNew&&curStep==3" type="success">已成功修改</el-tag>
       </div>
     </el-row>
   </div>
@@ -29,45 +30,42 @@
     name: 'new-schedule',
     data: function() {
       return {
+        curStep: 0,
         stepControl: {
           preStep: false,
           nextStep: true,
-          publish: false,
-          step: 0
+          publish: false
         }
       }
     },
     methods: {
-      generateKey() {
-        var a = new Date().toDateString()
-        console.log('key: ' + a)
-        return a
+      // 验证之后合法，由子组件调用handleNextStep调转
+      validateCurData: function() {
+        this.$refs.child.validateData()
+      },
+      // 调用子组件提供的统一的数据重置方法
+      resetData() {
+        this.$refs.child.resetData()
       },
       handlePreStep: function() {
+        this.curStep--
         this.$router.go(-1)
-        this.stepControl.step--
-        this.goStep(this.stepControl.step)
         $('html,body').animate({ scrollTop: 0 }, 500)
       },
       handleNextStep: function() {
+        this.curStep++
         if (this.$route.meta.isNew) {
-          this.$router.push('/schedule/new_schedule/step' + (this.stepControl.step + 2))
+          this.$router.push('/schedule/new_schedule/step' + (this.curStep + 1))
         } else {
-          this.$router.push('/schedule/modify/' + this.$route.params.scheduleId + '/step' + (this.stepControl.step + 2))
+          this.$router.push('/schedule/modify/' + this.$route.params.scheduleId + '/step' + (this.curStep + 1))
         }
-        var _this = this
-        this.stepControl.step++
-        this.goStep(_this.stepControl.step)
         $('html,body').animate({ scrollTop: 0 }, 500)
       },
       handlePublish: function() {
-        this.stepControl.step++
-        this.goStep(this.stepControl.step)
+        this.curStep++
         console.log('发布')
       },
       goStep: function(n) {
-        console.log(n)
-        console.log(this.stepControl)
         switch (n) {
           case 0 :
             this.stepControl.preStep = false
@@ -92,16 +90,26 @@
         }
       }
     },
+    created: function() {
+      // 直接访问的时候，取其step
+      // /schedule/new_schedule/step2
+      var path = this.$route.fullPath
+      var lastStartIndex = path.lastIndexOf('step')
+      if (lastStartIndex < 0) this.curStep = 0
+      else this.curStep = parseInt(path.substring(lastStartIndex + 4)) - 1
+    },
     watch: {
       $route: function(newRoute, oldRoute) {
+        console.log('watch route change')
         // watch 当前路由和之前的路由的isNew是否相同，不同则将路由按钮初始化为默认值
         if (newRoute.meta.isNew !== oldRoute.meta.isNew) {
-          this.stepControl.preStep = false
-          this.stepControl.nextStep = true
-          this.stepControl.publish = false
-          this.stepControl.step = 0
+          this.curStep = 0
           console.log('meta.isNew has changed, reset the stepControl data')
         }
+      },
+      curStep: function(val, oldVal) {
+        console.log('curStep 已改变')
+        this.goStep(val)
       }
     }
   }
@@ -112,12 +120,9 @@
     color: #fff
   }
 
-  .new-schedule .but-group .el-button {
-    margin-right: 20px
-  }
-
   .but-group{
     align-content: center;
+    margin-top: 35px;
   }
 </style>
 

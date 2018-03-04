@@ -1,5 +1,6 @@
 <template>
   <div class="step1">
+    <h1>{{ curStep }}</h1>
     <el-form :model="basicInfoForm" :rules="rules" ref="basicInfoForm" label-width="100px" class="basicInfoForm">
       <el-form-item label="计划名称" prop="name" style="margin-top: 30px">
         <el-input v-model="basicInfoForm.name"></el-input>
@@ -39,7 +40,6 @@
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="submitForm('basicInfoForm')">立即创建</el-button>
-        <el-button @click="resetForm('basicInfoForm')">重置</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -51,6 +51,7 @@
 
   export default {
     name: 'step1',
+    props: ['curStep'],
     computed: {
       ...mapGetters([
         'basic_info_form'
@@ -111,7 +112,7 @@
             { type: 'date', required: true, message: '请选择日期', trigger: 'change' }
           ],
           time: [
-            { type: 'time', required: true, message: '请选择时间', trigger: 'change' }
+            { type: 'date', required: true, message: '请选择时间', trigger: 'change' }
           ],
           type: [
             { required: true, message: '请选择活动资源', trigger: 'change' }
@@ -133,20 +134,20 @@
       }
     },
     methods: {
-      // 提交表单
-      submitForm(formName) {
-        this.$refs[formName].validate((valid) => {
+      // 验证表单
+      validateData() {
+        this.$refs['basicInfoForm'].validate((valid) => {
           if (valid) {
             alert('submit!')
+            this.$emit('next')
           } else {
             console.log('error submit!!')
-            return false
           }
         })
       },
       // 重置表单
-      resetForm(formName) {
-        this.$refs[formName].resetFields()
+      resetData() {
+        this.$refs['basicInfoForm'].resetFields()
       }
     },
     mounted: function() {

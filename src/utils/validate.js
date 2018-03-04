@@ -34,7 +34,7 @@ export function validatAlphabets(str) {
 
 /* 数字 */
 export function validatNumbers(str) {
-  const reg = /^[1-9]\d*\.\d*|0\.\d*[1-9]\d*$/
+  const reg = /^[+]{0,1}(\d+)$|^[+]{0,1}(\d+\.\d+)$/
   return reg.test(str)
 }
 
