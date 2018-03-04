@@ -52,6 +52,7 @@
         <el-table :data="seatPriceMap" style="width: 500px" stripe>
           <el-table-column
             v-for="{ prop, label } in colConfigs"
+            align="center"
             :key="prop"
             :prop="prop"
             :label="label">

@@ -32,3 +32,9 @@ export function validatAlphabets(str) {
   return reg.test(str)
 }
 
+/* 数字 */
+export function validatNumbers(str) {
+  const reg = /^[1-9]\d*\.\d*|0\.\d*[1-9]\d*$/
+  return reg.test(str)
+}
+

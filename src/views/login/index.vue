@@ -26,7 +26,7 @@
     </el-form>
 
     <el-button-group>
-      <el-button v-if="loginForm.userType!=='member'" type="success" @click.native="changeToMamber">转为会员登录</el-button>
+      <el-button v-if="loginForm.userType!=='member'" type="success" @click.native="changeToMember">转为会员登录</el-button>
       <el-button v-if="loginForm.userType!=='spot'" type="info" @click.native="changeToSpot">转为场馆登录</el-button>
       <el-button v-if="loginForm.userType!=='manager'" type="danger" @click.native="changeToManager">转为管理员登录</el-button>
     </el-button-group>
@@ -49,7 +49,7 @@ export default {
     }
     const validatePass = (rule, value, callback) => {
       if (value.length < 6) {
-        callback(new Error('密码不能少于6位'))
+        callback(new Error('密码不能少于 6 位'))
       } else {
         callback()
       }
@@ -93,7 +93,7 @@ export default {
         }
       })
     },
-    changeToMamber() {
+    changeToMember() {
       this.loginForm.userType = 'member'
       this.loginForm.username = ''
       this.loginForm.password = ''

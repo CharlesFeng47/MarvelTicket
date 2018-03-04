@@ -111,7 +111,7 @@
             { type: 'date', required: true, message: '请选择日期', trigger: 'change' }
           ],
           time: [
-            { type: 'date', required: true, message: '请选择时间', trigger: 'change' }
+            { type: 'time', required: true, message: '请选择时间', trigger: 'change' }
           ],
           type: [
             { required: true, message: '请选择活动资源', trigger: 'change' }
@@ -150,7 +150,7 @@
       }
     },
     mounted: function() {
-      console.log('mounted')
+      console.log('basic_info_form mounted')
       this.basicInfoForm.name = this.basic_info_form.name
       this.basicInfoForm.date = this.basic_info_form.date
       this.basicInfoForm.time = this.basic_info_form.time
