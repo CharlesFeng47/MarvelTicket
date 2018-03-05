@@ -82,7 +82,7 @@ export const constantRouterMap = [
         path: ':scheduleId',
         name: 'ScheduleOne',
         hidden: true,
-        component: () => import('@/views/schedule/OneSchedule'),
+        component: () => import('@/views/schedule/oneSchedule/index'),
         meta: { title: '详情' }
       }
     ]

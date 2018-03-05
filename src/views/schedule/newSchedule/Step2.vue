@@ -39,13 +39,17 @@
 <script>
   import { validatNumbers } from '@/utils/validate'
   import { mapGetters } from 'vuex'
+  import { getUser } from '../../../api/user'
+  import { getSchedule } from '../../../api/schedule'
 
   export default {
     name: 'step2',
     props: ['curStep'],
     computed: {
       ...mapGetters([
-        'seat_price_map'
+        'token',
+        'seat_price_map',
+        'seat_price_map_modified'
       ])
     },
     data() {
@@ -84,18 +88,113 @@
           mapNew[i].seatPrice = ''
         }
         this.seatPriceMap = mapNew
+      },
+      // 页面的默认值
+      fetchDefaultData() {
+        if (this.$route.meta.isNew) {
+          // 新建的计划，基本信息默认为空，同时向后端发出请求获取此场馆的座位信息初始化store
+          new Promise((resolve, reject) => {
+            getUser(this.token).then(response => {
+              console.log(response)
+              if (response.state === 'OK') {
+                const curSpot = JSON.parse(response.object)
+
+                var seatMapForPrice = []
+                var curSpotSeats = curSpot.seatInfos
+                for (var i = 0; i < curSpotSeats.length; i++) {
+                  var curSeat = curSpotSeats[i]
+                  seatMapForPrice[i] = {}
+                  seatMapForPrice[i].seatName = curSeat.seatName
+                  seatMapForPrice[i].seatNum = curSeat.num
+                  seatMapForPrice[i].seatPrice = ''
+                }
+
+                this.$store.dispatch('ChangeSeatPriceMap', seatMapForPrice).then(() => {
+                  this.fulfillStoredData()
+                }).catch(() => {
+                })
+              }
+              resolve()
+            }).catch(error => {
+              reject(error)
+            })
+          }).then(() => {
+          }).catch(() => {
+          })
+        } else {
+          // 是修改已存在的计划，获得内容后自动填充
+          console.log('new schedule2222')
+          new Promise((resolve, reject) => {
+            getSchedule(this.$route.params.scheduleId).then(response => {
+              console.log(response)
+              if (response.state === 'OK') {
+                const scheduleDetail = JSON.parse(response.object)
+                var seatPriceMapNew = []
+                var all_prices = scheduleDetail.all_prices
+                var all_seats = scheduleDetail.all_seats
+                for (var i = 0; i < all_prices.length; i++) {
+                  seatPriceMapNew[i] = {}
+                  seatPriceMapNew[i].seatPrice = all_prices[i]
+                  seatPriceMapNew[i].seatName = all_seats[i].seatName
+                  seatPriceMapNew[i].seatNum = all_seats[i].num
+                }
+                this.$store.dispatch('ChangeSeatPriceMap', seatPriceMapNew).then(() => {
+                  this.fulfillStoredData()
+                }).catch(() => {
+                })
+              }
+              resolve()
+            }).catch(error => {
+              reject(error)
+            })
+          }).then(() => {
+          }).catch(() => {
+          })
+        }
+      },
+      // 填充store里面的值
+      fulfillStoredData() {
+        var seatPriceMapNew = []
+        const storedMapLength = this.seat_price_map.length
+        for (var i = 0; i < storedMapLength; i++) {
+          var entry = this.seat_price_map[i]
+          seatPriceMapNew[i] = {}
+          seatPriceMapNew[i].seatName = entry.seatName
+          seatPriceMapNew[i].seatNum = entry.seatNum
+          seatPriceMapNew[i].seatPrice = entry.seatPrice
+        }
+        this.seatPriceMap = seatPriceMapNew
       }
     },
     mounted: function() {
-      console.log('seat_price_map mounted')
-      const storedMapLength = this.seat_price_map.length
-      for (var i = 0; i < storedMapLength; i++) {
-        var entry = this.seat_price_map[i]
-        this.seatPriceMap[i] = {}
-        this.seatPriceMap[i].seatName = entry.seatName
-        this.seatPriceMap[i].seatNum = entry.seatNum
-        this.seatPriceMap[i].seatPrice = entry.seatPrice
+      console.log('seat_price_map mounted: seatPriceMap-----')
+      if (!this.seat_price_map_modified) {
+        console.log('step2 第一次，加载数据')
+        this.fetchDefaultData()
+      } else {
+        console.log('step2 已修改过数据，从store中加载数据')
+        this.fulfillStoredData()
       }
+    // },
+    // beforeRouteEnter: function(to, from, next) {
+    //   const fromUrl = from.fullPath
+    //   if (fromUrl.indexOf('step1') >= 0) {
+    //     next()
+    //   } else {
+    //     if (fromUrl.indexOf('modify') >= 0) {
+    //       const modifyPos = fromUrl.indexOf('modify')
+    //       const temp = fromUrl.substr(modifyPos + 7)
+    //       const idLastIndex = temp.indexOf('/')
+    //       if (idLastIndex) {
+    //         next('schedule/modify/' + temp.substr(0, idLastIndex))
+    //       } else {
+    //         next('schedule/modify/' + temp)
+    //       }
+    //     }
+    //     if (fromUrl.indexOf('new_schedule') >= 0) {
+    //       next('schedule/new_schedule')
+    //     }
+    //   }
     }
   }
 </script>

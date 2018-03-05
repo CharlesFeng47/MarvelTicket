@@ -45,13 +45,16 @@
 
 <script>
   import { mapGetters } from 'vuex'
+  import { getSchedule } from '../../../api/schedule'
+  import { getRelativeScheduleType } from '../../../utils/schedule'
 
   export default {
     name: 'step1',
     props: ['curStep'],
     computed: {
       ...mapGetters([
-        'basic_info_form'
+        'basic_info_form',
+        'basic_info_form_modified'
       ])
     },
     data() {
@@ -128,6 +131,12 @@
           })
         },
         deep: true
+      },
+      $route: function(newRoute, oldRoute) {
+        // watch 当前路由和之前的路由的isNew是否相同，不同则将内容重新获取
+        if (newRoute.meta.isNew !== oldRoute.meta.isNew) {
+          this.fetchDefaultData()
+        }
       }
     },
     methods: {
@@ -135,7 +144,6 @@
       validateData() {
         this.$refs['basicInfoForm'].validate((valid) => {
           if (valid) {
-            alert('submit!')
             this.$emit('next')
           } else {
             console.log('error submit!!')
@@ -145,15 +153,82 @@
       // 重置表单
       resetData() {
         this.$refs['basicInfoForm'].resetFields()
+      },
+      // 页面的默认值
+      fetchDefaultData() {
+        if (this.$route.meta.isNew) {
+          // 新建的计划，基本信息默认为空，同时向后端发出请求获取此场馆的座位信息初始化store
+          console.log('new schedule1111')
+          const defaultBasicInfoForm = {
+            name: '',
+            date: '',
+            time: '',
+            type: '',
+            description: ''
+          }
+          this.$store.dispatch('ChangeBasicInfo', defaultBasicInfoForm).then(() => {
+            this.fulfillStoredData()
+          }).catch(() => {
+          })
+        } else {
+          // 是修改已存在的计划，获得内容后自动填充
+          console.log('new schedule2222')
+          new Promise((resolve, reject) => {
+            getSchedule(this.$route.params.scheduleId).then(response => {
+              console.log(response)
+              var defaultBasicInfoForm = {}
+              if (response.state === 'OK') {
+                const scheduleDetail = JSON.parse(response.object)
+                defaultBasicInfoForm.name = scheduleDetail.name
+                defaultBasicInfoForm.type = getRelativeScheduleType(scheduleDetail.type)
+                defaultBasicInfoForm.description = scheduleDetail.description
+
+                var startDateTime = scheduleDetail.startDateTime
+                var dateString = startDateTime.split(' ')[0]
+                var timeString = startDateTime.split(' ')[1]
+
+                var curDate = new Date()
+                var dateParts = dateString.split('-')
+                curDate.setFullYear(parseInt(dateParts[0]), parseInt(dateParts[1]) - 1, parseInt(dateParts[2]))
+                defaultBasicInfoForm.date = curDate
+
+                var curTime = new Date()
+                var timeParts = timeString.split(':')
+                curTime.setHours(parseInt(timeParts[0]), parseInt(timeParts[1]), parseInt(timeParts[2]))
+                defaultBasicInfoForm.time = curTime
+
+                this.$store.dispatch('ChangeBasicInfo', defaultBasicInfoForm).then(() => {
+                  this.fulfillStoredData()
+                }).catch(() => {
+                })
+              }
+              resolve()
+            }).catch(error => {
+              reject(error)
+            })
+          }).then(() => {
+          }).catch(() => {
+          })
+        }
+      },
+      // 填充store里面的值
+      fulfillStoredData() {
+        this.basicInfoForm.name = this.basic_info_form.name
+        this.basicInfoForm.date = this.basic_info_form.date
+        this.basicInfoForm.time = this.basic_info_form.time
+        this.basicInfoForm.type = this.basic_info_form.type
+        this.basicInfoForm.description = this.basic_info_form.description
       }
     },
     mounted: function() {
-      console.log('basic_info_form mounted')
-      this.basicInfoForm.name = this.basic_info_form.name
-      this.basicInfoForm.date = this.basic_info_form.date
-      this.basicInfoForm.time = this.basic_info_form.time
-      this.basicInfoForm.type = this.basic_info_form.type
-      this.basicInfoForm.description = this.basic_info_form.description
+      console.log('basic_info_form mounted: basicInfoForm-----')
+      if (!this.basic_info_form_modified) {
+        console.log('step1 第一次，获取数据')
+        this.fetchDefaultData()
+      } else {
+        console.log('step1 已修改过数据，从store中加载数据')
+        this.fulfillStoredData()
+      }
     }
   }
 </script>

@@ -60,24 +60,26 @@
         </el-table>
       </el-col>
     </el-row>
-
-    <!--可进行的操作-->
-    <el-row type="flex" justify="space-around" style="margin-top: 47px">
-      <div class="but-group">
-        <el-button @click.native.prevent="goToModify" type="primary" round>修改</el-button>
-        <el-button @click.native.prevent="deleteSchedule" type="danger" round>删除</el-button>
-      </div>
-    </el-row>
-
-    <div>{{ fetchData() }}</div>
   </div>
 </template>
 
 <script>
-  import { getSchedule, deleteSchedule } from '../../api/schedule'
-  import { getRelativeScheduleType } from '../../utils/schedule'
+  import { getSchedule, deleteSchedule } from '../../../api/schedule'
+  import { getUser } from '../../../api/user'
+  import { getRelativeScheduleType } from '../../../utils/schedule'
+  import { timeFormater } from '../../../utils/time'
+  import { mapGetters } from 'vuex'
 
   export default {
+    name: 'ScheduleDetail',
+    props: ['isNew'],
+    computed: {
+      ...mapGetters([
+        'token',
+        'basic_info_form',
+        'seat_price_map'
+      ])
+    },
     data() {
       this.colConfigs = [
         { prop: 'seatName', label: '坐席名称' },
@@ -97,16 +99,24 @@
         seatPriceMap: []
       }
     },
-    created: function() {
-      console.log('to fetch')
-      this.fetchData()
+    mounted: function() {
+      console.log('OneSchedule detail mounted, isNew: ' + this.isNew)
+      if (this.isNew === 'false') {
+        // 不是新的，从后端加载数据
+        console.log('to fetch')
+        this.fetchData()
+      } else {
+        // 新计划预览，从store中加载数据
+        console.log('to fulfill')
+        this.fulfillData()
+      }
     },
     methods: {
-      // 修改日程数据，跳转页面
+      // 【提供给父组件中button调用】修改日程数据，跳转页面
       goToModify() {
         this.$router.push('/schedule/modify/' + this.basicInfo.id)
       },
-      // 删除此日程 TODO 先进行提示
+      // 【提供给父组件中button调用】删除此日程 TODO 先进行提示
       // TODO 界面提示报错500是因为删除之后，前端又发了一个请求当前页面到后端，后端此数据已删除，所以报错
       deleteSchedule() {
         alert('删除计划：' + this.basicInfo.id)
@@ -143,11 +153,47 @@
               var all_prices = scheduleDetail.all_prices
               var all_seats = scheduleDetail.all_seats
               for (var i = 0; i < all_prices.length; i++) {
-                console.log('index: ' + i)
                 seatPriceMapNew[i] = {}
                 seatPriceMapNew[i].seatPrice = all_prices[i]
                 seatPriceMapNew[i].seatName = all_seats[i].seatName
                 seatPriceMapNew[i].seatNum = all_seats[i].num
+              }
+              this.seatPriceMap = seatPriceMapNew
+            }
+            resolve()
+          }).catch(error => {
+            reject(error)
+          })
+        }).then(() => {
+        }).catch(() => {
+        })
+      },
+      fulfillData() {
+        new Promise((resolve, reject) => {
+          getUser(this.token).then(response => {
+            console.log(response)
+            if (response.state === 'OK') {
+              const curSpot = JSON.parse(response.object)
+              this.basicInfo.spotName = curSpot.spotName
+
+              this.basicInfo.scheduleName = this.basic_info_form.name
+              this.basicInfo.type = this.basic_info_form.type
+              this.basicInfo.textArea = this.basic_info_form.description
+
+              this.basicInfo.startTime = this.basic_info_form.date + this.basic_info_form.time
+              const date = this.basic_info_form.date
+              const time = this.basic_info_form.time
+              const dateString = date.getFullYear() + '-' + timeFormater(date.getMonth() + 1) + '-' + timeFormater(date.getDate())
+              const timeString = timeFormater(time.getHours()) + ':' + timeFormater(time.getMinutes()) + ':' + timeFormater(time.getSeconds())
+              this.basicInfo.startTime = dateString + ' ' + timeString
+
+              var seatPriceMapNew = []
+              var allPrices = this.seat_price_map
+              for (var i = 0; i < allPrices.length; i++) {
+                seatPriceMapNew[i] = {}
+                seatPriceMapNew[i].seatPrice = allPrices[i].seatPrice
+                seatPriceMapNew[i].seatName = allPrices[i].seatName
+                seatPriceMapNew[i].seatNum = allPrices[i].seatNum
               }
               this.seatPriceMap = seatPriceMapNew
             }

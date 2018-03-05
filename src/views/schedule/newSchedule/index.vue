@@ -26,16 +26,9 @@
 
 <script>
   import $ from 'jquery'
-  import { mapGetters } from 'vuex'
-  import { getUser } from '../../../api/user'
 
   export default {
     name: 'new-schedule',
-    computed: {
-      ...mapGetters([
-        'token'
-      ])
-    },
     data: function() {
       return {
         curStep: 0,
@@ -105,49 +98,22 @@
       var lastStartIndex = path.lastIndexOf('step')
       if (lastStartIndex < 0) this.curStep = 0
       else this.curStep = parseInt(path.substring(lastStartIndex + 4)) - 1
-
-      // 同时向后端发出请求获取此场馆的座位信息初始化store
-      new Promise((resolve, reject) => {
-        getUser(this.token).then(response => {
-          console.log(response)
-          if (response.state === 'OK') {
-            const curSpot = JSON.parse(response.object)
-
-            var seatMapForPrice = []
-            var curSpotSeats = curSpot.seatInfos
-            for (var i = 0; i < curSpotSeats.length; i++) {
-              var curSeat = curSpotSeats[i]
-              seatMapForPrice[i] = {}
-              seatMapForPrice[i].seatName = curSeat.seatName
-              seatMapForPrice[i].seatNum = curSeat.num
-              seatMapForPrice[i].seatPrice = ''
-            }
-
-            this.$store.dispatch('ChangeSeatPriceMap', seatMapForPrice).then(() => {
-            }).catch(() => {
-            })
-          }
-          resolve()
-        }).catch(error => {
-          reject(error)
-        })
-      }).then(() => {
-      }).catch(() => {
-      })
     },
     watch: {
-      $route: function(newRoute, oldRoute) {
-        console.log('watch route change')
-        // watch 当前路由和之前的路由的isNew是否相同，不同则将路由按钮初始化为默认值
-        if (newRoute.meta.isNew !== oldRoute.meta.isNew) {
-          this.curStep = 0
-          console.log('meta.isNew has changed, reset the stepControl data')
-        }
-      },
       curStep: function(val, oldVal) {
         console.log('curStep 已改变')
         this.goStep(val)
       }
+    },
+    beforeRouteLeave: function(to, from, next) {
+      if (to.meta.isNew !== from.meta.isNew) {
+        this.$store.dispatch('ResetSchedule').then(() => {
+          this.curStep = 0
+          console.log('reset the new schedule view stored data')
+        }).catch(() => {
+        })
+      }
+      next()
     }
   }
 

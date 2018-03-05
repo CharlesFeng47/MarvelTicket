@@ -5,6 +5,8 @@ const getters = {
   name: state => state.user.name,
   roles: state => state.user.roles,
   basic_info_form: state => state.schedule.basic_info_form,
-  seat_price_map: state => state.schedule.seat_price_map
+  seat_price_map: state => state.schedule.seat_price_map,
+  basic_info_form_modified: state => state.schedule.basic_info_form_modified,
+  seat_price_map_modified: state => state.schedule.seat_price_map_modified
 }
 export default getters
