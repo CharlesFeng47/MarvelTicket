@@ -66,7 +66,6 @@
 <script>
   import { getSchedule, deleteSchedule } from '../../../api/schedule'
   import { getUser } from '../../../api/user'
-  import { getRelativeScheduleType } from '../../../utils/schedule'
   import { timeFormater } from '../../../utils/time'
   import { mapGetters } from 'vuex'
 
@@ -145,7 +144,7 @@
               this.basicInfo.id = scheduleDetail.id
               this.basicInfo.scheduleName = scheduleDetail.name
               this.basicInfo.spotName = scheduleDetail.spotName
-              this.basicInfo.type = getRelativeScheduleType(scheduleDetail.type)
+              this.basicInfo.type = scheduleDetail.type
               this.basicInfo.startTime = scheduleDetail.startDateTime
               this.basicInfo.textArea = scheduleDetail.description
 

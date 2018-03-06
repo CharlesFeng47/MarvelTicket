@@ -26,9 +26,18 @@
 
 <script>
   import $ from 'jquery'
+  import { mapGetters } from 'vuex'
+  import { saveSchedule } from '../../../api/schedule'
 
   export default {
     name: 'new-schedule',
+    computed: {
+      ...mapGetters([
+        'token',
+        'basic_info_form',
+        'seat_price_map'
+      ])
+    },
     data: function() {
       return {
         curStep: 0,
@@ -63,8 +72,22 @@
         $('html,body').animate({ scrollTop: 0 }, 500)
       },
       handlePublish: function() {
-        this.curStep++
-        console.log('发布')
+        new Promise((resolve, reject) => {
+          saveSchedule(this.token, this.basic_info_form, this.seat_price_map).then(response => {
+            console.log(response)
+            if (response.state === 'OK') {
+              this.curStep++
+              this.$store.dispatch('ResetSchedule', this.seatPriceMap).then(() => {
+              }).catch(() => {
+              })
+            }
+            resolve()
+          }).catch(error => {
+            reject(error)
+          })
+        }).then(() => {
+        }).catch(() => {
+        })
       },
       goStep: function(n) {
         switch (n) {

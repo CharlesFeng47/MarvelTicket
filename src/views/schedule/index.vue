@@ -66,7 +66,6 @@
 <script>
   import { mapGetters } from 'vuex'
   import { getAllSchedules, getSchedulesOfOneSpot } from '../../api/schedule'
-  import { getRelativeScheduleType } from '../../utils/schedule'
 
   export default {
     name: 'schedule',
@@ -141,7 +140,7 @@
           allScheduleBriefNew[i].startTime = data[i].startDateTime
           allScheduleBriefNew[i].scheduleName = data[i].name
           allScheduleBriefNew[i].spotName = data[i].spotName
-          allScheduleBriefNew[i].type = getRelativeScheduleType(data[i].type)
+          allScheduleBriefNew[i].type = data[i].type
         }
         this.allScheduleBrief = allScheduleBriefNew
       }

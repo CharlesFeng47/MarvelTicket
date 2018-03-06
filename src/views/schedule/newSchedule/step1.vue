@@ -46,7 +46,6 @@
 <script>
   import { mapGetters } from 'vuex'
   import { getSchedule } from '../../../api/schedule'
-  import { getRelativeScheduleType } from '../../../utils/schedule'
 
   export default {
     name: 'step1',
@@ -180,7 +179,7 @@
               if (response.state === 'OK') {
                 const scheduleDetail = JSON.parse(response.object)
                 defaultBasicInfoForm.name = scheduleDetail.name
-                defaultBasicInfoForm.type = getRelativeScheduleType(scheduleDetail.type)
+                defaultBasicInfoForm.type = scheduleDetail.type
                 defaultBasicInfoForm.description = scheduleDetail.description
 
                 var startDateTime = scheduleDetail.startDateTime
