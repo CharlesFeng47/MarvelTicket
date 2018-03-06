@@ -16,7 +16,7 @@
         <el-button @click.native.prevent="handlePreStep" v-show="stepControl.preStep" type="info" round>上一步</el-button>
         <el-button @click.native.prevent="validateCurData" v-show="stepControl.nextStep" type="primary" round>下一步</el-button>
         <el-button @click.native.prevent="handlePublish" v-if="this.$route.meta.isNew&&stepControl.publish" type="danger" round>发布计划</el-button>
-        <el-button @click.native.prevent="handlePublish" v-if="!this.$route.meta.isNew&&stepControl.publish" type="danger" round>修改计划</el-button>
+        <el-button @click.native.prevent="handleModify" v-if="!this.$route.meta.isNew&&stepControl.publish" type="danger" round>修改计划</el-button>
         <el-tag v-if="this.$route.meta.isNew&&curStep==3" type="success">已成功发布</el-tag>
         <el-tag v-if="!this.$route.meta.isNew&&curStep==3" type="success">已成功修改</el-tag>
       </div>
@@ -27,7 +27,7 @@
 <script>
   import $ from 'jquery'
   import { mapGetters } from 'vuex'
-  import { saveSchedule } from '../../../api/schedule'
+  import { saveSchedule, modifySchedule } from '../../../api/schedule'
 
   export default {
     name: 'new-schedule',
@@ -74,6 +74,24 @@
       handlePublish: function() {
         new Promise((resolve, reject) => {
           saveSchedule(this.token, this.basic_info_form, this.seat_price_map).then(response => {
+            console.log(response)
+            if (response.state === 'OK') {
+              this.curStep++
+              this.$store.dispatch('ResetSchedule', this.seatPriceMap).then(() => {
+              }).catch(() => {
+              })
+            }
+            resolve()
+          }).catch(error => {
+            reject(error)
+          })
+        }).then(() => {
+        }).catch(() => {
+        })
+      },
+      handleModify: function() {
+        new Promise((resolve, reject) => {
+          modifySchedule(this.token, this.$route.params.scheduleId, this.basic_info_form, this.seat_price_map).then(response => {
             console.log(response)
             if (response.state === 'OK') {
               this.curStep++
