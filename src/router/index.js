@@ -26,7 +26,13 @@ export const constantRouterMap = [
   { path: '/404', component: () => import('@/views/404'), hidden: true },
 
   {
-    path: '/spot_sign_up', component: () => import('@/views/login/spot/SignUp'), hidden: true
+    path: '/spot_sign_up', component: () => import('@/views/user/spot/modify/index'), hidden: true,
+    children: [
+      { path: '', hidden: true, component: () => import('@/views/user/spot/modify/step1'), meta: { isNew: true }},
+      { path: 'step1', hidden: true, component: () => import('@/views/user/spot/modify/step1'), meta: { isNew: true }},
+      { path: 'step2', hidden: true, component: () => import('@/views/user/spot/modify/step2'), meta: { isNew: true }},
+      { path: 'step3', hidden: true, component: () => import('@/views/user/spot/modify/step3'), meta: { isNew: true }}
+    ]
   },
 
   {
