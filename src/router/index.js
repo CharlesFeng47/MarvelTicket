@@ -26,6 +26,10 @@ export const constantRouterMap = [
   { path: '/404', component: () => import('@/views/404'), hidden: true },
 
   {
+    path: '/spot_sign_up', component: () => import('@/views/login/spot/SignUp'), hidden: true
+  },
+
+  {
     path: '/',
     component: Layout,
     redirect: '/dashboard',

@@ -175,8 +175,8 @@
           new Promise((resolve, reject) => {
             getSchedule(this.$route.params.scheduleId).then(response => {
               console.log(response)
-              var defaultBasicInfoForm = {}
               if (response.state === 'OK') {
+                var defaultBasicInfoForm = {}
                 const scheduleDetail = JSON.parse(response.object)
                 defaultBasicInfoForm.name = scheduleDetail.name
                 defaultBasicInfoForm.type = scheduleDetail.type

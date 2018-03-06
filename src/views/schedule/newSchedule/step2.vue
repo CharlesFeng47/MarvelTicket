@@ -37,7 +37,7 @@
 </template>
 
 <script>
-  import { validatNumbers } from '@/utils/validate'
+  import { isValidatNumbers } from '@/utils/validate'
   import { mapGetters } from 'vuex'
   import { getUser } from '../../../api/user'
   import { getSchedule } from '../../../api/schedule'
@@ -62,7 +62,7 @@
       validateData() {
         var numbersIsValidate = true
         for (var i = 0; i < this.seatPriceMap.length; i++) {
-          if (!validatNumbers(this.seatPriceMap[i].seatPrice)) {
+          if (!isValidatNumbers(this.seatPriceMap[i].seatPrice)) {
             numbersIsValidate = false
           }
         }
