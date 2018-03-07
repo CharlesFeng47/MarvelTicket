@@ -18,6 +18,10 @@ import store from './store'
 import '@/icons' // icon
 import '@/permission' // permission control
 
+// 将全局函数当做插件来进行注册
+import charts from './utils/seat-charts'
+Vue.use(charts)
+
 Vue.use(ElementUI)
 
 Vue.config.productionTip = false
