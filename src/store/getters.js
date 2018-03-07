@@ -4,9 +4,13 @@ const getters = {
   // avatar: state => state.user.avatar,
   name: state => state.user.name,
   roles: state => state.user.roles,
+
   basic_info_form: state => state.schedule.basic_info_form,
   seat_price_map: state => state.schedule.seat_price_map,
   basic_info_form_modified: state => state.schedule.basic_info_form_modified,
-  seat_price_map_modified: state => state.schedule.seat_price_map_modified
+  seat_price_map_modified: state => state.schedule.seat_price_map_modified,
+
+  spot_basic: state => state.spot.spot_basic,
+  spot_seats_map: state => state.spot.spot_seats_map
 }
 export default getters
