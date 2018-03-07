@@ -41,7 +41,7 @@
               </el-input>
             </el-col>
             <el-col :offset="1" :span="3">
-              <el-switch v-model="chooseSeatForWhich[0]" class="seat-label-switch"
+              <el-switch v-model="chooseSeatForWhich.chooseSeatForA" class="seat-label-switch"
                          :active-color="chooseSeatForActiveColor" :inactive-color="chooseSeatForInactiveColor">
               </el-switch>
             </el-col>
@@ -55,7 +55,7 @@
               </el-input>
             </el-col>
             <el-col :offset="1" :span="3">
-              <el-switch v-model="chooseSeatForWhich[1]" class="seat-label-switch"
+              <el-switch v-model="chooseSeatForWhich.chooseSeatForB" class="seat-label-switch"
                          :active-color="chooseSeatForActiveColor" :inactive-color="chooseSeatForInactiveColor">
               </el-switch>
             </el-col>
@@ -69,7 +69,7 @@
               </el-input>
             </el-col>
             <el-col :offset="1" :span="3">
-              <el-switch v-model="chooseSeatForWhich[2]" class="seat-label-switch"
+              <el-switch v-model="chooseSeatForWhich.chooseSeatForC" class="seat-label-switch"
                          :active-color="chooseSeatForActiveColor" :inactive-color="chooseSeatForInactiveColor">
               </el-switch>
             </el-col>
@@ -83,7 +83,7 @@
               </el-input>
             </el-col>
             <el-col :offset="1" :span="3">
-              <el-switch v-model="chooseSeatForWhich[3]" class="seat-label-switch"
+              <el-switch v-model="chooseSeatForWhich.chooseSeatForD" class="seat-label-switch"
                          :active-color="chooseSeatForActiveColor" :inactive-color="chooseSeatForInactiveColor">
               </el-switch>
             </el-col>
@@ -97,7 +97,7 @@
               </el-input>
             </el-col>
             <el-col :offset="1" :span="3">
-              <el-switch v-model="chooseSeatForWhich[4]" class="seat-label-switch"
+              <el-switch v-model="chooseSeatForWhich.chooseSeatForE" class="seat-label-switch"
                          :active-color="chooseSeatForActiveColor" :inactive-color="chooseSeatForInactiveColor">
               </el-switch>
             </el-col>
@@ -111,7 +111,7 @@
               </el-input>
             </el-col>
             <el-col :offset="1" :span="3">
-              <el-switch v-model="chooseSeatForWhich[5]" class="seat-label-switch"
+              <el-switch v-model="chooseSeatForWhich.chooseSeatForF" class="seat-label-switch"
                          :active-color="chooseSeatForActiveColor" :inactive-color="chooseSeatForInactiveColor">
               </el-switch>
             </el-col>
@@ -125,7 +125,7 @@
               </el-input>
             </el-col>
             <el-col :offset="1" :span="3">
-              <el-switch v-model="chooseSeatForWhich[6]" class="seat-label-switch"
+              <el-switch v-model="chooseSeatForWhich.chooseSeatForG" class="seat-label-switch"
                          :active-color="chooseSeatForActiveColor" :inactive-color="chooseSeatForInactiveColor">
               </el-switch>
             </el-col>
@@ -139,7 +139,7 @@
               </el-input>
             </el-col>
             <el-col :offset="1" :span="3">
-              <el-switch v-model="chooseSeatForWhich[7]" class="seat-label-switch"
+              <el-switch v-model="chooseSeatForWhich.chooseSeatForH" class="seat-label-switch"
                          :active-color="chooseSeatForActiveColor" :inactive-color="chooseSeatForInactiveColor">
               </el-switch>
             </el-col>
@@ -153,7 +153,7 @@
               </el-input>
             </el-col>
             <el-col :offset="1" :span="3">
-              <el-switch v-model="chooseSeatForWhich[8]" class="seat-label-switch"
+              <el-switch v-model="chooseSeatForWhich.chooseSeatForI" class="seat-label-switch"
                          :active-color="chooseSeatForActiveColor" :inactive-color="chooseSeatForInactiveColor">
               </el-switch>
             </el-col>
@@ -190,17 +190,17 @@
         chooseSeatForInactiveColor: '#ff4949',
 
         // 点击座位为哪种类型
-        chooseSeatForWhich: [
-          true,
-          false,
-          false,
-          false,
-          false,
-          false,
-          false,
-          false,
-          false
-        ],
+        chooseSeatForWhich: {
+          chooseSeatForA: true,
+          chooseSeatForB: false,
+          chooseSeatForC: false,
+          chooseSeatForD: false,
+          chooseSeatForE: false,
+          chooseSeatForF: false,
+          chooseSeatForG: false,
+          chooseSeatForH: false,
+          chooseSeatForI: false
+        },
 
         seatMapControlForm: {
           seatRow: 9,
@@ -244,60 +244,89 @@
         ]
       }
     },
-    computed: {
-      chooseSeatForWhichBackup: function() {
-        var result = []
-        for (var i = 0; i < this.chooseSeatForWhich.length; i++) {
-          result[i] = this.chooseSeatForWhich[i]
-        }
-        return result
-      }
-    },
     created: function() {
     },
     watch: {
-      chooseSeatForWhichBackup: {
-        handler(val, oldVal) {
-          console.log(val)
-          console.log(oldVal)
-          var nowChooseIndex
-          // 先找到当前选择的一个
-          for (var i = 0; i < val.length; i++) {
-            if (val[i] === true && oldVal[i] === false) {
-              nowChooseIndex = i
-            }
-          }
-          // 除了找到的这一个都设为false
-          for (var j = 0; j < val.length; j++) {
-            if (nowChooseIndex !== j) {
-              this.chooseSeatForWhich[j] = false
-            }
-          }
-        },
-        deep: true
+      'chooseSeatForWhich.chooseSeatForA': function(val, oldVal) {
+        if (val === true) {
+          this.closeAllChooseSeatButOne('chooseSeatForA')
+        }
+      },
+      'chooseSeatForWhich.chooseSeatForB': function(val, oldVal) {
+        if (val === true) {
+          this.closeAllChooseSeatButOne('chooseSeatForB')
+        }
+      },
+      'chooseSeatForWhich.chooseSeatForC': function(val, oldVal) {
+        if (val === true) {
+          this.closeAllChooseSeatButOne('chooseSeatForC')
+        }
+      },
+      'chooseSeatForWhich.chooseSeatForD': function(val, oldVal) {
+        if (val === true) {
+          this.closeAllChooseSeatButOne('chooseSeatForD')
+        }
+      },
+      'chooseSeatForWhich.chooseSeatForE': function(val, oldVal) {
+        if (val === true) {
+          this.closeAllChooseSeatButOne('chooseSeatForE')
+        }
+      },
+      'chooseSeatForWhich.chooseSeatForF': function(val, oldVal) {
+        if (val === true) {
+          this.closeAllChooseSeatButOne('chooseSeatForF')
+        }
+      },
+      'chooseSeatForWhich.chooseSeatForG': function(val, oldVal) {
+        if (val === true) {
+          this.closeAllChooseSeatButOne('chooseSeatForG')
+        }
+      },
+      'chooseSeatForWhich.chooseSeatForH': function(val, oldVal) {
+        if (val === true) {
+          this.closeAllChooseSeatButOne('chooseSeatForH')
+        }
+      },
+      'chooseSeatForWhich.chooseSeatForI': function(val, oldVal) {
+        if (val === true) {
+          this.closeAllChooseSeatButOne('chooseSeatForI')
+        }
       }
     },
     methods: {
+      closeAllChooseSeatButOne: function(chooseSeatForWhichItem) {
+        console.log('but: ' + chooseSeatForWhichItem)
+        for (var item in this.chooseSeatForWhich) {
+          if (item !== chooseSeatForWhichItem) {
+            this.chooseSeatForWhich[item] = false
+          } else {
+            this.chooseSeatForWhich[item] = true
+          }
+        }
+      },
       addSeatTypeMethod: function() {
         this.curSeatTypeCount++
       },
       deleteSeatTypeMethod: function() {
         this.curSeatTypeCount--
 
-        // 先找到当前选择的一个
-        var nowChooseIndex
-        for (var i = 0; i < this.chooseSeatForWhich.length; i++) {
-          if (this.chooseSeatForWhich[i] === true) {
-            nowChooseIndex = i
+        // 先找到当前选择的座位类型
+        var nowChooseSeatForWhichItem
+        for (var item in this.chooseSeatForWhich) {
+          if (this.chooseSeatForWhich[item] === true) {
+            nowChooseSeatForWhichItem = item
           }
         }
 
-        if (this.curSeatTypeCount <= nowChooseIndex) {
+        if (nowChooseSeatForWhichItem && this.curSeatTypeCount <= this.getChooseSeatTypeForWhichItemIndex(nowChooseSeatForWhichItem)) {
           // 选择的那一个座位类型被删除，通过默认开启第一个，关闭被删除的那一个
           // TODO 将此类型座位删除
-          console.log('NEED DELETE: ' + nowChooseIndex)
-          this.$set(this.chooseSeatForWhich, 0, true)
+          this.closeAllChooseSeatButOne('chooseSeatForA')
         }
+      },
+      getChooseSeatTypeForWhichItemIndex: function(chooseSeatForWhichItem) {
+        const lastChar = chooseSeatForWhichItem.charAt(chooseSeatForWhichItem.length - 1)
+        return lastChar.charCodeAt() - 65
       },
       seatChartInit() {
         var _this = this
