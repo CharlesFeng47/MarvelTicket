@@ -10,13 +10,13 @@
         </el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="seatChartInit">生成座位</el-button>
+        <el-button type="primary" @click="initFromSeatMapControlForm">生成座位</el-button>
       </el-form-item>
     </el-form>
 
     <el-row>
       <!--左侧为座位表-->
-      <el-col :span="18" style="height: 600px;overflow-x: auto;overflow-y: auto">
+      <el-col id="seat-region" :span="18" style="height: 600px;overflow-x: auto;overflow-y: auto">
         <div id="seat-map">
           <div class="front-indicator">Front</div>
         </div>
@@ -181,8 +181,8 @@
   export default {
     name: 'step2',
     data() {
-      // const seatRepreChar = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i']
       return {
+        seatRepreChar: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'],
         // 当前有多少种座位类型
         curSeatTypeCount: 9,
 
@@ -310,74 +310,120 @@
       deleteSeatTypeMethod: function() {
         this.curSeatTypeCount--
 
-        // 先找到当前选择的座位类型
+        const nowChooseSeatForWhichItem = this.getNowChooseSeatForWhichItem()
+        if (nowChooseSeatForWhichItem && this.curSeatTypeCount <= this.getChooseSeatTypeForWhichItemIndex(nowChooseSeatForWhichItem)) {
+          // 选择的那一个座位类型被删除，通过默认开启第一个，关闭被删除的那一个
+          this.closeAllChooseSeatButOne('chooseSeatForA')
+        }
+
+        // 如果有被删除类型的座位，将此类型座位类型设为a类
+        var deleteChar = this.seatRepreChar[this.curSeatTypeCount]
+        console.log('deleteChar: ' + deleteChar)
+        for (var i = 0; i < this.seatMap.length; i++) {
+          for (var j = 0; j < this.seatMap[i].length; j++) {
+            if (this.seatMap[i].charAt(j) === deleteChar) {
+              this.seatMap[i] = this.replaceSpecificIndexChar(this.seatMap[i], j, 'a')
+            }
+          }
+        }
+        console.log(this.seatMap)
+        this.seatChartInit()
+      },
+      // 用于寻找找到当前选择的座位类型，返回如 'chooseSeatForA'
+      getNowChooseSeatForWhichItem() {
         var nowChooseSeatForWhichItem
         for (var item in this.chooseSeatForWhich) {
           if (this.chooseSeatForWhich[item] === true) {
             nowChooseSeatForWhichItem = item
           }
         }
-
-        if (nowChooseSeatForWhichItem && this.curSeatTypeCount <= this.getChooseSeatTypeForWhichItemIndex(nowChooseSeatForWhichItem)) {
-          // 选择的那一个座位类型被删除，通过默认开启第一个，关闭被删除的那一个
-          // TODO 将此类型座位删除
-          this.closeAllChooseSeatButOne('chooseSeatForA')
-        }
+        return nowChooseSeatForWhichItem
       },
+      // 返回 chooseSeatForWhichItem 对应的从 0 开始的序号
       getChooseSeatTypeForWhichItemIndex: function(chooseSeatForWhichItem) {
         const lastChar = chooseSeatForWhichItem.charAt(chooseSeatForWhichItem.length - 1)
         return lastChar.charCodeAt() - 65
       },
+      // 返回 chooseSeatForWhichItem 对应的表示字符
+      getNowChooseSeatForWhichItemChar: function(chooseSeatForWhichItem) {
+        return chooseSeatForWhichItem.charAt(chooseSeatForWhichItem.length - 1).toLowerCase()
+      },
+      // 替换指定位置为指定元素
+      replaceSpecificIndexChar: function(str, index, newChar) {
+        const curRowCharArray = str.split('')
+        curRowCharArray.splice(index, 1, newChar)
+        return curRowCharArray.join('')
+      },
+      initFromSeatMapControlForm() {
+        // 修改map中的值
+        var seatMapNew = []
+        for (var i = 0; i < this.seatMapControlForm.seatRow; i++) {
+          var curStr = ''
+          for (var j = 0; j < this.seatMapControlForm.seatCol; j++) {
+            curStr += 'a'
+          }
+          seatMapNew[i] = curStr
+        }
+        this.seatMap = seatMapNew
+        // 从map进行生成
+        this.seatChartInit()
+      },
       seatChartInit() {
         var _this = this
-        $(document).ready(function() {
-          $('#seat-map').seatCharts({
-            map: _this.seatMap,
-            seats: {
-              a: {
-                classes: 'a-class'
-              },
-              b: {
-                classes: 'b-class'
-              },
-              c: {
-                classes: 'c-class'
-              },
-              d: {
-                classes: 'd-class'
-              },
-              e: {
-                classes: 'e-class'
-              },
-              f: {
-                classes: 'f-class'
-              },
-              g: {
-                classes: 'g-class'
-              },
-              h: {
-                classes: 'h-class'
-              },
-              i: {
-                classes: 'i-class'
-              }
+        // 需要先将之前的内容给清空，不然不会重新生成
+        $('#seat-region').html('<div id="seat-map">\n' +
+          '          <div class="front-indicator">Front</div>\n' +
+          '        </div>')
+        $('#seat-map').seatCharts({
+          map: _this.seatMap,
+          seats: {
+            a: {
+              classes: 'a-class'
             },
-            naming: {
-              left: true,
-              top: true
+            b: {
+              classes: 'b-class'
             },
-            click: function() {
-              if (this.status() === 'available') {
-                return 'selected'
-              } else if (this.status() === 'selected') {
-                return 'available'
-              } else if (this.status() === 'unavailable') {
-                return 'unavailable'
-              } else {
-                return this.style()
-              }
+            c: {
+              classes: 'c-class'
+            },
+            d: {
+              classes: 'd-class'
+            },
+            e: {
+              classes: 'e-class'
+            },
+            f: {
+              classes: 'f-class'
+            },
+            g: {
+              classes: 'g-class'
+            },
+            h: {
+              classes: 'h-class'
+            },
+            i: {
+              classes: 'i-class'
             }
-          })
+          },
+          naming: {
+            left: true,
+            top: true
+          },
+          click: function() {
+            if (this.status() === 'available') {
+              const curId = this.settings.id
+              const curIdParts = curId.split('_')
+              const curRowIndexFromZero = parseInt(curIdParts[0]) - 1
+              const curColIndexFromZero = parseInt(curIdParts[1]) - 1
+              // 将此行此列此座位的代表字符设为当前所选的字符，然后重新初始化
+              const nowChooseSeatForWhichItem = _this.getNowChooseSeatForWhichItem()
+              const choosenChar = _this.getNowChooseSeatForWhichItemChar(nowChooseSeatForWhichItem)
+              _this.seatMap[curRowIndexFromZero] = _this.replaceSpecificIndexChar(_this.seatMap[curRowIndexFromZero], curColIndexFromZero, choosenChar)
+              _this.seatChartInit()
+            } else {
+              return this.style()
+            }
+          }
         })
       }
     },
