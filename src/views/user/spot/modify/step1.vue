@@ -73,6 +73,16 @@
         pwdType: 'password'
       }
     },
+    watch: {
+      spotBasic: {
+        handler(val, oldVal) {
+          this.$store.dispatch('ChangeSpotBasicInfo', this.spotBasic).then(() => {
+          }).catch(() => {
+          })
+        },
+        deep: true
+      }
+    },
     methods: {
       showPwd() {
         if (this.pwdType === 'password') {

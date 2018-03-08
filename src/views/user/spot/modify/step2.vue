@@ -1,11 +1,11 @@
 <template>
   <div style="max-height: 620px;overflow: auto">
-    <el-form :inline="true" :model="seatMapControlForm" style="text-align: center;margin-top: 25px">
-      <el-form-item label="最大行数">
+    <el-form :inline="true" :model="seatMapControlForm" :rules="seatMapControlFormRules" ref="seatMapControlForm" style="text-align: center;margin-top: 25px">
+      <el-form-item label="最大行数" prop="seatRow">
         <el-input v-model="seatMapControlForm.seatRow" placeholder="请输入最大行数">
         </el-input>
       </el-form-item>
-      <el-form-item label="最大列数">
+      <el-form-item label="最大列数" prop="seatCol">
         <el-input v-model="seatMapControlForm.seatCol" placeholder="请输入最大行数">
         </el-input>
       </el-form-item>
@@ -177,10 +177,27 @@
 
 <script>
   import $ from 'jquery'
+  import { mapGetters } from 'vuex'
+  import { isValidatePositiveIntegers } from '../../../../utils/validate'
 
   export default {
     name: 'step2',
+    computed: {
+      ...mapGetters([
+        'spot_seats_map',
+        'cur_seat_type_count',
+        'seat_names',
+        'spot_seats_map_modified'
+      ])
+    },
     data() {
+      const validatePositiveInteger = (rule, value, callback) => {
+        if (!isValidatePositiveIntegers(value)) {
+          callback(new Error('请输入合法正整数'))
+        } else {
+          callback()
+        }
+      }
       return {
         seatRepreChar: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'],
         // 当前有多少种座位类型
@@ -190,61 +207,28 @@
         chooseSeatForInactiveColor: '#ff4949',
 
         // 点击座位为哪种类型
-        chooseSeatForWhich: {
-          chooseSeatForA: true,
-          chooseSeatForB: false,
-          chooseSeatForC: false,
-          chooseSeatForD: false,
-          chooseSeatForE: false,
-          chooseSeatForF: false,
-          chooseSeatForG: false,
-          chooseSeatForH: false,
-          chooseSeatForI: false
-        },
+        chooseSeatForWhich: {},
 
         seatMapControlForm: {
           seatRow: 9,
           seatCol: 5
         },
-        seatNames: {
-          aName: 'A 类座位',
-          bName: 'B 类座位',
-          cName: 'C 类座位',
-          dName: 'D 类座位',
-          eName: 'E 类座位',
-          fName: 'F 类座位',
-          gName: 'G 类座位',
-          hName: 'H 类座位',
-          iName: 'I 类座位'
+        seatMapControlFormRules: {
+          seatRow: [{ required: true, trigger: 'blur', validator: validatePositiveInteger }],
+          seatCol: [{ required: true, trigger: 'blur', validator: validatePositiveInteger }]
         },
-        seatMap: [
-          'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
-          'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb',
-          'cccccccccccccccccccccccccccccccccccccccccccccccccc',
-          'dddddddddddddddddddddddddddddddddddddddddddddddddd',
-          'eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
-          'ffffffffffffffffffffffffffffffffffffffffffffffffff',
-          'gggggggggggggggggggggggggggggggggggggggggggggggggg',
-          'hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh',
-          'hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh',
-          'hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh',
-          'hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh',
-          'hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh',
-          'hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh',
-          'hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh',
-          'hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh',
-          'hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh',
-          'hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh',
-          'hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh',
-          'hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh',
-          'hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh',
-          'hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh',
-          'hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh',
-          'iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii'
-        ]
+        seatNames: {},
+        seatMap: []
       }
     },
-    created: function() {
+    mounted: function() {
+      if (!this.spot_seats_map_modified) {
+        console.log('step2 第一次，加载数据')
+        this.resetData()
+      } else {
+        console.log('step2 已修改过数据，从store中加载数据')
+        this.fulfillStoredData()
+      }
     },
     watch: {
       'chooseSeatForWhich.chooseSeatForA': function(val, oldVal) {
@@ -294,8 +278,89 @@
       }
     },
     methods: {
+      // 检验数据可靠性并修改store
+      validateData() {
+        this.$refs['seatMapControlForm'].validate((valid) => {
+          if (valid) {
+            this.$store.dispatch('ChangeSpotSeatsMap', {
+              spot_seats_map: this.seatMap,
+              cur_seat_type_count: this.curSeatTypeCount,
+              seat_names: this.seatNames
+            }).then(() => {
+            }).catch(() => {
+            })
+
+            this.$emit('next')
+          } else {
+            console.log('error submit!!')
+          }
+        })
+      },
+      // 重置价格
+      resetData() {
+        this.curSeatTypeCount = 9
+        this.chooseSeatForWhich = {
+          chooseSeatForA: true,
+          chooseSeatForB: false,
+          chooseSeatForC: false,
+          chooseSeatForD: false,
+          chooseSeatForE: false,
+          chooseSeatForF: false,
+          chooseSeatForG: false,
+          chooseSeatForH: false,
+          chooseSeatForI: false
+        }
+        this.seatMapControlForm = {
+          seatRow: 9,
+          seatCol: 50
+        }
+        this.seatNames = {
+          aName: 'A 类座位',
+          bName: 'B 类座位',
+          cName: 'C 类座位',
+          dName: 'D 类座位',
+          eName: 'E 类座位',
+          fName: 'F 类座位',
+          gName: 'G 类座位',
+          hName: 'H 类座位',
+          iName: 'I 类座位'
+        }
+        this.seatMap = [
+          'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+          'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb',
+          'cccccccccccccccccccccccccccccccccccccccccccccccccc',
+          'dddddddddddddddddddddddddddddddddddddddddddddddddd',
+          'eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee',
+          'ffffffffffffffffffffffffffffffffffffffffffffffffff',
+          'gggggggggggggggggggggggggggggggggggggggggggggggggg',
+          'hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh',
+          'iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii'
+        ]
+        this.seatChartInit()
+      },
+      // 填充store里面的值
+      fulfillStoredData() {
+        this.curSeatTypeCount = this.cur_seat_type_count
+        this.chooseSeatForWhich = {
+          chooseSeatForA: true,
+          chooseSeatForB: false,
+          chooseSeatForC: false,
+          chooseSeatForD: false,
+          chooseSeatForE: false,
+          chooseSeatForF: false,
+          chooseSeatForG: false,
+          chooseSeatForH: false,
+          chooseSeatForI: false
+        }
+        this.seatNames = this.seat_names
+        this.seatMap = this.spot_seats_map
+        this.seatMapControlForm = {
+          seatRow: this.seatMap.length,
+          seatCol: this.seatMap[0].length
+        }
+        this.seatChartInit()
+      },
       closeAllChooseSeatButOne: function(chooseSeatForWhichItem) {
-        console.log('but: ' + chooseSeatForWhichItem)
         for (var item in this.chooseSeatForWhich) {
           if (item !== chooseSeatForWhichItem) {
             this.chooseSeatForWhich[item] = false
@@ -355,18 +420,23 @@
         return curRowCharArray.join('')
       },
       initFromSeatMapControlForm() {
-        // 修改map中的值
-        var seatMapNew = []
-        for (var i = 0; i < this.seatMapControlForm.seatRow; i++) {
-          var curStr = ''
-          for (var j = 0; j < this.seatMapControlForm.seatCol; j++) {
-            curStr += 'a'
+        // 数据合法再修改座位表
+        this.$refs['seatMapControlForm'].validate((valid) => {
+          if (valid) {
+            // 修改map中的值
+            var seatMapNew = []
+            for (var i = 0; i < this.seatMapControlForm.seatRow; i++) {
+              var curStr = ''
+              for (var j = 0; j < this.seatMapControlForm.seatCol; j++) {
+                curStr += 'a'
+              }
+              seatMapNew[i] = curStr
+            }
+            this.seatMap = seatMapNew
+            // 从map进行生成
+            this.seatChartInit()
           }
-          seatMapNew[i] = curStr
-        }
-        this.seatMap = seatMapNew
-        // 从map进行生成
-        this.seatChartInit()
+        })
       },
       seatChartInit() {
         var _this = this
@@ -417,7 +487,14 @@
               const curColIndexFromZero = parseInt(curIdParts[1]) - 1
               // 将此行此列此座位的代表字符设为当前所选的字符，然后重新初始化
               const nowChooseSeatForWhichItem = _this.getNowChooseSeatForWhichItem()
-              const choosenChar = _this.getNowChooseSeatForWhichItemChar(nowChooseSeatForWhichItem)
+              var choosenChar
+              if (nowChooseSeatForWhichItem) {
+                // 用户有选择座位类型
+                choosenChar = _this.getNowChooseSeatForWhichItemChar(nowChooseSeatForWhichItem)
+              } else {
+                // 用户为选择座位类型，点选座位即取消此座位
+                choosenChar = '_'
+              }
               _this.seatMap[curRowIndexFromZero] = _this.replaceSpecificIndexChar(_this.seatMap[curRowIndexFromZero], curColIndexFromZero, choosenChar)
               _this.seatChartInit()
             } else {
@@ -425,10 +502,31 @@
             }
           }
         })
+        this.addLineNumListener()
+      },
+      addLineNumListener() {
+        var _this = this
+        $('.seatCharts-cell').filter('.seatCharts-space').click(function() {
+          var curRowIndexFromZero = this.innerHTML - 1
+
+          const nowChooseSeatForWhichItem = _this.getNowChooseSeatForWhichItem()
+          var choosenChar
+          if (nowChooseSeatForWhichItem) {
+            // 用户有选择座位类型
+            choosenChar = _this.getNowChooseSeatForWhichItemChar(nowChooseSeatForWhichItem)
+          } else {
+            // 用户为选择座位类型，点选座位即取消此座位
+            choosenChar = '_'
+          }
+
+          let newRow = ''
+          for (var i = 0; i < _this.seatMap[curRowIndexFromZero].length; i++) {
+            newRow += choosenChar
+          }
+          _this.seatMap[curRowIndexFromZero] = newRow
+          _this.seatChartInit()
+        })
       }
-    },
-    mounted: function() {
-      this.seatChartInit()
     }
   }
 </script>
