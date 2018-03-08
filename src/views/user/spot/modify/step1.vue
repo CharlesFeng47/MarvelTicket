@@ -15,7 +15,7 @@
         <span class="show-pwd" @click="showPwd"><svg-icon icon-class="eye" /></span>
       </el-form-item>
       <el-form-item label="地址" prop="site">
-        <el-input name="password" :type="pwdType" v-model="spotBasic.site" autoComplete="on" placeholder="">
+        <el-input name="password" v-model="spotBasic.site" autoComplete="on" placeholder="">
         </el-input>
       </el-form-item>
     </el-form>
@@ -23,8 +23,16 @@
 </template>
 
 <script>
+  import { mapGetters } from 'vuex'
+
   export default {
     name: 'step1',
+    computed: {
+      ...mapGetters([
+        'spot_basic',
+        'spot_basic_modified'
+      ])
+    },
     data() {
       const validatePassword = (rule, value, callback) => {
         if (value === '') {
@@ -83,6 +91,15 @@
         deep: true
       }
     },
+    mounted: function() {
+      if (!this.spot_basic_modified) {
+        console.log('step1 第一次，获取数据')
+        this.resetData()
+      } else {
+        console.log('step1 已修改过数据，从store中加载数据')
+        this.fulfillStoredData()
+      }
+    },
     methods: {
       showPwd() {
         if (this.pwdType === 'password') {
@@ -104,6 +121,13 @@
       // 重置表单
       resetData() {
         this.$refs['spotBasic'].resetFields()
+      },
+      // 填充store里面的值
+      fulfillStoredData() {
+        this.spotBasic.name = this.spot_basic.name
+        this.spotBasic.password = this.spot_basic.password
+        this.spotBasic.password2 = this.spot_basic.password2
+        this.spotBasic.site = this.spot_basic.site
       }
     }
   }
