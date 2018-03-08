@@ -398,6 +398,7 @@ export default function charts(Vue, options) {
               //label param should be second
               overrideLabel = params.length === 2 ? params[1] : null;
 
+            var id = overrideId ? overrideId : settings.naming.getId(character, settings.naming.rows[row], settings.naming.columns[column]);
             $row.append(character != '_' ?
               //if the character is not an underscore (empty space)
               (function (naming) {
@@ -405,7 +406,6 @@ export default function charts(Vue, options) {
                 //so users don't have to specify empty objects
                 settings.seats[character] = character in settings.seats ? settings.seats[character] : {};
 
-                var id = overrideId ? overrideId : naming.getId(character, naming.rows[row], naming.columns[column]);
                 seats[id] = new seat({
                   id: id,
                   label: overrideLabel ?
@@ -420,7 +420,8 @@ export default function charts(Vue, options) {
 
               })(settings.naming) :
               //this is just an empty space (_)
-              $('<div></div>').addClass('seatCharts-cell seatCharts-space')
+              //即使是空白，也增加一个id，便于选择
+              $('<div></div>').attr('id', id).addClass('seatCharts-cell seatCharts-space')
             );
           });
 
@@ -466,15 +467,15 @@ export default function charts(Vue, options) {
 
 
         //when container's focused, move focus to the first seat
-        fn.focus(function () {
-          if (fn.attr('aria-activedescendant')) {
-            seats[fn.attr('aria-activedescendant')].blur();
-          }
-
-          fn.find('.seatCharts-seat:not(.seatCharts-space):first').focus();
-          seats[seatIds[0]].focus();
-
-        });
+        // fn.focus(function () {
+        //   if (fn.attr('aria-activedescendant')) {
+        //     seats[fn.attr('aria-activedescendant')].blur();
+        //   }
+        //
+        //   fn.find('.seatCharts-seat:not(.seatCharts-space):first').focus();
+        //   seats[seatIds[0]].focus();
+        //
+        // });
 
         //public methods of seatCharts
         fn.data('seatCharts', {
