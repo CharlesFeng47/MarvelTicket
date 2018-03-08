@@ -50,11 +50,7 @@ export function deleteSchedule(scheduleId) {
  * 保存单条计划
  */
 export function saveSchedule(token, basic_info_form, seat_price_map) {
-  const curDate = basic_info_form.date
-  const dateStr = curDate.getFullYear() + '-' + curDate.getMonth() + '-' + curDate.getDate()
-
-  const curTime = basic_info_form.time
-  const timeStr = curTime.getHours() + ':' + curTime.getMinutes() + ':' + curTime.getSeconds()
+  const dateStrAndTimeStr = getDateStrAndTimeStr(basic_info_form.date, basic_info_form.time)
 
   const length = seat_price_map.length
   var nameList = []
@@ -72,8 +68,8 @@ export function saveSchedule(token, basic_info_form, seat_price_map) {
         // 用于获取此场馆用户
         token: token,
         name: basic_info_form.name,
-        dateStr: dateStr,
-        timeStr: timeStr,
+        dateStr: dateStrAndTimeStr[0],
+        timeStr: dateStrAndTimeStr[1],
         type: basic_info_form.type,
         description: basic_info_form.description,
         nameListStr: JSON.stringify(nameList),
@@ -86,11 +82,7 @@ export function saveSchedule(token, basic_info_form, seat_price_map) {
  * 修改单条计划
  */
 export function modifySchedule(token, scheduleId, basic_info_form, seat_price_map) {
-  const curDate = basic_info_form.date
-  const dateStr = curDate.getFullYear() + '-' + curDate.getMonth() + '-' + curDate.getDate()
-
-  const curTime = basic_info_form.time
-  const timeStr = curTime.getHours() + ':' + curTime.getMinutes() + ':' + curTime.getSeconds()
+  const dateStrAndTimeStr = getDateStrAndTimeStr(basic_info_form.date, basic_info_form.time)
 
   const length = seat_price_map.length
   var nameList = []
@@ -109,12 +101,25 @@ export function modifySchedule(token, scheduleId, basic_info_form, seat_price_ma
         token: token,
         scheduleId: scheduleId,
         name: basic_info_form.name,
-        dateStr: dateStr,
-        timeStr: timeStr,
+        dateStr: dateStrAndTimeStr[0],
+        timeStr: dateStrAndTimeStr[1],
         type: basic_info_form.type,
         description: basic_info_form.description,
         nameListStr: JSON.stringify(nameList),
         priceListStr: JSON.stringify(priceList)
       })
   })
+}
+
+/**
+ * 将JS的date类型转化为需要的datetime string返回
+ */
+function getDateStrAndTimeStr(date, time) {
+  const curDate = date
+  const dateStr = curDate.getFullYear() + '-' + (curDate.getMonth() + 1) + '-' + curDate.getDate()
+
+  const curTime = time
+  const timeStr = curTime.getHours() + ':' + curTime.getMinutes() + ':' + curTime.getSeconds()
+
+  return [dateStr, timeStr]
 }

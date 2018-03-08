@@ -92,7 +92,7 @@
       // 页面的默认值
       fetchDefaultData() {
         if (this.$route.meta.isNew) {
-          // 新建的计划，基本信息默认为空，同时向后端发出请求获取此场馆的座位信息初始化store
+          // 新建的计划，向后端发出请求获取此场馆的座位信息初始化store
           new Promise((resolve, reject) => {
             getUser(this.token).then(response => {
               console.log(response)
@@ -123,7 +123,6 @@
           })
         } else {
           // 是修改已存在的计划，获得内容后自动填充
-          console.log('new schedule2222')
           new Promise((resolve, reject) => {
             getSchedule(this.$route.params.scheduleId).then(response => {
               console.log(response)

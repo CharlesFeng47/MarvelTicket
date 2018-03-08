@@ -224,6 +224,7 @@
     mounted: function() {
       if (!this.spot_seats_map_modified) {
         console.log('step2 第一次，加载数据')
+        // TODO 场馆信息修改时，获取原有值填充
         this.resetData()
       } else {
         console.log('step2 已修改过数据，从store中加载数据')
