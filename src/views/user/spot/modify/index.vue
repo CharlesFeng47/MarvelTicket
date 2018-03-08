@@ -28,7 +28,7 @@
   import $ from 'jquery'
 
   export default {
-    name: 'SignUpIndex',
+    name: 'SpotModifyIndex',
     data: function() {
       return {
         curStep: 0,
@@ -141,7 +141,6 @@
 
 <style scoped>
   .bg_container {
-    position: fixed;
     height: 100%;
     width:100%;
     background-color: #ffffff;

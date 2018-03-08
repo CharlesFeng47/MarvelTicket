@@ -48,6 +48,27 @@ export const constantRouterMap = [
   },
 
   {
+    path: '/user_info',
+    component: Layout,
+    name: 'UserInfo',
+    meta: { title: '身份' },
+    hidden: true,
+    children: [
+      { path: '', component: () => import('@/views/user/index') },
+      { path: 'modify_spot', component: () => import('@/views/user/spot/modify/index'),
+        children: [
+          { path: '', hidden: true, component: () => import('@/views/user/spot/modify/step1'), meta: { isNew: true }},
+          { path: 'step1', hidden: true, component: () => import('@/views/user/spot/modify/step1'), meta: { isNew: true }},
+          { path: 'step2', hidden: true, component: () => import('@/views/user/spot/modify/step2'), meta: { isNew: true }},
+          { path: 'step3', hidden: true, component: () => import('@/views/user/spot/modify/step3'), meta: { isNew: true }}
+        ]
+      },
+      { path: 'modify_member', component: () => import('@/views/user/member/modify'), hidden: true },
+      { path: 'modify_manager', component: () => import('@/views/user/manager/modify'), hidden: true }
+    ]
+  },
+
+  {
     path: '/schedule',
     component: Layout,
     redirect: '/schedule/overall',

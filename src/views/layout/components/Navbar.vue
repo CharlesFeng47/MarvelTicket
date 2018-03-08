@@ -4,11 +4,12 @@
     <breadcrumb></breadcrumb>
     <el-dropdown class="avatar-container" trigger="click">
       <div class="avatar-wrapper">
+        <h3>{{ name }}</h3>
         <!--<img class="user-avatar" :src="avatar+'?imageView2/1/w/80/h/80'">-->
         <i class="el-icon-caret-bottom"></i>
       </div>
       <el-dropdown-menu class="user-dropdown" slot="dropdown">
-        <router-link class="inlineBlock" to="/">
+        <router-link class="inlineBlock" to="/user_info">
           <el-dropdown-item>
             我的信息
           </el-dropdown-item>
@@ -33,7 +34,8 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'sidebar'
+      'sidebar',
+      'name'
       // 'avatar'
     ])
   },

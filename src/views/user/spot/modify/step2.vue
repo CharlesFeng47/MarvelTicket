@@ -22,7 +22,7 @@
         </div>
       </el-col>
 
-      <!--右侧为图例-->
+      <!--右侧为增加删除标记座位类型-->
       <el-col :span="6">
         <el-row>
           <el-col :offset="9" style="margin-top: 20px;margin-bottom: 20px;font-size: 14px;color: #373C38;">
