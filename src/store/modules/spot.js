@@ -38,16 +38,11 @@ const schedule = {
   actions: {
     // 提交基本信息
     ChangeSpotBasicInfo({ commit }, spot_basic) {
-      console.log(spot_basic)
       commit('SET_SPOT_BASIC', spot_basic)
       commit('SET_POT_BASIC_MODIFIED', true)
     },
-    // 提交座位表
+    // 提交座位图
     ChangeSpotSeatsMap({ commit }, { spot_seats_map, cur_seat_type_count, seat_names }) {
-      console.log('IN COMMIT')
-      console.log(spot_seats_map)
-      console.log(cur_seat_type_count)
-      console.log(seat_names)
       commit('SET_SPOT_SEATS_MAP', spot_seats_map)
       commit('SET_CUR_SEAT_TYPE_COUNT', cur_seat_type_count)
       commit('SET_SEAT_NAMES', seat_names)

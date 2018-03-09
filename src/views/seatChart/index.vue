@@ -171,7 +171,8 @@
       ...mapGetters([
         'spot_seats_map',
         'cur_seat_type_count',
-        'seat_names'
+        'seat_names',
+        'spot_seats_map_modified'
       ])
     },
     data() {
@@ -188,6 +189,19 @@
         seatNames: {},
         seatMap: []
       }
+    },
+    mounted: function() {
+      var _this = this
+      setTimeout(function() {
+        if (!_this.spot_seats_map_modified) {
+          console.log('seatChart 第一次，加载数据')
+          // TODO 场馆信息修改时，获取原有值填充
+          _this.resetData()
+        } else {
+          console.log('seatChart 已修改过数据，从store中加载数据')
+          _this.fulfillStoredData()
+        }
+      }, 500)
     },
     watch: {
       'chooseSeatForWhich.chooseSeatForA': function(val, oldVal) {
@@ -420,7 +434,6 @@
             top: true
           },
           click: function() {
-            console.log(this)
             if (this.status() === 'available') {
               const curId = this.settings.id
               const curIdParts = curId.split('_')

@@ -4,7 +4,7 @@
       <el-steps :active="curStep" simple finish-status="success">
         <el-step title="基本信息" icon="el-icon-edit"></el-step>
         <el-step title="坐席信息" icon="el-icon-star-on"></el-step>
-        <el-step title="完成" icon="el-icon-upload"></el-step>
+        <el-step title="完成并预览" icon="el-icon-upload"></el-step>
       </el-steps>
 
       <transition name="fade">

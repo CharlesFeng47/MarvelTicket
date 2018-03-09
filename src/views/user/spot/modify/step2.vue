@@ -55,14 +55,6 @@
       }
     },
     mounted: function() {
-      if (!this.spot_seats_map_modified) {
-        console.log('step2 第一次，加载数据')
-        // TODO 场馆信息修改时，获取原有值填充
-        this.resetData()
-      } else {
-        console.log('step2 已修改过数据，从store中加载数据')
-        this.fulfillStoredData()
-      }
     },
     watch: {
       'chooseSeatForWhich.chooseSeatForA': function(val, oldVal) {
@@ -122,18 +114,6 @@
             console.log('error submit!!')
           }
         })
-      },
-      // 重置价格
-      resetData() {
-        this.seatMapControlForm = {
-          seatRow: 9,
-          seatCol: 50
-        }
-        this.$refs.SeatChart.resetData()
-      },
-      // 填充store里面的值
-      fulfillStoredData() {
-        this.$refs.SeatChart.fulfillStoredData()
       },
       // 由子组件调用自己，重新设置自己的 seatMapControlForm 的值
       setSeatMapControlForm: function(curRow, curCol) {

@@ -399,6 +399,7 @@ export default function charts(Vue, options) {
               overrideLabel = params.length === 2 ? params[1] : null;
 
             var id = overrideId ? overrideId : settings.naming.getId(character, settings.naming.rows[row], settings.naming.columns[column]);
+            // console.log(id)
             $row.append(character != '_' ?
               //if the character is not an underscore (empty space)
               (function (naming) {
