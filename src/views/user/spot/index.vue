@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>重庆江北大剧院</h1>
+    <h1>{{ spotBasic.name }}</h1>
 
     <!--基本信息-->
     <el-row class="basic_info">
@@ -9,7 +9,7 @@
           <h3>编号ID</h3>
         </el-col>
         <el-col :span="8">
-          <el-tag type="primary" class="basic_content">0000001</el-tag>
+          <el-tag type="primary" class="basic_content">注册后自动生成哦</el-tag>
         </el-col>
       </el-col>
       <el-col :span="4">
@@ -17,17 +17,9 @@
           <h3>密码</h3>
         </el-col>
         <el-col :span="8">
-          <el-tag type="warning" class="basic_content">******</el-tag>
+          <el-tag type="warning" class="basic_content">{{ spotBasic.password }}</el-tag>
         </el-col>
       </el-col>
-      <!--<el-col :span="8">-->
-        <!--<el-col :span="8">-->
-          <!--<h3>预计开始时间</h3>-->
-        <!--</el-col>-->
-        <!--<el-col :span="16">-->
-          <!--<el-tag type="danger" class="basic_content">{{ basicInfo.startTime }}</el-tag>-->
-        <!--</el-col>-->
-      <!--</el-col>-->
     </el-row>
 
     <!--地址-->
@@ -37,7 +29,7 @@
       </el-col>
       <el-col :span="23">
         <!--<el-tag type="info" class="basic_content">{{ textArea }}</el-tag>-->
-        <el-input type="textarea" autosize disabled v-model="basicInfo.site" style="margin-top: 13px"></el-input>
+        <el-input type="textarea" autosize disabled v-model="spotBasic.site" style="margin-top: 13px"></el-input>
       </el-col>
     </el-row>
 
@@ -85,6 +77,7 @@
     },
     computed: {
       ...mapGetters([
+        'spot_basic',
         'spot_seats_map',
         'cur_seat_type_count',
         'seat_names'
@@ -96,23 +89,16 @@
         { prop: 'seatNum', label: '坐席数量' }
       ]
       return {
-        basicInfo: {
+        spotBasic: {
           name: '',
-          id: '',
           password: '',
-          site: '重庆江北嘴'
+          site: ''
         },
-        seatNameNumMap: [
-          { seatName: 'A类座位', seatNum: 100 },
-          { seatName: 'B类座位', seatNum: 200 },
-          { seatName: 'C类座位', seatNum: 300 },
-          { seatName: 'D类座位', seatNum: 400 },
-          { seatName: 'E类座位', seatNum: 500 },
-          { seatName: 'F类座位', seatNum: 600 }
-        ]
+        seatNameNumMap: []
       }
     },
     mounted: function() {
+      this.fulfillStoredData()
       this.computeSeatNameNumMap()
     },
     methods: {
@@ -120,12 +106,18 @@
       goToModify() {
         this.$router.push('/user_info/modify_spot')
       },
+      // 填充store里面的值
+      fulfillStoredData() {
+        this.spotBasic.name = this.spot_basic.name
+        this.spotBasic.password = this.spot_basic.password
+        this.spotBasic.site = this.spot_basic.site
+      },
       computeSeatNameNumMap: function() {
         const seatRepreChar = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i']
 
         var i = 0
         for (var temp in this.seat_names) {
-          this.seatNameNumMap[i] = []
+          this.seatNameNumMap[i] = {}
           this.seatNameNumMap[i].seatName = this.seat_names[temp]
           this.seatNameNumMap[i].seatNum = this.countSpecificChar(seatRepreChar[i])
           i++

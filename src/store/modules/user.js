@@ -1,4 +1,4 @@
-import { login, memberSignUp, logout, getInfo } from '@/api/login'
+import { login, memberSignUp, spotSignUp, logout, getInfo } from '@/api/login'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { Message } from 'element-ui'
 
@@ -66,7 +66,7 @@ const user = {
       })
     },
 
-    // 注册
+    // 会员注册
     MemberSignUp({ commit }, userInfo) {
       const username = userInfo.username.trim()
       return new Promise((resolve, reject) => {
@@ -82,6 +82,30 @@ const user = {
             Message({
               message: '此会员名已被注册',
               type: 'error',
+              duration: 3 * 1000,
+              center: true,
+              showClose: true
+            })
+          }
+          resolve()
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+
+    // 场馆注册
+    SpotSignUp({ commit }, { spot_basic, spot_seats_map, cur_seat_type_count, seat_names }) {
+      return new Promise((resolve, reject) => {
+        spotSignUp(spot_basic, spot_seats_map, cur_seat_type_count, seat_names).then(response => {
+          if (response.state === 'OK') {
+            const token = JSON.parse(response.object)
+            setToken(token)
+            commit('SET_TOKEN', token)
+            console.log('sign_up finish')
+            Message({
+              message: '用户您好，您已成功注册，欢迎使用！',
+              type: 'success',
               duration: 3 * 1000,
               center: true,
               showClose: true

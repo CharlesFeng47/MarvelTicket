@@ -26,9 +26,18 @@
 
 <script>
   import $ from 'jquery'
+  import { mapGetters } from 'vuex'
 
   export default {
     name: 'SpotModifyIndex',
+    computed: {
+      ...mapGetters([
+        'spot_basic',
+        'spot_seats_map',
+        'cur_seat_type_count',
+        'seat_names'
+      ])
+    },
     data: function() {
       return {
         curStep: 0,
@@ -63,20 +72,13 @@
         $('html,body').animate({ scrollTop: 0 }, 500)
       },
       handlePublish: function() {
-        new Promise((resolve, reject) => {
-          // saveSchedule(this.token, this.basic_info_form, this.seat_price_map).then(response => {
-          //   console.log(response)
-          //   if (response.state === 'OK') {
-          //     this.curStep++
-          //     this.$store.dispatch('ResetSchedule', this.seatPriceMap).then(() => {
-          //     }).catch(() => {
-          //     })
-          //   }
-          //   resolve()
-          // }).catch(error => {
-          //   reject(error)
-          // })
+        this.$store.dispatch('SpotSignUp', {
+          spot_basic: this.spot_basic,
+          spot_seats_map: this.spot_seats_map,
+          cur_seat_type_count: this.cur_seat_type_count,
+          seat_names: this.seat_names
         }).then(() => {
+          this.$router.push({ path: '/' })
         }).catch(() => {
         })
       },
