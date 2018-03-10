@@ -2,7 +2,7 @@
   <div>
 
     <MemberInfo v-if="roles[0]==='MEMBER'" ref="child"></MemberInfo>
-    <SpotInfo v-if="roles[0]==='SPOT'" ref="child"></SpotInfo>
+    <SpotInfo v-if="roles[0]==='SPOT'" ref="child" is-new="false"></SpotInfo>
     <ManagerInfo v-if="roles[0]==='MANAGER'" ref="child"></ManagerInfo>
 
     <!--可进行的操作-->

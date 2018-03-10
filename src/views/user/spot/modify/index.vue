@@ -67,7 +67,7 @@
         if (this.$route.meta.isNew) {
           this.$router.push('/spot_sign_up/step' + (this.curStep + 1))
         } else {
-          // this.$router.push('/schedule/modify/' + this.$route.params.scheduleId + '/step' + (this.curStep + 1))
+          this.$router.push('/user_info/modify_spot/step' + (this.curStep + 1))
         }
         $('html,body').animate({ scrollTop: 0 }, 500)
       },

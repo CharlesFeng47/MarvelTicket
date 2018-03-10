@@ -1,6 +1,6 @@
 <template>
   <div>
-    <SpotInfo></SpotInfo>
+    <SpotInfo is-new="true"></SpotInfo>
   </div>
 </template>
 

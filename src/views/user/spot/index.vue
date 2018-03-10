@@ -9,7 +9,7 @@
           <h3>编号ID</h3>
         </el-col>
         <el-col :span="8">
-          <el-tag type="primary" class="basic_content">注册后自动生成哦</el-tag>
+          <el-tag type="primary" class="basic_content">{{ spotBasic.id }}</el-tag>
         </el-col>
       </el-col>
       <el-col :span="4">
@@ -57,10 +57,6 @@
     <el-row class="basic_info">
       <!--座位图-->
       <SeatChartDisplayOnly ref="SeatChart"></SeatChartDisplayOnly>
-
-      <!--图例解说-->
-      <!--<div id="legend" class="seatCharts-legend">-->
-      <!--</div>-->
     </el-row>
 
   </div>
@@ -69,14 +65,18 @@
 <script>
   import SeatChartDisplayOnly from '../../seatChart/displayOnly'
   import { mapGetters } from 'vuex'
+  import { getUser } from '../../../api/user'
+  import { computeSeatNameNumMap } from '../../../utils/seat_chart_helper'
 
   export default {
     name: 'SpotInfo',
+    props: ['isNew'],
     components: {
       SeatChartDisplayOnly
     },
     computed: {
       ...mapGetters([
+        'token',
         'spot_basic',
         'spot_seats_map',
         'cur_seat_type_count',
@@ -86,10 +86,11 @@
     data() {
       this.colConfigs = [
         { prop: 'seatName', label: '坐席名称' },
-        { prop: 'seatNum', label: '坐席数量' }
+        { prop: 'num', label: '坐席数量' }
       ]
       return {
         spotBasic: {
+          id: '注册后自动生成哦',
           name: '',
           password: '',
           site: ''
@@ -98,44 +99,101 @@
       }
     },
     mounted: function() {
-      this.fulfillStoredData()
-      this.computeSeatNameNumMap()
+      if (this.isNew === 'false') {
+        // 不是新的，从后端加载数据
+        console.log('to fetch')
+        this.fetchData()
+      } else {
+        // 新计划预览，从store中加载数据
+        console.log('to fulfill')
+        this.fulfillData()
+      }
     },
     methods: {
       // 【提供给父组件中button调用】修改用户数据，跳转页面
       goToModify() {
         this.$router.push('/user_info/modify_spot')
       },
+      // 后端得值
+      fetchData() {
+        new Promise((resolve, reject) => {
+          getUser(this.token).then(response => {
+            console.log(response)
+            if (response.state === 'OK') {
+              const curSpot = JSON.parse(response.object)
+              console.log(curSpot)
+
+              this.spotBasic.id = curSpot.id
+              this.spotBasic.name = curSpot.spotName
+              this.spotBasic.password = curSpot.pwd
+              this.spotBasic.site = curSpot.site
+              this.seatNameNumMap = curSpot.seatInfos
+              const curSeatNames = this.convertToSeatNames(curSpot.seatInfos, curSpot.curSeatTypeCount)
+
+              console.log('allSeatsJson')
+              console.log(curSpot.allSeatsJson)
+
+              this.$store.dispatch('ChangeSpotBasicInfo', this.spotBasic).then(() => {
+                this.$store.dispatch('ChangeSpotSeatsMap', {
+                  spot_seats_map: JSON.parse(curSpot.allSeatsJson),
+                  cur_seat_type_count: curSpot.curSeatTypeCount,
+                  seat_names: curSeatNames
+                }).then(() => {
+                  resolve()
+                }).catch(() => {
+                })
+              }).catch(() => {
+              })
+            }
+          }).catch(error => {
+            reject(error)
+          })
+        }).then(() => {
+        }).catch(() => {
+        })
+      },
       // 填充store里面的值
-      fulfillStoredData() {
+      fulfillData() {
         this.spotBasic.name = this.spot_basic.name
         this.spotBasic.password = this.spot_basic.password
         this.spotBasic.site = this.spot_basic.site
+        this.seatNameNumMap = computeSeatNameNumMap(this.cur_seat_type_count, this.spot_seats_map, this.seat_names)
       },
-      computeSeatNameNumMap: function() {
-        const seatRepreChar = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i']
-
-        var i = 0
-        for (var temp in this.seat_names) {
-          this.seatNameNumMap[i] = {}
-          this.seatNameNumMap[i].seatName = this.seat_names[temp]
-          this.seatNameNumMap[i].seatNum = this.countSpecificChar(seatRepreChar[i])
-          i++
-          if (i >= this.cur_seat_type_count) break
-        }
-      },
-      // 在 seat_map 中查找指定的 char 的个数
-      countSpecificChar: function(char) {
-        var count = 0
-
-        const rowNum = this.spot_seats_map.length
-        const colNum = this.spot_seats_map[0].length
-        for (var i = 0; i < rowNum; i++) {
-          for (var j = 0; j < colNum; j++) {
-            if (this.spot_seats_map[i].charAt(j) === char) count++
+      // 从后端的seatInfos得到数据seat_names填充到store
+      convertToSeatNames(seatInfos, curSeatTypeCount) {
+        var seatNames = {}
+        for (var i = 0; i < curSeatTypeCount; i++) {
+          switch (i) {
+            case 0:
+              seatNames.aName = seatInfos[i].seatName
+              break
+            case 1:
+              seatNames.bName = seatInfos[i].seatName
+              break
+            case 2:
+              seatNames.cName = seatInfos[i].seatName
+              break
+            case 3:
+              seatNames.dName = seatInfos[i].seatName
+              break
+            case 4:
+              seatNames.eName = seatInfos[i].seatName
+              break
+            case 5:
+              seatNames.fName = seatInfos[i].seatName
+              break
+            case 6:
+              seatNames.gName = seatInfos[i].seatName
+              break
+            case 7:
+              seatNames.hName = seatInfos[i].seatName
+              break
+            case 8:
+              seatNames.iName = seatInfos[i].seatName
+              break
           }
         }
-        return count
+        return seatNames
       }
     }
   }

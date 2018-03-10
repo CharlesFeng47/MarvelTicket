@@ -57,10 +57,10 @@ export const constantRouterMap = [
       { path: '', component: () => import('@/views/user/index') },
       { path: 'modify_spot', component: () => import('@/views/user/spot/modify/index'),
         children: [
-          { path: '', hidden: true, component: () => import('@/views/user/spot/modify/step1'), meta: { isNew: true }},
-          { path: 'step1', hidden: true, component: () => import('@/views/user/spot/modify/step1'), meta: { isNew: true }},
-          { path: 'step2', hidden: true, component: () => import('@/views/user/spot/modify/step2'), meta: { isNew: true }},
-          { path: 'step3', hidden: true, component: () => import('@/views/user/spot/modify/step3'), meta: { isNew: true }}
+          { path: '', hidden: true, component: () => import('@/views/user/spot/modify/step1'), meta: { isNew: false }},
+          { path: 'step1', hidden: true, component: () => import('@/views/user/spot/modify/step1'), meta: { isNew: false }},
+          { path: 'step2', hidden: true, component: () => import('@/views/user/spot/modify/step2'), meta: { isNew: false }},
+          { path: 'step3', hidden: true, component: () => import('@/views/user/spot/modify/step3'), meta: { isNew: false }}
         ]
       },
       { path: 'modify_member', component: () => import('@/views/user/member/modify'), hidden: true },
