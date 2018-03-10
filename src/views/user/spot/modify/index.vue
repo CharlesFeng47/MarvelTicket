@@ -27,11 +27,14 @@
 <script>
   import $ from 'jquery'
   import { mapGetters } from 'vuex'
+  import { Message } from 'element-ui'
+  import { spotModify } from '../../../../api/user'
 
   export default {
     name: 'SpotModifyIndex',
     computed: {
       ...mapGetters([
+        'name',
         'spot_basic',
         'spot_seats_map',
         'cur_seat_type_count',
@@ -83,19 +86,24 @@
         })
       },
       handleModify: function() {
+        console.log(this.spot_basic)
         new Promise((resolve, reject) => {
-          // modifySchedule(this.token, this.$route.params.scheduleId, this.basic_info_form, this.seat_price_map).then(response => {
-          //   console.log(response)
-          //   if (response.state === 'OK') {
-          //     this.curStep++
-          //     this.$store.dispatch('ResetSchedule', this.seatPriceMap).then(() => {
-          //     }).catch(() => {
-          //     })
-          //   }
-          //   resolve()
-          // }).catch(error => {
-          //   reject(error)
-          // })
+          spotModify(this.name, this.spot_basic, this.spot_seats_map, this.cur_seat_type_count, this.seat_names).then(response => {
+            console.log(response)
+            if (response.state === 'OK') {
+              Message({
+                message: '您已成功修改场馆信息！',
+                type: 'success',
+                duration: 3 * 1000,
+                center: true,
+                showClose: true
+              })
+              this.$router.push({ path: '/user_info' })
+            }
+            resolve()
+          }).catch(error => {
+            reject(error)
+          })
         }).then(() => {
         }).catch(() => {
         })

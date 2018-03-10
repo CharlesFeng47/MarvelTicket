@@ -77,6 +77,7 @@
     computed: {
       ...mapGetters([
         'token',
+        'name',
         'spot_basic',
         'spot_seats_map',
         'cur_seat_type_count',
@@ -123,7 +124,7 @@
               const curSpot = JSON.parse(response.object)
               console.log(curSpot)
 
-              this.spotBasic.id = curSpot.id
+              this.spotBasic.id = this.name
               this.spotBasic.name = curSpot.spotName
               this.spotBasic.password = curSpot.pwd
               this.spotBasic.site = curSpot.site
@@ -154,6 +155,7 @@
       },
       // 填充store里面的值
       fulfillData() {
+        this.spotBasic.id = this.name
         this.spotBasic.name = this.spot_basic.name
         this.spotBasic.password = this.spot_basic.password
         this.spotBasic.site = this.spot_basic.site

@@ -186,7 +186,10 @@
         // 点击座位为哪种类型
         chooseSeatForWhich: {},
 
+        // 右侧的座位名称输入框集合
         seatNames: {},
+
+        // 座位图
         seatMap: []
       }
     },
@@ -313,10 +316,46 @@
           chooseSeatForH: false,
           chooseSeatForI: false
         }
-        this.seatNames = this.seat_names
+        this.seatNames = this.supplementAllSeatNames(this.seat_names, this.cur_seat_type_count)
         this.seatMap = this.spot_seats_map
         this.seatChartInit()
         this.$emit('reset', this.seatMap.length, this.seatMap[0].length)
+      },
+      // 将展示时只显示的我含有的seatNames补足至默认九位
+      supplementAllSeatNames: function(curSeatNamesDisplayOnly, curSeatTypeCount) {
+        var result = curSeatNamesDisplayOnly
+        for (var i = curSeatTypeCount; i < 9; i++) {
+          switch (i) {
+            case 0:
+              result.aName = 'A 类座位'
+              break
+            case 1:
+              result.bName = 'B 类座位'
+              break
+            case 2:
+              result.cName = 'C 类座位'
+              break
+            case 3:
+              result.dName = 'D 类座位'
+              break
+            case 4:
+              result.eName = 'E 类座位'
+              break
+            case 5:
+              result.fName = 'F 类座位'
+              break
+            case 6:
+              result.gName = 'G 类座位'
+              break
+            case 7:
+              result.hName = 'H 类座位'
+              break
+            case 8:
+              result.iName = 'I 类座位'
+              break
+          }
+        }
+        return result
       },
       closeAllChooseSeatButOne: function(chooseSeatForWhichItem) {
         for (var item in this.chooseSeatForWhich) {
