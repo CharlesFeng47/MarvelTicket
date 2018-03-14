@@ -1,6 +1,6 @@
 <template>
   <div class="step1">
-    <h1>{{ curStep }}</h1>
+    <!--<h1>{{ curStep }}</h1>-->
     <el-form :model="basicInfoForm" :rules="rules" ref="basicInfoForm" label-width="100px" class="basicInfoForm">
       <el-form-item label="计划名称" prop="name" style="margin-top: 30px">
         <el-input v-model="basicInfoForm.name"></el-input>

@@ -16,11 +16,13 @@ import Layout from '../views/layout/Layout'
 *                                it will becomes nested mode, otherwise not show the root menu
 * redirect: noredirect           if `redirect:noredirect` will no redirct in the breadcrumb
 * name:'router-name'             the name is used by <keep-alive> (must set!!!)
-* meta : {
+ * meta : {
+    roles: ['admin','editor']     will control the page roles (you can set multiple roles)
     title: 'title'               the name show in submenu and breadcrumb (recommend set)
     icon: 'svg-name'             the icon show in the sidebar,
+    noCache: true                if true ,the page will no be cached(default is false)
   }
-**/
+ **/
 export const constantRouterMap = [
   { path: '/login', component: () => import('@/views/login/index'), hidden: true },
   { path: '/404', component: () => import('@/views/404'), hidden: true },
@@ -48,78 +50,6 @@ export const constantRouterMap = [
   },
 
   {
-    path: '/user_info',
-    component: Layout,
-    name: 'UserInfo',
-    meta: { title: '身份' },
-    hidden: true,
-    children: [
-      { path: '', component: () => import('@/views/user/index') },
-      { path: 'modify_spot', component: () => import('@/views/user/spot/modify/index'),
-        children: [
-          { path: '', hidden: true, component: () => import('@/views/user/spot/modify/step1'), meta: { isNew: false }},
-          { path: 'step1', hidden: true, component: () => import('@/views/user/spot/modify/step1'), meta: { isNew: false }},
-          { path: 'step2', hidden: true, component: () => import('@/views/user/spot/modify/step2'), meta: { isNew: false }},
-          { path: 'step3', hidden: true, component: () => import('@/views/user/spot/modify/step3'), meta: { isNew: false }}
-        ]
-      },
-      { path: 'modify_member', component: () => import('@/views/user/member/modify'), hidden: true },
-      { path: 'modify_manager', component: () => import('@/views/user/manager/modify'), hidden: true }
-    ]
-  },
-
-  {
-    path: '/schedule',
-    component: Layout,
-    redirect: '/schedule/overall',
-    name: 'Schedule',
-    meta: { title: '计划', icon: 'example' },
-    children: [
-      {
-        path: 'overall',
-        name: 'ScheduleAll',
-        hidden: false,
-        component: () => import('@/views/schedule/index'),
-        meta: { title: '查看', icon: 'schedule' }
-      },
-      {
-        path: 'new_schedule',
-        name: 'ScheduleNew',
-        hidden: false,
-        component: () => import('@/views/schedule/newSchedule/index'),
-        meta: { title: '新增', icon: 'plus' },
-        children: [
-          { path: '', hidden: true, component: () => import('@/views/schedule/newSchedule/step1'), meta: { isNew: true }},
-          { path: 'step1', hidden: true, component: () => import('@/views/schedule/newSchedule/step1'), meta: { isNew: true }},
-          { path: 'step2', hidden: true, component: () => import('@/views/schedule/newSchedule/step2'), meta: { isNew: true }},
-          { path: 'step3', hidden: true, component: () => import('@/views/schedule/newSchedule/step3'), meta: { isNew: true }}
-
-        ]
-      },
-      {
-        path: 'modify/:scheduleId',
-        name: 'ScheduleModify',
-        hidden: true,
-        component: () => import('@/views/schedule/newSchedule/index'),
-        children: [
-          { path: '', hidden: true, component: () => import('@/views/schedule/newSchedule/step1'), meta: { isNew: false }},
-          { path: 'step1', hidden: true, component: () => import('@/views/schedule/newSchedule/step1'), meta: { isNew: false }},
-          { path: 'step2', hidden: true, component: () => import('@/views/schedule/newSchedule/step2'), meta: { isNew: false }},
-          { path: 'step3', hidden: true, component: () => import('@/views/schedule/newSchedule/step3'), meta: { isNew: false }}
-
-        ]
-      },
-      {
-        path: ':scheduleId',
-        name: 'ScheduleOne',
-        hidden: true,
-        component: () => import('@/views/schedule/oneSchedule/index'),
-        meta: { title: '详情' }
-      }
-    ]
-  },
-
-  {
     path: '/example',
     component: Layout,
     redirect: '/example/table',
@@ -141,20 +71,82 @@ export const constantRouterMap = [
     ]
   },
 
+  { path: '*', redirect: '/404', hidden: true }
+]
+
+export const asyncRouterMap = [
   {
-    path: '/form',
+    path: '/user_info',
     component: Layout,
+    name: 'UserInfo',
+    meta: { title: '身份' },
+    hidden: true,
     children: [
-      {
-        path: 'index',
-        name: 'Form',
-        component: () => import('@/views/form/index'),
-        meta: { title: 'Form', icon: 'form' }
-      }
+      { path: '', component: () => import('@/views/user/index') },
+      { path: 'modify_spot', component: () => import('@/views/user/spot/modify/index'), meta: { roles: ['SPOT'] },
+        children: [
+          { path: '', hidden: true, component: () => import('@/views/user/spot/modify/step1'), meta: { isNew: false, roles: ['SPOT'] }},
+          { path: 'step1', hidden: true, component: () => import('@/views/user/spot/modify/step1'), meta: { isNew: false, roles: ['SPOT'] }},
+          { path: 'step2', hidden: true, component: () => import('@/views/user/spot/modify/step2'), meta: { isNew: false, roles: ['SPOT'] }},
+          { path: 'step3', hidden: true, component: () => import('@/views/user/spot/modify/step3'), meta: { isNew: false, roles: ['SPOT'] }}
+        ]
+      },
+      { path: 'modify_member', hidden: true, component: () => import('@/views/user/member/modify'), meta: { roles: ['MEMBER'] }},
+      { path: 'modify_manager', hidden: true, component: () => import('@/views/user/manager/modify'), meta: { roles: ['MANAGER'] }}
     ]
   },
 
-  { path: '*', redirect: '/404', hidden: true }
+  {
+    path: '/schedule',
+    component: Layout,
+    redirect: '/schedule/overall',
+    name: 'Schedule',
+    meta: { title: '计划', icon: 'example' },
+    children: [
+      {
+        path: 'overall',
+        name: 'ScheduleAll',
+        hidden: false,
+        component: () => import('@/views/schedule/index'),
+        meta: { title: '查看', icon: 'schedule', roles: ['MEMBER', 'SPOT'] }
+      },
+      {
+        path: 'new_schedule',
+        name: 'ScheduleNew',
+        hidden: false,
+        component: () => import('@/views/schedule/newSchedule/index'),
+        meta: { title: '新增', icon: 'plus', roles: ['SPOT'] },
+        children: [
+          { path: '', hidden: true, component: () => import('@/views/schedule/newSchedule/step1'), meta: { isNew: true, roles: ['SPOT'] }},
+          { path: 'step1', hidden: true, component: () => import('@/views/schedule/newSchedule/step1'), meta: { isNew: true, roles: ['SPOT'] }},
+          { path: 'step2', hidden: true, component: () => import('@/views/schedule/newSchedule/step2'), meta: { isNew: true, roles: ['SPOT'] }},
+          { path: 'step3', hidden: true, component: () => import('@/views/schedule/newSchedule/step3'), meta: { isNew: true, roles: ['SPOT'] }}
+
+        ]
+      },
+      {
+        path: 'modify/:scheduleId',
+        name: 'ScheduleModify',
+        hidden: true,
+        component: () => import('@/views/schedule/newSchedule/index'),
+        meta: { title: '修改', roles: ['SPOT'] },
+        children: [
+          { path: '', hidden: true, component: () => import('@/views/schedule/newSchedule/step1'), meta: { isNew: false, roles: ['SPOT'] }},
+          { path: 'step1', hidden: true, component: () => import('@/views/schedule/newSchedule/step1'), meta: { isNew: false, roles: ['SPOT'] }},
+          { path: 'step2', hidden: true, component: () => import('@/views/schedule/newSchedule/step2'), meta: { isNew: false, roles: ['SPOT'] }},
+          { path: 'step3', hidden: true, component: () => import('@/views/schedule/newSchedule/step3'), meta: { isNew: false, roles: ['SPOT'] }}
+
+        ]
+      },
+      {
+        path: ':scheduleId',
+        name: 'ScheduleOne',
+        hidden: true,
+        component: () => import('@/views/schedule/oneSchedule/index'),
+        meta: { title: '详情', roles: ['MEMBER', 'SPOT'] }
+      }
+    ]
+  }
 ]
 
 export default new Router({
@@ -162,4 +154,3 @@ export default new Router({
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRouterMap
 })
-

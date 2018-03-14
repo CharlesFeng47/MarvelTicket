@@ -1,7 +1,7 @@
 <template>
   <div>
-    <h1>组件三</h1>
-    <h1>{{ curStep }}</h1>
+    <!--<h1>组件三</h1>-->
+    <!--<h1>{{ curStep }}</h1>-->
     <ScheduleDetail is-new="true"></ScheduleDetail>
   </div>
 </template>

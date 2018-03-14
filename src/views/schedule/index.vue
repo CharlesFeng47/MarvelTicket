@@ -67,6 +67,7 @@
   import { mapGetters } from 'vuex'
   import { getAllSchedules, getSchedulesOfOneSpot } from '../../api/schedule'
 
+  // 查看schedule列表的界面
   export default {
     name: 'schedule',
     data() {

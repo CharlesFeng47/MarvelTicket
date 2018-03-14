@@ -4,6 +4,7 @@ import app from './modules/app'
 import user from './modules/user'
 import schedule from './modules/schedule'
 import spot from './modules/spot'
+import permission from './modules/permission'
 import getters from './getters'
 
 Vue.use(Vuex)
@@ -13,7 +14,8 @@ const store = new Vuex.Store({
     app,
     user,
     schedule,
-    spot
+    spot,
+    permission
   },
   getters
 })

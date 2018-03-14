@@ -1,6 +1,6 @@
 <template>
     <div>
-      <h1>{{ curStep }}</h1>
+      <!--<h1>{{ curStep }}</h1>-->
       <!--座位价格映射-->
       <el-row>
         <el-col :span="2">

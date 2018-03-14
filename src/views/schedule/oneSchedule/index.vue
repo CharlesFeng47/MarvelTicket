@@ -4,9 +4,12 @@
 
     <!--可进行的操作-->
     <el-row type="flex" justify="space-around" style="margin-top: 47px">
-      <div class="but-group">
+      <div class="but-group" v-if="roles[0]==='SPOT'">
         <el-button @click.native.prevent="goToModify" type="primary" round>修改</el-button>
         <el-button @click.native.prevent="deleteSchedule" type="danger" round>删除</el-button>
+      </div>
+      <div class="but-group" v-if="roles[0]==='MEMBER'">
+        <el-button @click.native.prevent="goToOrder" type="primary" round>订购</el-button>
       </div>
     </el-row>
   </div>
@@ -14,9 +17,16 @@
 
 <script>
   import ScheduleDetail from './ScheduleDetail'
+  import { mapGetters } from 'vuex'
 
+  // 单个schedule的界面
   export default {
     name: 'OneSchedule',
+    computed: {
+      ...mapGetters([
+        'roles'
+      ])
+    },
     components: {
       ScheduleDetail
     },
@@ -28,6 +38,11 @@
       // 删除此日程
       deleteSchedule() {
         this.$refs.detail.deleteSchedule()
+      },
+
+      // 在此计划中订票
+      goToOrder() {
+        alert('去订票！')
       }
     }
   }

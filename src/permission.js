@@ -17,7 +17,13 @@ router.beforeEach((to, from, next) => {
     } else {
       if (store.getters.roles.length === 0) {
         store.dispatch('GetInfo').then(res => { // 拉取用户信息
-          next()
+          const data = JSON.parse(res.object)
+          const roles = data.role
+          store.dispatch('GenerateRoutes', { roles }).then(() => { // 根据roles权限生成可访问的路由表
+            router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
+            console.log(router)
+            next({ ...to, replace: true }) // hack方法 确保addRoutes已完成 ,set the replace: true so the navigation will not leave a history record
+          })
         }).catch(() => {
           store.dispatch('FedLogOut').then(() => {
             Message.error('验证失败,请重新登录')
@@ -25,6 +31,7 @@ router.beforeEach((to, from, next) => {
           })
         })
       } else {
+        // 没有动态改变权限的需求可直接next()
         next()
       }
     }
@@ -35,7 +42,6 @@ router.beforeEach((to, from, next) => {
       next()
     } else {
       next('/login')
-      NProgress.done()
     }
   }
 })
