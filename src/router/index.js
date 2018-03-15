@@ -69,9 +69,7 @@ export const constantRouterMap = [
         meta: { title: 'Tree', icon: 'tree' }
       }
     ]
-  },
-
-  { path: '*', redirect: '/404', hidden: true }
+  }
 ]
 
 export const asyncRouterMap = [
@@ -171,7 +169,8 @@ export const asyncRouterMap = [
         children: [
           { path: '', hidden: true, component: () => import('@/views/order/newOrder/step1'), meta: { roles: ['MEMBER'] }},
           { path: 'step1', hidden: true, component: () => import('@/views/order/newOrder/step1'), meta: { roles: ['MEMBER'] }},
-          { path: 'step2', hidden: true, component: () => import('@/views/order/newOrder/step2'), meta: { roles: ['MEMBER'] }}
+          { path: 'step2', hidden: true, component: () => import('@/views/order/newOrder/step2'), meta: { roles: ['MEMBER'] }},
+          { path: 'step3', hidden: true, component: () => import('@/views/order/newOrder/step3'), meta: { roles: ['MEMBER'] }}
         ]
       },
       {
@@ -204,7 +203,9 @@ export const asyncRouterMap = [
         meta: { title: '支付宝', roles: ['MEMBER'] }
       }
     ]
-  }
+  },
+
+  { path: '*', redirect: '/404', hidden: true }
 ]
 
 export default new Router({

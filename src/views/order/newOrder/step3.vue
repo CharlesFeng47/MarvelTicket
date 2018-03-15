@@ -1,13 +1,12 @@
 <template>
   <div>
-    <h1>订单预览</h1>
+    <h1>订单付款</h1>
   </div>
 </template>
 
 <script>
-  // 订单付款
   export default {
-    name: 'step2'
+    name: 'step3'
   }
 </script>
 
