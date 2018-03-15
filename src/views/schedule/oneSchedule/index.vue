@@ -42,7 +42,7 @@
 
       // 在此计划中订票
       goToOrder() {
-        alert('去订票！')
+        this.$router.push('/order/new_order')
       }
     }
   }

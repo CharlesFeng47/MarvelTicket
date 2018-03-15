@@ -146,6 +146,64 @@ export const asyncRouterMap = [
         meta: { title: '详情', roles: ['MEMBER', 'SPOT'] }
       }
     ]
+  },
+
+  {
+    path: '/order',
+    component: Layout,
+    redirect: '/order/overall',
+    name: 'Order',
+    meta: { title: '订单', icon: 'example' },
+    children: [
+      {
+        path: 'overall',
+        name: 'OrderAll',
+        hidden: false,
+        component: () => import('@/views/order/index'),
+        meta: { title: '查看', icon: 'schedule', roles: ['MEMBER'] }
+      },
+      {
+        path: 'new_order',
+        name: 'OrderNew',
+        hidden: true,
+        component: () => import('@/views/order/newOrder/index'),
+        meta: { title: '新增', icon: 'plus', roles: ['MEMBER'] },
+        children: [
+          { path: '', hidden: true, component: () => import('@/views/order/newOrder/step1'), meta: { roles: ['MEMBER'] }},
+          { path: 'step1', hidden: true, component: () => import('@/views/order/newOrder/step1'), meta: { roles: ['MEMBER'] }},
+          { path: 'step2', hidden: true, component: () => import('@/views/order/newOrder/step2'), meta: { roles: ['MEMBER'] }}
+        ]
+      },
+      {
+        path: ':orderId',
+        name: 'OrderOne',
+        hidden: true,
+        component: () => import('@/views/order/oneOrder/index'),
+        meta: { title: '详情', roles: ['MEMBER'] }
+      }
+    ]
+  },
+
+  {
+    path: '/payment',
+    component: Layout,
+    name: 'Payment',
+    meta: { title: '支付' },
+    hidden: true,
+    children: [
+      {
+        path: '',
+        name: 'PaymentIndex',
+        component: () => import('@/views/payment/index'),
+        meta: { title: '订单支付', roles: ['MEMBER'] }
+      },
+      {
+        path: 'alipay',
+        name: 'Alipay',
+        component: () => import('@/views/payment/Alipay'),
+        meta: { title: '支付宝', roles: ['MEMBER'] }
+      }
+    ]
   }
 ]
 
