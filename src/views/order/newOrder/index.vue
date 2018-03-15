@@ -1,7 +1,5 @@
 <template>
   <div>
-    <h1>下达订单</h1>
-
     <el-steps :active="curStep" simple finish-status="success">
       <el-step title="选座订票" icon="el-icon-edit"></el-step>
       <el-step title="预览账单" icon="el-icon-circle-check-outline"></el-step>

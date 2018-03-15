@@ -42,7 +42,12 @@
 
       // 在此计划中订票
       goToOrder() {
-        this.$router.push('/order/new_order')
+        this.$router.push({
+          name: 'OrderNew',
+          query: {
+            scheduleId: this.$route.params.scheduleId
+          }
+        })
       }
     }
   }

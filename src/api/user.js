@@ -35,3 +35,13 @@ export function spotModify(spotId, spot_basic, spot_seats_map, cur_seat_type_cou
     })
   })
 }
+
+/**
+ * 获取场馆信息
+ */
+export function getSpot(scheduleId) {
+  return request({
+    url: '/user/spot?scheduleId=' + scheduleId,
+    method: 'get'
+  })
+}

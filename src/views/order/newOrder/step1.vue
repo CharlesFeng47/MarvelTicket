@@ -1,7 +1,10 @@
 <template>
   <div>
     <el-row>
-      <el-form :inline="true" style="text-align: center;margin-top: 25px">
+      <h2>购买类型</h2>
+    </el-row>
+    <el-row>
+      <el-form :inline="true" style="text-align: center;">
         <el-form-item label="" prop="type">
           <el-radio-group v-model="order_type">
             <el-tooltip class="item" effect="light" content="每单限 6 张，需要指定订单座位。" placement="top-start">
@@ -17,7 +20,7 @@
 
     <!-- 选座 -->
     <el-row v-show="order_type==='CHOOSE_SEATS'">
-      选座位
+      <MemberChoose></MemberChoose>
     </el-row>
 
     <!-- 要购买的座位数量 -->
@@ -31,9 +34,14 @@
 </template>
 
 <script>
+  import MemberChoose from '../../seatChart/memberChoose'
+
   // 选择订座类型并订座
   export default {
     name: 'step1',
+    components: {
+      MemberChoose
+    },
     data() {
       return {
         order_type: 'CHOOSE_SEATS',
