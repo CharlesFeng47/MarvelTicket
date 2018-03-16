@@ -22,6 +22,13 @@ const getters = {
   cur_seat_type_count: state => state.spot.cur_seat_type_count,
   seat_names: state => state.spot.seat_names,
   spot_basic_modified: state => state.spot.spot_basic_modified,
-  spot_seats_map_modified: state => state.spot.spot_seats_map_modified
+  spot_seats_map_modified: state => state.spot.spot_seats_map_modified,
+
+  // order
+  order_type: state => state.order.order_type,
+  order_num: state => state.order.order_num,
+  choose_seats: state => state.order.choose_seats,
+  choose_seats_count: state => state.order.choose_seats_count,
+  order_modified: state => state.order.order_modified
 }
 export default getters

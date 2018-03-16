@@ -19,12 +19,21 @@
 
 <script>
   import $ from 'jquery'
+  import { mapGetters } from 'vuex'
   import { Message } from 'element-ui'
   import { getSpot } from '../../api/user'
 
   // 用户选座用的
   export default {
     name: 'MemberChoose',
+    computed: {
+      ...mapGetters([
+        'order_modified',
+        'order_type',
+        'choose_seats',
+        'choose_seats_count'
+      ])
+    },
     data() {
       return {
         seatLegendItems: [],
@@ -84,7 +93,7 @@
         $('#seat-member-choose').html('<div id="seat-map">\n' +
           '          <div class="front-indicator">Front</div>\n' +
           '        </div>')
-        $('#seat-map').seatCharts({
+        var sc = $('#seat-map').seatCharts({
           map: _this.seatMap,
           seats: {
             a: {
@@ -162,6 +171,23 @@
         })
 
         // TODO 设置已预订的座位
+
+        // 如果座位被修改过，还需加载修改的数据
+        if (this.order_modified === true && this.order_type === 'CHOOSE_SEATS') {
+          sc.get(this.choose_seats).status('selected')
+          this.chooseSeats = this.choose_seats
+          this.chooseSeatsCount = this.choose_seats_count
+        }
+      },
+
+      // 给父组件 newOrder/step1 提供的，将参数保存到store中的方法
+      storeMemberChooseData() {
+        this.$store.dispatch('StoreMemberChooseSeats', {
+          choose_seats: this.chooseSeats,
+          choose_seats_count: this.chooseSeatsCount
+        }).then(() => {
+        }).catch(() => {
+        })
       }
     }
   }

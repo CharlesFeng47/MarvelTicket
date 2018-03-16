@@ -1,4 +1,4 @@
-const schedule = {
+const spot = {
   state: {
     // 场馆的基本信息
     spot_basic: {},
@@ -51,4 +51,4 @@ const schedule = {
   }
 }
 
-export default schedule
+export default spot
