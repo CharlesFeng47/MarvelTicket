@@ -49,11 +49,11 @@
         chooseSeatsCount: 0
       }
     },
-    mounted: function() {
-      var _this = this
-      setTimeout(function() {
-        _this.getSeatMapData()
-      }, 500)
+    // 因为created/mounted的时候scheduleDetail可能还没取到，所以watch取到之后再添加
+    watch: {
+      scheduleDetail: function() {
+        this.getSeatMapData()
+      }
     },
     methods: {
       getSeatMapData() {
@@ -210,11 +210,26 @@
       },
 
       // 给父组件 newOrder/step1 提供的，将参数保存到store中的方法
+      validateData() {
+        if (this.chooseSeatsCount === 0) {
+          Message({
+            message: '选座购买至少需要购买 1 张票哦～',
+            type: 'error',
+            duration: 3 * 1000,
+            center: true,
+            showClose: true
+          })
+        } else {
+          this.storeMemberChooseData()
+        }
+      },
+
       storeMemberChooseData() {
         this.$store.dispatch('StoreMemberChooseSeats', {
           choose_seats: this.chooseSeats,
           choose_seats_count: this.chooseSeatsCount
         }).then(() => {
+          this.$emit('next')
         }).catch(() => {
         })
       }

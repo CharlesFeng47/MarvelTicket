@@ -36,7 +36,7 @@
         </el-col>
       </el-form-item>
       <el-form-item label="活动描述" prop="description">
-        <el-input type="textarea" v-model="basicInfoForm.description"></el-input>
+        <el-input type="textarea" :rows="10" v-model="basicInfoForm.description"></el-input>
       </el-form-item>
     </el-form>
   </div>

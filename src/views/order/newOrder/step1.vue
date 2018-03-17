@@ -21,7 +21,7 @@
     <!-- 选座 -->
     <el-row v-show="orderType==='CHOOSE_SEATS'">
       <h3>座位图</h3>
-      <MemberChoose :schedule-detail="scheduleDetail" ref="MemberChoose"></MemberChoose>
+      <MemberChoose :schedule-detail="scheduleDetail" ref="MemberChoose" v-on:next="gotoNext"></MemberChoose>
     </el-row>
 
     <!-- 要购买的座位数量 -->
@@ -83,11 +83,11 @@
   import MemberChoose from '../../seatChart/memberChoose'
   import { mapGetters } from 'vuex'
   import { isValidatePositiveIntegers } from '../../../utils/validate'
-  import { getSchedule } from '../../../api/schedule'
 
   // 选择订座类型并订座
   export default {
     name: 'step1',
+    props: ['scheduleDetail'],
     components: {
       MemberChoose
     },
@@ -138,56 +138,41 @@
           orderNum: [{ required: true, trigger: 'blur', validator: validatePositiveInteger }]
         },
 
-        // 此页面和子组件需要用的场馆座位数据
-        scheduleDetail: '',
-
         // 表格数据
         seatPriceMap: []
       }
     },
-    mounted: function() {
-      this.fetchData()
-      if (this.order_modified === true) {
-        this.orderType = this.order_type
+    // 因为created/mounted的时候scheduleDetail可能还没取到，所以watch取到之后再添加
+    watch: {
+      scheduleDetail: function() {
+        this.initData()
+        if (this.order_modified === true) {
+          this.orderType = this.order_type
 
-        if (this.orderType === 'NOT_CHOOSE_SEATS') {
-          this.notChooseSeatsForm.orderNum = this.order_num
-          this.notChooseSeatsForm.orderSeatName = this.order_seat_name
+          if (this.orderType === 'NOT_CHOOSE_SEATS') {
+            this.notChooseSeatsForm.orderNum = this.order_num
+            this.notChooseSeatsForm.orderSeatName = this.order_seat_name
+          }
+        } else {
+          // 默认加载情况
+          this.orderType = 'CHOOSE_SEATS'
         }
-      } else {
-        // 默认加载情况
-        this.orderType = 'CHOOSE_SEATS'
       }
     },
     methods: {
-      fetchData() {
-        new Promise((resolve, reject) => {
-          getSchedule(this.$route.query.scheduleId).then(response => {
-            console.log(response)
-            if (response.state === 'OK') {
-              const scheduleDetail = JSON.parse(response.object)
-              this.scheduleDetail = scheduleDetail
-
-              var seatPriceMapNew = []
-              var all_prices = scheduleDetail.all_prices
-              var all_seats = scheduleDetail.all_seats
-              for (var i = 0; i < all_prices.length; i++) {
-                seatPriceMapNew[i] = {}
-                seatPriceMapNew[i].seatPrice = all_prices[i]
-                seatPriceMapNew[i].seatName = all_seats[i].seatName
-                seatPriceMapNew[i].seatNum = all_seats[i].num
-                // TODO 计算剩余数量
-                seatPriceMapNew[i].seatRemainNum = all_seats[i].num
-              }
-              this.seatPriceMap = seatPriceMapNew
-              resolve()
-            }
-          }).catch(error => {
-            reject(error)
-          })
-        }).then(() => {
-        }).catch(() => {
-        })
+      initData() {
+        var seatPriceMapNew = []
+        var all_prices = this.scheduleDetail.all_prices
+        var all_seats = this.scheduleDetail.all_seats
+        for (var i = 0; i < all_prices.length; i++) {
+          seatPriceMapNew[i] = {}
+          seatPriceMapNew[i].seatPrice = all_prices[i]
+          seatPriceMapNew[i].seatName = all_seats[i].seatName
+          seatPriceMapNew[i].seatNum = all_seats[i].num
+          // TODO 计算剩余数量
+          seatPriceMapNew[i].seatRemainNum = all_seats[i].num
+        }
+        this.seatPriceMap = seatPriceMapNew
       },
 
       // 重置表单
@@ -197,8 +182,7 @@
       // 验证座位信息
       validateData() {
         if (this.orderType === 'CHOOSE_SEATS') {
-          this.$refs.MemberChoose.storeMemberChooseData()
-          this.$emit('next')
+          this.$refs.MemberChoose.validateData()
         } else {
           this.$refs['notChooseSeatsForm'].validate((valid) => {
             if (valid) {
@@ -206,7 +190,7 @@
                 order_num: this.notChooseSeatsForm.orderNum,
                 order_seat_name: this.notChooseSeatsForm.orderSeatName
               }).then(() => {
-                this.$emit('next')
+                this.gotoNext()
               }).catch(() => {
               })
             } else {
@@ -214,6 +198,10 @@
             }
           })
         }
+      },
+      // 前往下一步
+      gotoNext() {
+        this.$emit('next')
       }
     }
   }

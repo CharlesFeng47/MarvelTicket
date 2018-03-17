@@ -7,7 +7,11 @@
     </el-steps>
 
     <transition name="fade">
-      <router-view :cur-step.sync="curStep" ref="child" v-on:next="handleNextStep" class="view"></router-view>
+      <keep-alive>
+        <router-view :cur-step.sync="curStep" :schedule-detail="scheduleDetail"
+                     ref="child" v-on:next="handleNextStep" class="view">
+        </router-view>
+      </keep-alive>
     </transition>
 
     <el-row type="flex" justify="space-around">
@@ -25,6 +29,7 @@
 <script>
   import $ from 'jquery'
   import { mapGetters } from 'vuex'
+  import { getSchedule } from '../../../api/schedule'
 
   export default {
     name: 'NewOrder',
@@ -37,10 +42,40 @@
     },
     data: function() {
       return {
-        curStep: 0
+        curStep: 0,
+
+        // 子组件需要用的计划、场馆等信息
+        scheduleDetail: ''
       }
     },
+    created: function() {
+      // 直接访问的时候，取其step
+      // /schedule/new_schedule/step2
+      var path = this.$route.fullPath
+      var lastStartIndex = path.lastIndexOf('step')
+      if (lastStartIndex < 0) this.curStep = 0
+      else this.curStep = parseInt(path.substring(lastStartIndex + 4)) - 1
+
+      // 取数据
+      this.fetchData()
+      console.log('index created')
+      console.log(this.scheduleDetail)
+    },
     methods: {
+      fetchData() {
+        new Promise((resolve, reject) => {
+          getSchedule(this.$route.query.scheduleId).then(response => {
+            if (response.state === 'OK') {
+              this.scheduleDetail = JSON.parse(response.object)
+              resolve()
+            }
+          }).catch(error => {
+            reject(error)
+          })
+        }).then(() => {
+        }).catch(() => {
+        })
+      },
       // 验证之后合法，由子组件调用handleNextStep调转
       validateCurData: function() {
         this.$refs.child.validateData()
@@ -56,11 +91,21 @@
       },
       handleOrder: function() {
         this.curStep++
-        this.$router.push('/order/new_order/step3')
+        this.$router.push({
+          path: '/order/new_order/step3',
+          query: {
+            scheduleId: this.$route.query.scheduleId
+          }
+        })
       },
       handleNextStep: function() {
         this.curStep++
-        this.$router.push('/order/new_order/step2')
+        this.$router.push({
+          path: '/order/new_order/step2',
+          query: {
+            scheduleId: this.$route.query.scheduleId
+          }
+        })
         $('html,body').animate({ scrollTop: 0 }, 500)
       },
       handlePay: function() {
@@ -81,14 +126,6 @@
         }).catch(() => {
         })
       }
-    },
-    created: function() {
-      // 直接访问的时候，取其step
-      // /schedule/new_schedule/step2
-      var path = this.$route.fullPath
-      var lastStartIndex = path.lastIndexOf('step')
-      if (lastStartIndex < 0) this.curStep = 0
-      else this.curStep = parseInt(path.substring(lastStartIndex + 4)) - 1
     },
     beforeRouteLeave: function(to, from, next) {
       if (to.meta.isNew !== from.meta.isNew) {

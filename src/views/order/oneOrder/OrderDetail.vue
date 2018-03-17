@@ -1,6 +1,6 @@
 <template>
     <div>
-      <h1>订单编号：1234565432</h1>
+      <h1>订单编号：（待确认）</h1>
 
       <!--基本信息-->
       <el-row class="basic_info">
@@ -9,7 +9,7 @@
             <h3>举行场馆</h3>
           </el-col>
           <el-col :span="18">
-            <el-tag type="primary" class="basic_content">江苏大剧院</el-tag>
+            <el-tag type="primary" class="basic_content">{{ scheduleDetail.spotName }}</el-tag>
           </el-col>
         </el-col>
         <el-col :span="8">
@@ -17,7 +17,7 @@
             <h3>计划名称</h3>
           </el-col>
           <el-col :span="18">
-            <el-tag type="primary" class="basic_content">2018大寺大街上的撒娇的撒娇</el-tag>
+            <el-tag type="primary" class="basic_content">{{ scheduleDetail.name }}</el-tag>
           </el-col>
         </el-col>
         <el-col :span="8">
@@ -25,7 +25,7 @@
             <h3>计划预计开始时间</h3>
           </el-col>
           <el-col :span="14">
-            <el-tag type="danger" class="basic_content">2018-21-21</el-tag>
+            <el-tag type="danger" class="basic_content">{{ scheduleDetail.startDateTime }}</el-tag>
           </el-col>
         </el-col>
         <el-col :span="8">
@@ -33,20 +33,20 @@
             <h3>订票类型</h3>
           </el-col>
           <el-col :span="18">
-            <el-tag type="primary" class="basic_content">立即购票</el-tag>
+            <el-tag type="primary" class="basic_content">{{ convertOrderTypeToChinese(order_type) }}</el-tag>
           </el-col>
         </el-col>
         <el-col :span="8">
           <el-col :span="6">
-            <h3>订票状态</h3>
+            <h3>订单状态</h3>
           </el-col>
           <el-col :span="18">
-            <el-tag type="primary" class="basic_content">已购票</el-tag>
+            <el-tag type="primary" class="basic_content">购票中</el-tag>
           </el-col>
         </el-col>
         <el-col :span="8">
           <el-col :span="6">
-            <h3>订票总价</h3>
+            <h3>订单总价</h3>
           </el-col>
           <el-col :span="18">
             <el-tag type="warning" class="basic_content">3280</el-tag>
@@ -73,6 +73,8 @@
           </el-table>
         </el-col>
       </el-row>
+
+      <!--TODO 优惠信息-->
     </div>
 </template>
 
@@ -82,7 +84,10 @@
   // 订单详情
   export default {
     name: 'OrderDetail',
-    props: ['isNew'],
+    props: [
+      'isNew',
+      'scheduleDetail'
+    ],
     computed: {
       ...mapGetters([
         'order_type',
@@ -110,6 +115,8 @@
       }
     },
     mounted: function() {
+      console.log('11')
+      console.log(this.scheduleDetail)
       if (this.isNew === 'false') {
         // 不是新的，从后端加载数据
         console.log('to fetch')
@@ -124,6 +131,19 @@
       fetchData() {
       },
       fulfillData() {
+        // TODO 座位名称不知道是哪一个。。。
+        console.log(this.choose_seats)
+        console.log(this.choose_seats_count)
+      },
+
+      // order_type转中文展示
+      convertOrderTypeToChinese(type) {
+        switch (type) {
+          case 'CHOOSE_SEATS':
+            return '选座购买'
+          case 'NOT_CHOOSE_SEATS':
+            return '立即购买不选座'
+        }
       }
     }
   }

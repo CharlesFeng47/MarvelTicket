@@ -1,6 +1,6 @@
 <template>
   <div>
-    <OrderDetail is-new="true"></OrderDetail>
+    <OrderDetail is-new="true" :schedule-detail="scheduleDetail"></OrderDetail>
   </div>
 </template>
 
@@ -10,6 +10,7 @@
   // 订单付款
   export default {
     name: 'step2',
+    props: ['scheduleDetail'],
     components: {
       OrderDetail
     }

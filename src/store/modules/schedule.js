@@ -28,15 +28,11 @@ const schedule = {
   actions: {
     // 提交基本信息
     ChangeBasicInfo({ commit }, basicInfoForm) {
-      console.log('COMMIT中basicInfoForm')
-      console.log(basicInfoForm)
       commit('SET_BASIC_INFO', basicInfoForm)
       commit('SET_BASIC_INFO_MODIFIED', true)
     },
     // 提交座位价格对应表
     ChangeSeatPriceMap({ commit }, seatPriceMap) {
-      console.log('COMMIT中seatPriceMap')
-      console.log(seatPriceMap)
       commit('SET_SEAT_PRICE_MAP', seatPriceMap)
       commit('SET_SEAT_PRICE_MAP_MODIFIED', true)
     },
