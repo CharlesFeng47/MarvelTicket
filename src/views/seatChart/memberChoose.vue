@@ -26,6 +26,7 @@
   // 用户选座用的
   export default {
     name: 'MemberChoose',
+    props: ['scheduleDetail'],
     computed: {
       ...mapGetters([
         'order_modified',
@@ -38,6 +39,9 @@
       return {
         seatLegendItems: [],
         seatMap: '',
+
+        // 座位的价格
+        seatPrices: [],
 
         // 选择的座位列表
         chooseSeats: [],
@@ -59,7 +63,7 @@
               const curSpot = JSON.parse(response.object)
               this.seatMap = JSON.parse(curSpot.allSeatsJson)
               this.computeSeatLegendNames(curSpot.seatNames)
-              this.seatChartInit()
+              this.computeSeatPrices()
             }
           }).catch(error => {
             reject(error)
@@ -68,6 +72,7 @@
         }).catch(() => {
         })
       },
+      // 计算图例的数据，填充seatLegendItems
       computeSeatLegendNames(seatNames) {
         var i = 0
         for (var temp in seatNames) {
@@ -87,6 +92,20 @@
       getRelatedChar: function(i) {
         return String.fromCharCode(i + 97)
       },
+
+      // 填充seatPrices，填充之后再初始化 seat chart
+      computeSeatPrices() {
+        const allPrices = this.scheduleDetail.all_prices
+
+        // 把其他项也补齐0
+        const allPricesLength = allPrices.length
+        for (var i = allPricesLength; i < 9; i++) {
+          allPrices[i] = 0
+        }
+        this.seatPrices = allPrices
+        this.seatChartInit()
+      },
+
       seatChartInit() {
         var _this = this
         // 需要先将之前的内容给清空，不然不会重新生成
@@ -97,30 +116,39 @@
           map: _this.seatMap,
           seats: {
             a: {
+              price: _this.seatPrices[0],
               classes: 'a-class'
             },
             b: {
+              price: _this.seatPrices[1],
               classes: 'b-class'
             },
             c: {
+              price: _this.seatPrices[2],
               classes: 'c-class'
             },
             d: {
+              price: _this.seatPrices[3],
               classes: 'd-class'
             },
             e: {
+              price: _this.seatPrices[4],
               classes: 'e-class'
             },
             f: {
+              price: _this.seatPrices[5],
               classes: 'f-class'
             },
             g: {
+              price: _this.seatPrices[6],
               classes: 'g-class'
             },
             h: {
+              price: _this.seatPrices[7],
               classes: 'h-class'
             },
             i: {
+              price: _this.seatPrices[8],
               classes: 'i-class'
             }
           },
@@ -133,6 +161,7 @@
             items: this.seatLegendItems
           },
           click: function() {
+            console.log(this.data().price)
             const thisId = this.settings.id
             if (this.status() === 'available') {
               // 选座不超过6个

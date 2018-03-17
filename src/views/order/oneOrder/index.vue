@@ -1,12 +1,26 @@
 <template>
   <div>
-    <h1>查看单个订单</h1>
+    <OrderDetail is-new="false"></OrderDetail>
   </div>
 </template>
 
 <script>
+  import { mapGetters } from 'vuex'
+  import OrderDetail from './OrderDetail'
+
   export default {
-    name: 'OneOrder'
+    name: 'OneOrder',
+    components: {
+      OrderDetail
+    },
+    computed: {
+      ...mapGetters([
+        'order_type',
+        'order_num',
+        'choose_seats',
+        'choose_seats_count'
+      ])
+    }
   }
 </script>
 

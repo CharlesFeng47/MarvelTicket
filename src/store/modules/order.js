@@ -4,6 +4,8 @@ const order = {
     order_type: '',
     // 立即购买不选座时购买的票数
     order_num: '',
+    // 立即购买不选座时购买的座位类型
+    order_seat_name: '',
     // 选择的座位id列表
     choose_seats: [],
     // 选择的座位个数
@@ -18,6 +20,9 @@ const order = {
     },
     SET_ORDER_NUM: (state, order_num) => {
       state.order_num = order_num
+    },
+    SET_ORDER_SEAT_NAME: (state, order_seat_name) => {
+      state.order_seat_name = order_seat_name
     },
     SET_CHOOSE_SEATS: (state, choose_seats) => {
       state.choose_seats = choose_seats
@@ -39,9 +44,10 @@ const order = {
       commit('SET_ORDER_MODIFIED', true)
     },
     // 提交立即购买不选座的购买数量
-    StoreNotChooseSeats({ commit }, order_num) {
+    StoreNotChooseSeats({ commit }, { order_num, order_seat_name }) {
       commit('SET_ORDER_TYPE', 'NOT_CHOOSE_SEATS')
       commit('SET_ORDER_NUM', order_num)
+      commit('SET_ORDER_SEAT_NAME', order_seat_name)
       commit('SET_ORDER_MODIFIED', true)
     }
   }

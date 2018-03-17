@@ -27,6 +27,7 @@ const getters = {
   // order
   order_type: state => state.order.order_type,
   order_num: state => state.order.order_num,
+  order_seat_name: state => state.order.order_seat_name,
   choose_seats: state => state.order.choose_seats,
   choose_seats_count: state => state.order.choose_seats_count,
   order_modified: state => state.order.order_modified

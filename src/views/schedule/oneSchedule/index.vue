@@ -43,7 +43,7 @@
       // 在此计划中订票
       goToOrder() {
         this.$router.push({
-          name: 'OrderNew',
+          path: '/order/new_order',
           query: {
             scheduleId: this.$route.params.scheduleId
           }

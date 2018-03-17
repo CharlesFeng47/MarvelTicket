@@ -1,13 +1,18 @@
 <template>
   <div>
-    <h1>订单预览</h1>
+    <OrderDetail is-new="true"></OrderDetail>
   </div>
 </template>
 
 <script>
+  import OrderDetail from '../oneOrder/OrderDetail'
+
   // 订单付款
   export default {
-    name: 'step2'
+    name: 'step2',
+    components: {
+      OrderDetail
+    }
   }
 </script>
 
