@@ -29,7 +29,6 @@
     props: ['scheduleDetail'],
     computed: {
       ...mapGetters([
-        'order_modified',
         'order_type',
         'choose_seats',
         'choose_seats_count'
@@ -93,7 +92,7 @@
         return String.fromCharCode(i + 97)
       },
 
-      // 填充seatPrices，填充之后再初始化 seat chart
+      // 填充seatPrices，并根据seatLegendItems把seat初始化的category补齐，填充之后再初始化 seat chart
       computeSeatPrices() {
         const allPrices = this.scheduleDetail.all_prices
 
@@ -103,53 +102,74 @@
           allPrices[i] = 0
         }
         this.seatPrices = allPrices
-        this.seatChartInit()
+
+        var categories = []
+        for (var k = 0; k < this.seatLegendItems.length; k++) {
+          categories[k] = this.seatLegendItems[k][2]
+        }
+        for (var j = this.seatLegendItems.length - 1; j < 9; j++) {
+          categories[j] = ''
+        }
+
+        this.seatChartInit(categories)
       },
 
-      seatChartInit() {
+      seatChartInit(categories) {
         var _this = this
+        console.log('aaaa')
+        console.log(categories)
         // 需要先将之前的内容给清空，不然不会重新生成
         $('#seat-member-choose').html('<div id="seat-map">\n' +
           '          <div class="front-indicator">Front</div>\n' +
           '        </div>')
-        var sc = $('#seat-map').seatCharts({
+        $('#seat-map').seatCharts({
           map: _this.seatMap,
           seats: {
             a: {
               price: _this.seatPrices[0],
-              classes: 'a-class'
+              classes: 'a-class',
+              category: categories[0]
+
             },
             b: {
               price: _this.seatPrices[1],
-              classes: 'b-class'
+              classes: 'b-class',
+              category: categories[1]
             },
             c: {
               price: _this.seatPrices[2],
-              classes: 'c-class'
+              classes: 'c-class',
+              category: categories[2]
             },
             d: {
               price: _this.seatPrices[3],
-              classes: 'd-class'
+              classes: 'd-class',
+              category: categories[3]
             },
             e: {
               price: _this.seatPrices[4],
-              classes: 'e-class'
+              classes: 'e-class',
+              category: categories[4]
             },
             f: {
               price: _this.seatPrices[5],
-              classes: 'f-class'
+              classes: 'f-class',
+              category: categories[5]
             },
             g: {
               price: _this.seatPrices[6],
-              classes: 'g-class'
+              classes: 'g-class',
+              category: categories[6]
             },
             h: {
               price: _this.seatPrices[7],
-              classes: 'h-class'
+              classes: 'h-class',
+              category: categories[7]
             },
             i: {
               price: _this.seatPrices[8],
-              classes: 'i-class'
+              classes: 'i-class',
+              category: categories[8]
             }
           },
           naming: {
@@ -161,12 +181,11 @@
             items: this.seatLegendItems
           },
           click: function() {
-            console.log(this.data().price)
-            const thisId = this.settings.id
+            console.log(this.data().price + '   ' + this.data().category)
             if (this.status() === 'available') {
               // 选座不超过6个
               if (_this.chooseSeatsCount < 6) {
-                _this.chooseSeats[_this.chooseSeatsCount] = thisId
+                _this.chooseSeats[_this.chooseSeatsCount] = this
                 _this.chooseSeatsCount++
                 return 'selected'
               } else {
@@ -182,10 +201,11 @@
             } else if (this.status() === 'selected') {
               _this.chooseSeatsCount--
 
+              const thisId = this.settings.id
               // 先找到此座位在列表中存储的序号
               var needToDeleteIndex
               for (var curIndex in _this.chooseSeats) {
-                if (_this.chooseSeats[curIndex] === thisId) {
+                if (_this.chooseSeats[curIndex].settings.id === thisId) {
                   needToDeleteIndex = curIndex
                 }
               }
@@ -200,13 +220,6 @@
         })
 
         // TODO 设置已预订的座位
-
-        // 如果座位被修改过，还需加载修改的数据
-        if (this.order_modified === true && this.order_type === 'CHOOSE_SEATS') {
-          sc.get(this.choose_seats).status('selected')
-          this.chooseSeats = this.choose_seats
-          this.chooseSeatsCount = this.choose_seats_count
-        }
       },
 
       // 给父组件 newOrder/step1 提供的，将参数保存到store中的方法

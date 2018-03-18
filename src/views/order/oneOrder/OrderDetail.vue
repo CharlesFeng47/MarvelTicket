@@ -1,6 +1,6 @@
 <template>
     <div>
-      <h1>订单编号：（待确认）</h1>
+      <h1>订单编号：（下达后确认）</h1>
 
       <!--基本信息-->
       <el-row class="basic_info">
@@ -41,15 +41,17 @@
             <h3>订单状态</h3>
           </el-col>
           <el-col :span="18">
-            <el-tag type="primary" class="basic_content">购票中</el-tag>
+            <el-tag v-if="this.$route.meta.isNew" type="primary" class="basic_content">购票中</el-tag>
+            <el-tag v-if="!this.$route.meta.isNew" type="primary" class="basic_content">bb</el-tag>
           </el-col>
         </el-col>
         <el-col :span="8">
-          <el-col :span="6">
-            <h3>订单总价</h3>
+          <el-col :span="10">
+            <h3>订单下达时间</h3>
           </el-col>
-          <el-col :span="18">
-            <el-tag type="warning" class="basic_content">3280</el-tag>
+          <el-col :span="14">
+            <el-tag v-if="this.$route.meta.isNew" type="warning" class="basic_content">下单后就可以查看哦</el-tag>
+            <el-tag v-if="!this.$route.meta.isNew" type="warning" class="basic_content">aa</el-tag>
           </el-col>
         </el-col>
       </el-row>
@@ -63,12 +65,13 @@
       <el-row class="basic_info" type="flex" justify="space-around">
         <el-col :offset="2">
           <el-table :data="seatPriceNumMap" style="width: 500px" stripe show-summary>
-            <el-table-column
-              v-for="{ prop, label } in colConfigs"
-              align="center"
-              :key="prop"
-              :prop="prop"
-              :label="label">
+            <el-table-column align="center" prop="seatName" label="坐席名称">
+            </el-table-column>
+            <el-table-column v-if="order_type==='NOT_CHOOSE_SEATS'" align="center" prop="num" label="订购数量">
+            </el-table-column>
+            <el-table-column v-if="order_type==='CHOOSE_SEATS'" align="center" prop="seatId" label="座位号（行_列）">
+            </el-table-column>
+            <el-table-column align="center" prop="price" label="小计">
             </el-table-column>
           </el-table>
         </el-col>
@@ -91,32 +94,21 @@
     computed: {
       ...mapGetters([
         'order_type',
+
         'order_num',
+        'order_seat_name',
+        'order_price',
+
         'choose_seats',
         'choose_seats_count'
       ])
     },
     data() {
-      this.colConfigs = [
-        { prop: 'seatName', label: '坐席名称' },
-        { prop: 'num', label: '订购数量' },
-        { prop: 'price', label: '计价' }
-      ]
-
       return {
-        seatPriceNumMap: [
-          { seatName: 'das', num: 100, price: 200 },
-          { seatName: 'das', num: 100, price: 200 },
-          { seatName: 'das', num: 100, price: 200 },
-          { seatName: 'das', num: 100, price: 200 },
-          { seatName: 'das', num: 100, price: 200 },
-          { seatName: 'das', num: 100, price: 200 }
-        ]
+        seatPriceNumMap: []
       }
     },
-    mounted: function() {
-      console.log('11')
-      console.log(this.scheduleDetail)
+    activated: function() {
       if (this.isNew === 'false') {
         // 不是新的，从后端加载数据
         console.log('to fetch')
@@ -131,9 +123,21 @@
       fetchData() {
       },
       fulfillData() {
-        // TODO 座位名称不知道是哪一个。。。
-        console.log(this.choose_seats)
-        console.log(this.choose_seats_count)
+        var seatPriceNumMapNew = []
+        if (this.order_type === 'NOT_CHOOSE_SEATS') {
+          seatPriceNumMapNew[0] = {}
+          seatPriceNumMapNew[0].seatName = this.order_seat_name
+          seatPriceNumMapNew[0].num = this.order_num
+          seatPriceNumMapNew[0].price = this.order_price
+        } else {
+          for (var i = 0; i < this.choose_seats_count; i++) {
+            seatPriceNumMapNew[i] = {}
+            seatPriceNumMapNew[i].seatName = this.choose_seats[i].data().category
+            seatPriceNumMapNew[i].seatId = this.choose_seats[i].settings.id
+            seatPriceNumMapNew[i].price = this.choose_seats[i].data().price
+          }
+        }
+        this.seatPriceNumMap = seatPriceNumMapNew
       },
 
       // order_type转中文展示

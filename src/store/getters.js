@@ -26,8 +26,11 @@ const getters = {
 
   // order
   order_type: state => state.order.order_type,
+  // 不选座
   order_num: state => state.order.order_num,
   order_seat_name: state => state.order.order_seat_name,
+  order_price: state => state.order.order_price,
+  // 选座
   choose_seats: state => state.order.choose_seats,
   choose_seats_count: state => state.order.choose_seats_count,
   order_modified: state => state.order.order_modified

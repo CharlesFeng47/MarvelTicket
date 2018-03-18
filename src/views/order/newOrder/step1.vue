@@ -58,12 +58,12 @@
 
           <el-form :model="notChooseSeatsForm" :rules="notChooseSeatsFormRules" ref="notChooseSeatsForm" label-position="right">
             <el-form-item label="购买座位类型名称" prop="orderSeatName">
-              <el-select v-model="notChooseSeatsForm.orderSeatName" placeholder="请选择">
+              <el-select v-model="notChooseSeatsForm.orderSeatName" placeholder="请选择" @change="selectChange">
                 <el-option
                   v-for="item in seatPriceMap"
                   :key="item.seatName"
                   :label="item.seatName"
-                  :value="item.seatName">
+                  :value="item.seatPrice">
                 </el-option>
               </el-select>
             </el-form-item>
@@ -138,8 +138,11 @@
           orderNum: [{ required: true, trigger: 'blur', validator: validatePositiveInteger }]
         },
 
-        // 表格数据
-        seatPriceMap: []
+        // 不选座时的表格数据
+        seatPriceMap: [],
+
+        // 不选座时的座位类型的单价
+        seatPricePer: ''
       }
     },
     // 因为created/mounted的时候scheduleDetail可能还没取到，所以watch取到之后再添加
@@ -188,7 +191,8 @@
             if (valid) {
               this.$store.dispatch('StoreNotChooseSeats', {
                 order_num: this.notChooseSeatsForm.orderNum,
-                order_seat_name: this.notChooseSeatsForm.orderSeatName
+                order_seat_name: this.notChooseSeatsForm.orderSeatName,
+                order_price: this.seatPricePer * this.notChooseSeatsForm.orderNum
               }).then(() => {
                 this.gotoNext()
               }).catch(() => {
@@ -202,6 +206,11 @@
       // 前往下一步
       gotoNext() {
         this.$emit('next')
+      },
+
+      // 选择器值改变
+      selectChange(val) {
+        this.seatPricePer = val
       }
     }
   }
