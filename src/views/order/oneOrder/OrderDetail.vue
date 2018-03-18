@@ -1,6 +1,7 @@
 <template>
     <div>
-      <h1>订单编号：（下达后确认）</h1>
+      <h1 v-if="this.$route.meta.isNew">订单编号：（下达后确认）</h1>
+      <h1 v-if="!this.$route.meta.isNew">订单编号：{{ makeUpOrderId(orderDetail.id) }}</h1>
 
       <!--基本信息-->
       <el-row class="basic_info">
@@ -42,7 +43,7 @@
           </el-col>
           <el-col :span="18">
             <el-tag v-if="this.$route.meta.isNew" type="primary" class="basic_content">购票中</el-tag>
-            <el-tag v-if="!this.$route.meta.isNew" type="primary" class="basic_content">bb</el-tag>
+            <el-tag v-if="!this.$route.meta.isNew" type="primary" class="basic_content">{{ orderDetail.orderState }}</el-tag>
           </el-col>
         </el-col>
         <el-col :span="8">
@@ -51,7 +52,7 @@
           </el-col>
           <el-col :span="14">
             <el-tag v-if="this.$route.meta.isNew" type="warning" class="basic_content">下单后就可以查看哦</el-tag>
-            <el-tag v-if="!this.$route.meta.isNew" type="warning" class="basic_content">aa</el-tag>
+            <el-tag v-if="!this.$route.meta.isNew" type="warning" class="basic_content">{{ orderDetail.orderTime }}</el-tag>
           </el-col>
         </el-col>
       </el-row>
@@ -89,7 +90,8 @@
     name: 'OrderDetail',
     props: [
       'isNew',
-      'scheduleDetail'
+      'scheduleDetail',
+      'orderDetail'
     ],
     computed: {
       ...mapGetters([
@@ -108,21 +110,63 @@
         seatPriceNumMap: []
       }
     },
-    activated: function() {
-      if (this.isNew === 'false') {
-        // 不是新的，从后端加载数据
-        console.log('to fetch')
-        this.fetchData()
-      } else {
-        // 新计划预览，从store中加载数据
-        console.log('to fulfill')
-        this.fulfillData()
+    watch: {
+      orderDetail: function() {
+        if (this.isNew === 'false') {
+          // 不是新的，从后端加载数据
+          console.log('to fetch props')
+          this.fetchPropsData()
+        }
       }
     },
+    activated: function() {
+      // 在新建订单的时候keep-alive，但此处需要保持更新
+      // 新计划预览，从store中加载数据
+      console.log('to fulfill store')
+      this.fulfillStoredData()
+    },
     methods: {
-      fetchData() {
+      fetchPropsData() {
+        // 给chooseSeats赋默认值
+        var chooseSeats
+        if (typeof (this.orderDetail.orderedSeatsJson) !== 'undefined') {
+          chooseSeats = JSON.parse(this.orderDetail.orderedSeatsJson)
+        } else {
+          chooseSeats = []
+        }
+        this.$store.dispatch('StoreUploadedData', {
+          order_type: this.orderDetail.orderType,
+          order_num: this.orderDetail.notChoseSeats.num,
+          order_seat_name: this.orderDetail.notChoseSeats.seatName,
+          order_price: this.orderDetail.notChoseSeats.price,
+          choose_seats: chooseSeats,
+          choose_seats_count: chooseSeats.length
+        }).then(() => {
+          this.refillSeatPriceNumMap()
+        }).catch(() => {
+        })
       },
-      fulfillData() {
+      // 根据后后端获取的值填充
+      refillSeatPriceNumMap() {
+        var seatPriceNumMapNew = []
+        if (this.order_type === 'NOT_CHOOSE_SEATS') {
+          seatPriceNumMapNew[0] = {}
+          seatPriceNumMapNew[0].seatName = this.order_seat_name
+          seatPriceNumMapNew[0].num = this.order_num
+          seatPriceNumMapNew[0].price = this.order_price
+        } else {
+          for (var i = 0; i < this.choose_seats_count; i++) {
+            seatPriceNumMapNew[i] = {}
+            seatPriceNumMapNew[i].seatName = this.choose_seats[i].seatName
+            seatPriceNumMapNew[i].seatId = this.choose_seats[i].id
+            seatPriceNumMapNew[i].price = this.choose_seats[i].price
+          }
+        }
+        this.seatPriceNumMap = seatPriceNumMapNew
+      },
+
+      // 根据预览提供填充
+      fulfillStoredData() {
         var seatPriceNumMapNew = []
         if (this.order_type === 'NOT_CHOOSE_SEATS') {
           seatPriceNumMapNew[0] = {}
@@ -138,6 +182,15 @@
           }
         }
         this.seatPriceNumMap = seatPriceNumMapNew
+      },
+
+      // 订单id转为8位标准展示
+      makeUpOrderId(id) {
+        var temp = id + ''
+        while (temp.length < 8) {
+          temp = '0' + temp
+        }
+        return temp
       },
 
       // order_type转中文展示

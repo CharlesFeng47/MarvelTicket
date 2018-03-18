@@ -178,7 +178,7 @@ export const asyncRouterMap = [
         name: 'OrderOne',
         hidden: true,
         component: () => import('@/views/order/oneOrder/index'),
-        meta: { title: '详情', roles: ['MEMBER'] }
+        meta: { title: '详情', isNew: false, roles: ['MEMBER'] }
       }
     ]
   },

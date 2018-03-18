@@ -58,6 +58,14 @@ const order = {
       commit('SET_ORDER_SEAT_NAME', order_seat_name)
       commit('SET_ORDER_PRICE', order_price)
       commit('SET_ORDER_MODIFIED', true)
+    },
+    StoreUploadedData({ commit }, { order_type, order_num, order_seat_name, order_price, choose_seats, choose_seats_count }) {
+      commit('SET_ORDER_TYPE', order_type)
+      commit('SET_ORDER_NUM', order_num)
+      commit('SET_ORDER_SEAT_NAME', order_seat_name)
+      commit('SET_ORDER_PRICE', order_price)
+      commit('SET_CHOOSE_SEATS', choose_seats)
+      commit('SET_CHOOSE_SEATS_COUNT', choose_seats_count)
     }
   }
 }

@@ -5,9 +5,9 @@ const qs = require('qs')
 /**
  * 获取单条计划
  */
-export function getOrder(scheduleId) {
+export function getOrder(oid) {
   return request({
-    url: '/order/' + scheduleId,
+    url: '/order/' + oid,
     method: 'get'
   })
 }
@@ -15,9 +15,9 @@ export function getOrder(scheduleId) {
 /**
  * 获取所有计划
  */
-export function getAllOrders() {
+export function getMyOrders(mid) {
   return request({
-    url: '/order/all',
+    url: '/order/all?mid=' + mid,
     method: 'get'
   })
 }
@@ -35,11 +35,13 @@ export function saveOrder(token, scheduleId, order_type, order_num, order_seat_n
 
   // 订座的信息处理
   var choose_seat_array = []
-  for (var i = 0; i < choose_seats_count; i++) {
-    choose_seat_array[i] = {}
-    choose_seat_array[i].id = choose_seats[i].settings.id
-    choose_seat_array[i].seatName = choose_seats[i].data().category
-    choose_seat_array[i].price = choose_seats[i].data().price
+  if (choose_seats_count !== '') {
+    for (var i = 0; i < choose_seats_count; i++) {
+      choose_seat_array[i] = {}
+      choose_seat_array[i].id = choose_seats[i].settings.id
+      choose_seat_array[i].seatName = choose_seats[i].data().category
+      choose_seat_array[i].price = choose_seats[i].data().price
+    }
   }
 
   return request({
