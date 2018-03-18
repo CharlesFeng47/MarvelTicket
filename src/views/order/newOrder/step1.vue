@@ -58,12 +58,12 @@
 
           <el-form :model="notChooseSeatsForm" :rules="notChooseSeatsFormRules" ref="notChooseSeatsForm" label-position="right">
             <el-form-item label="购买座位类型名称" prop="orderSeatName">
-              <el-select v-model="notChooseSeatsForm.orderSeatName" placeholder="请选择" @change="selectChange">
+              <el-select v-model="notChooseSeatsForm.orderSeatName" placeholder="请选择">
                 <el-option
                   v-for="item in seatPriceMap"
                   :key="item.seatName"
                   :label="item.seatName"
-                  :value="item.seatPrice">
+                  :value="item.seatName">
                 </el-option>
               </el-select>
             </el-form-item>
@@ -139,10 +139,7 @@
         },
 
         // 不选座时的表格数据
-        seatPriceMap: [],
-
-        // 不选座时的座位类型的单价
-        seatPricePer: ''
+        seatPriceMap: []
       }
     },
     // 因为created/mounted的时候scheduleDetail可能还没取到，所以watch取到之后再添加
@@ -192,7 +189,7 @@
               this.$store.dispatch('StoreNotChooseSeats', {
                 order_num: this.notChooseSeatsForm.orderNum,
                 order_seat_name: this.notChooseSeatsForm.orderSeatName,
-                order_price: this.seatPricePer * this.notChooseSeatsForm.orderNum
+                order_price: this.getPerPriceByName(this.notChooseSeatsForm.orderSeatName) * this.notChooseSeatsForm.orderNum
               }).then(() => {
                 this.gotoNext()
               }).catch(() => {
@@ -208,9 +205,11 @@
         this.$emit('next')
       },
 
-      // 选择器值改变
-      selectChange(val) {
-        this.seatPricePer = val
+      // 根据选择器选中的座位名称得到他的单价
+      getPerPriceByName(name) {
+        for (var i = 0; i < this.seatPriceMap.length; i++) {
+          if (this.seatPriceMap[i].seatName === name) return this.seatPriceMap[i].seatPrice
+        }
       }
     }
   }

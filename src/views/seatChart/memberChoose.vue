@@ -116,8 +116,6 @@
 
       seatChartInit(categories) {
         var _this = this
-        console.log('aaaa')
-        console.log(categories)
         // 需要先将之前的内容给清空，不然不会重新生成
         $('#seat-member-choose').html('<div id="seat-map">\n' +
           '          <div class="front-indicator">Front</div>\n' +

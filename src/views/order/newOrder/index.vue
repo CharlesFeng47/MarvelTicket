@@ -29,15 +29,24 @@
 <script>
   import $ from 'jquery'
   import { mapGetters } from 'vuex'
+  import { Message } from 'element-ui'
   import { getSchedule } from '../../../api/schedule'
+  import { saveOrder } from '../../../api/order'
 
   export default {
     name: 'NewOrder',
     computed: {
       ...mapGetters([
         'token',
-        'basic_info_form',
-        'seat_price_map'
+
+        'order_type',
+
+        'order_num',
+        'order_seat_name',
+        'order_price',
+
+        'choose_seats',
+        'choose_seats_count'
       ])
     },
     data: function() {
@@ -90,12 +99,32 @@
         $('html,body').animate({ scrollTop: 0 }, 500)
       },
       handleOrder: function() {
-        this.curStep++
-        this.$router.push({
-          path: '/order/new_order/step3',
-          query: {
-            scheduleId: this.$route.query.scheduleId
-          }
+        new Promise((resolve, reject) => {
+          saveOrder(this.token, this.$route.query.scheduleId, this.order_type, this.order_num, this.order_seat_name, this.order_price,
+            this.choose_seats, this.choose_seats_count).then(response => {
+            if (response.state === 'OK') {
+              Message({
+                message: '您已成功下达订单！',
+                type: 'success',
+                duration: 3 * 1000,
+                center: true,
+                showClose: true
+              })
+
+              this.curStep++
+              this.$router.push({
+                path: '/order/new_order/step3',
+                query: {
+                  scheduleId: this.$route.query.scheduleId
+                }
+              })
+            }
+            resolve()
+          }).catch(error => {
+            reject(error)
+          })
+        }).then(() => {
+        }).catch(() => {
         })
       },
       handleNextStep: function() {
@@ -109,22 +138,23 @@
         $('html,body').animate({ scrollTop: 0 }, 500)
       },
       handlePay: function() {
-        new Promise((resolve, reject) => {
-          // saveSchedule(this.token, this.basic_info_form, this.seat_price_map).then(response => {
-          //   console.log(response)
-          //   if (response.state === 'OK') {
-          //     this.curStep++
-          //     this.$store.dispatch('ResetSchedule', this.seatPriceMap).then(() => {
-          //     }).catch(() => {
-          //     })
-          //   }
-          //   resolve()
-          // }).catch(error => {
-          //   reject(error)
-          // })
-        }).then(() => {
-        }).catch(() => {
-        })
+        // new Promise((resolve, reject) => {
+        //   saveOrder(this.token, this.order_type, this.order_num, this.order_seat_name, this.order_price,
+        //     this.choose_seats, this.choose_seats_count).then(response => {
+        //     console.log(response)
+        //     if (response.state === 'OK') {
+        //       this.curStep++
+        //       this.$store.dispatch('ResetSchedule', this.seatPriceMap).then(() => {
+        //       }).catch(() => {
+        //       })
+        //     }
+        //     resolve()
+        //   }).catch(error => {
+        //     reject(error)
+        //   })
+        // }).then(() => {
+        // }).catch(() => {
+        // })
       }
     },
     beforeRouteLeave: function(to, from, next) {
