@@ -25,7 +25,7 @@ export function getMyOrders(mid) {
 /**
  * 保存单条计划
  */
-export function saveOrder(token, scheduleId, order_type, order_num, order_seat_name, order_price, choose_seats, choose_seats_count) {
+export function saveOrder(token, scheduleId, order_type, order_num, order_seat_name, order_price, choose_seats, choose_seats_count, order_used_coupon, order_total_price) {
   // 不订座的信息处理
   var not_chose_seats = {}
   not_chose_seats.seatName = order_seat_name
@@ -54,7 +54,9 @@ export function saveOrder(token, scheduleId, order_type, order_num, order_seat_n
         scheduleId,
         order_type,
         not_chose_seats: JSON.stringify(not_chose_seats),
-        choose_seats_json: JSON.stringify(choose_seat_array)
+        choose_seats_json: JSON.stringify(choose_seat_array),
+        order_used_coupon: JSON.stringify(order_used_coupon),
+        order_total_price
       })
   })
 }

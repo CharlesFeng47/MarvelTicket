@@ -57,14 +57,44 @@
         </el-col>
       </el-row>
 
+      <!--优惠券使用-->
+      <el-row class="basic_info">
+        <el-col :span="2">
+          <h3>优惠券使用</h3>
+        </el-col>
+        <el-col :span="1">
+          <el-switch v-model="didUseCoupon" style="margin-top: 18px"
+                     active-color="#13ce66"
+                     inactive-color="#ff4949">
+          </el-switch>
+        </el-col>
+        <el-col :span="20" v-show="didUseCoupon">
+          <el-button type="text" @click="dialogTableVisible = true" style="margin-top: 10px">{{ wantToUseCouponDescription }}</el-button>
+        </el-col>
+
+        <el-dialog title="收货地址" :visible.sync="dialogTableVisible">
+          <el-table :data="myCouponData" stripe class="coupon_table" highlight-current-row @row-click="handleUsedCouponChange">
+            <!--使ID不显示-->
+            <el-table-column v-if="false" prop="id" label="优惠券Id" width="0">
+            </el-table-column>
+            <el-table-column
+              v-for="{ prop, label } in myCouponConfigs"
+              align="center"
+              :key="prop"
+              :prop="prop"
+              :label="label">
+            </el-table-column>
+          </el-table>
+        </el-dialog>
+      </el-row>
+
       <!--座位价格映射-->
       <el-row class="basic_info">
         <el-col :span="3">
           <h3>订单座位详情</h3>
         </el-col>
-      </el-row>
-      <el-row class="basic_info" type="flex" justify="space-around">
-        <el-col :offset="2">
+
+        <el-col :offset="2" class="basic_info" type="flex" justify="space-around">
           <el-table :data="seatPriceNumMap" style="width: 500px" stripe show-summary>
             <el-table-column align="center" prop="seatName" label="坐席名称">
             </el-table-column>
@@ -78,12 +108,24 @@
         </el-col>
       </el-row>
 
-      <!--TODO 优惠信息-->
+      <!--最终价格-->
+      <el-row class="basic_info">
+        <el-col :span="2">
+          <h3>最终价格</h3>
+        </el-col>
+        <el-col :span="18" class="basic_content">
+          <div style="margin-top: 7px">{{ finalTotalPriceProcess }}</div>
+        </el-col>
+        <el-col :span="2">
+          <el-tag type="danger" class="basic_content">{{ finalTotalPrice }}</el-tag>
+        </el-col>
+      </el-row>
     </div>
 </template>
 
 <script>
   import { mapGetters } from 'vuex'
+  import { getUser } from '../../../api/user'
 
   // 订单详情
   export default {
@@ -95,6 +137,7 @@
     ],
     computed: {
       ...mapGetters([
+        'token',
         'order_type',
 
         'order_num',
@@ -106,8 +149,33 @@
       ])
     },
     data() {
+      this.myCouponConfigs = [
+        { prop: 'neededCredit', label: '所需兑换积分' },
+        { prop: 'offPrice', label: '减免价格' },
+        { prop: 'description', label: '描述' }
+
+      ]
       return {
-        seatPriceNumMap: []
+        seatPriceNumMap: [],
+
+        myCouponData: [
+          { neededCredit: 100, offPrice: 5, description: '快来尝试使用优惠券吧' },
+          { neededCredit: 1000, offPrice: 100, description: '使用 1000 分即可减免最多 100 元' },
+          { neededCredit: 2000, offPrice: 150, description: '特惠！2000 分即可减免最多 150 元' }
+        ],
+        dialogTableVisible: false,
+
+        // 优惠券相关
+        didUseCoupon: false,
+        wantToUseCouponDescription: '点击选择优惠券',
+        couponTableRow: null,
+
+        // 会员等级
+        memberLevel: '',
+        // 表现价格计算过程
+        finalTotalPriceProcess: '',
+        // 最终价格
+        finalTotalPrice: 0
       }
     },
     watch: {
@@ -117,8 +185,36 @@
           console.log('to fetch props')
           this.fetchPropsData()
         }
+      },
+
+      // 优惠券使用情况变化导致最终价格变化
+      didUseCoupon: function() {
+        this.getCalculateProcess()
+      },
+      wantToUseCouponDescription: function() {
+        this.getCalculateProcess()
       }
     },
+    // 获取用户等级
+    mounted: function() {
+      new Promise((resolve, reject) => {
+        getUser(this.token).then(response => {
+          if (response.state === 'OK') {
+            const curMember = JSON.parse(response.object)
+            this.memberLevel = curMember.level
+            this.myCouponData = curMember.coupons
+            // 呈现计算结果
+            this.getCalculateProcess()
+          }
+          resolve()
+        }).catch(error => {
+          reject(error)
+        })
+      }).then(() => {
+      }).catch(() => {
+      })
+    },
+
     activated: function() {
       // 在新建订单的时候keep-alive，但此处需要保持更新
       // 新计划预览，从store中加载数据
@@ -163,6 +259,9 @@
           }
         }
         this.seatPriceNumMap = seatPriceNumMapNew
+
+        // 呈现计算结果
+        this.getCalculateProcess()
       },
 
       // 根据预览提供填充
@@ -182,6 +281,9 @@
           }
         }
         this.seatPriceNumMap = seatPriceNumMapNew
+
+        // 呈现计算结果
+        this.getCalculateProcess()
       },
 
       // 订单id转为8位标准展示
@@ -201,6 +303,55 @@
           case 'NOT_CHOOSE_SEATS':
             return '立即购买不选座'
         }
+      },
+
+      // 使用优惠券时的对话框操作
+      handleUsedCouponChange(val) {
+        this.couponTableRow = val
+        this.wantToUseCouponDescription = val.description + '【最多减免 ' + val.offPrice + ' 元】'
+        this.dialogTableVisible = false
+      },
+
+      // 呈现计算过程
+      getCalculateProcess() {
+        var totalPrice = 0
+        var result = ''
+
+        // 基础价格
+        totalPrice += this.order_price
+        result += totalPrice
+
+        // 会员折扣
+        const memberDiscount = this.getMemberLevelDiscount(this.memberLevel)
+        totalPrice *= parseInt(memberDiscount) / 100.0
+        result += ' * ' + memberDiscount
+
+        // 优惠券
+        if (this.didUseCoupon && this.couponTableRow) {
+          const couponDiscount = this.couponTableRow.offPrice
+          totalPrice -= couponDiscount
+          if (totalPrice < 0) totalPrice = 0
+          result += ' - ' + couponDiscount
+        }
+
+        result += ' = '
+        this.finalTotalPriceProcess = result
+        this.finalTotalPrice = totalPrice
+
+        // 同步到store中
+        this.$store.dispatch('StoreCoupon', {
+          order_used_coupon: this.couponTableRow,
+          order_total_price: this.finalTotalPrice
+        }).then(() => {
+        }).catch(() => {
+        })
+      },
+
+      getMemberLevelDiscount(level) {
+        const creditTableData = [
+          '95%', '90%', '85%', '80%', '75%', '70%', '65%', '60%'
+        ]
+        return creditTableData[level - 1]
       }
     }
   }
@@ -213,5 +364,9 @@
 
   .basic_content {
     margin-top: 12px;
+  }
+
+  .coupon_table {
+    width: 100%;
   }
 </style>

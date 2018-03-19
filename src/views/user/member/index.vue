@@ -169,7 +169,7 @@
         // 优惠券数据
         myCouponData: [],
         systemCouponData: [
-          { neededCredit: 100, offPrice: 5, description: '快来尝试使用优惠券吧' },
+          { neededCredit: 100, offPrice: 5, description: '尝试使用优惠券' },
           { neededCredit: 1000, offPrice: 100, description: '使用 1000 分即可减免最多 100 元' },
           { neededCredit: 2000, offPrice: 150, description: '特惠！2000 分即可减免最多 150 元' }
         ]

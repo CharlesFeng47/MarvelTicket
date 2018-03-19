@@ -236,9 +236,15 @@
       },
 
       storeMemberChooseData() {
+        var totalPrice = 0
+        for (var i = 0; i < this.chooseSeatsCount; i++) {
+          totalPrice += this.chooseSeats[i].data().price
+        }
+
         this.$store.dispatch('StoreMemberChooseSeats', {
           choose_seats: this.chooseSeats,
-          choose_seats_count: this.chooseSeatsCount
+          choose_seats_count: this.chooseSeatsCount,
+          order_price: totalPrice
         }).then(() => {
           this.$emit('next')
         }).catch(() => {
