@@ -9,7 +9,7 @@
           <h3>目前等级</h3>
         </el-col>
         <el-col :span="5">
-          <el-tag type="primary" class="basic_content">3</el-tag>
+          <el-tag type="primary" class="basic_content">{{ curMember.level }}</el-tag>
         </el-col>
       </el-col>
       <el-col :span="7">
@@ -17,7 +17,7 @@
           <h3>距下一等级还差积分</h3>
         </el-col>
         <el-col :span="5">
-          <el-tag type="danger" class="basic_content">2000</el-tag>
+          <el-tag type="danger" class="basic_content">{{ nextCredit }}</el-tag>
         </el-col>
       </el-col>
       <el-col :span="7">
@@ -25,7 +25,7 @@
           <h3>完成比例</h3>
         </el-col>
         <el-col :offset="1" :span="10">
-          <el-progress :text-inside="true" :stroke-width="18" :percentage="72" style="margin-top: 18px">
+          <el-progress :text-inside="true" :stroke-width="18" :percentage="nextPercent" style="margin-top: 18px">
           </el-progress>
         </el-col>
       </el-col>
@@ -49,7 +49,7 @@
           <h3>目前总积分</h3>
         </el-col>
         <el-col :span="5">
-          <el-tag type="primary" class="basic_content">1000</el-tag>
+          <el-tag type="primary" class="basic_content">{{ curMember.creditTotal }}</el-tag>
         </el-col>
       </el-col>
       <el-col :span="6">
@@ -57,7 +57,7 @@
           <h3>目前剩余积分</h3>
         </el-col>
         <el-col :span="5">
-          <el-tag type="primary" class="basic_content">200</el-tag>
+          <el-tag type="primary" class="basic_content">{{ curMember.creditRemain }}</el-tag>
         </el-col>
       </el-col>
     </el-row>
@@ -69,8 +69,13 @@
           <h3>我的优惠券</h3>
         </el-row>
         <el-row class="basic_info" type="flex" justify="space-around">
-          <el-col :offset="2">
-            <el-table :data="myCouponData" style="width: 500px" stripe>
+          <el-col>
+            <el-table :data="myCouponData" stripe class="coupon_table">
+              <el-table-column v-if="false"
+                               prop="id"
+                               label="优惠券Id"
+                               width="0">
+              </el-table-column>
               <el-table-column
                 v-for="{ prop, label } in myCouponConfigs"
                 align="center"
@@ -87,8 +92,8 @@
           <h3>系统优惠券</h3>
         </el-row>
         <el-row class="basic_info" type="flex" justify="space-around">
-          <el-col :offset="2">
-            <el-table :data="systemCouponData" style="width: 500px" stripe>
+          <el-col>
+            <el-table :data="systemCouponData" stripe class="coupon_table">
               <el-table-column
                 v-for="{ prop, label } in systemCouponConfigs"
                 align="center"
@@ -111,33 +116,43 @@
 </template>
 
 <script>
+  import { Message } from 'element-ui'
   import { mapGetters } from 'vuex'
   import { convertRoleToChinese } from '../../../utils/role_helper'
+  import { couponConvert } from '../../../api/user'
+  import { getUser } from '../../../api/user'
 
   export default {
     name: 'MemberInfo',
     computed: {
       ...mapGetters([
         'roles',
-        'name'
+        'name',
+        'token'
       ])
     },
     data() {
       this.myCouponConfigs = [
-        { prop: 'description', label: '描述' },
+        { prop: 'neededCredit', label: '所需兑换积分' },
         { prop: 'offPrice', label: '减免价格' },
-        { prop: 'neededCredit', label: '所需兑换积分' }
+        { prop: 'description', label: '描述' }
 
       ]
-
       this.systemCouponConfigs = [
-        { prop: 'description', label: '描述' },
+        { prop: 'neededCredit', label: '所需兑换积分' },
         { prop: 'offPrice', label: '减免价格' },
-        { prop: 'neededCredit', label: '所需兑换积分' }
+        { prop: 'description', label: '描述' }
 
       ]
 
       return {
+        // 当前用户
+        curMember: '',
+
+        // 距下一等级的积分、完成比例
+        nextCredit: '',
+        nextPercent: 0,
+
         // 会员等级表
         creditTableData: [
           { level: '1', credit: '100', offPercent: '95%' },
@@ -152,17 +167,34 @@
         creditTableVisible: false,
 
         // 优惠券数据
-        myCouponData: [
-          { description: 'aaa', offPrice: 100, neededCredit: 1000 },
-          { description: 'aaa', offPrice: 100, neededCredit: 1000 },
-          { description: 'aaa', offPrice: 100, neededCredit: 1000 },
-          { description: 'aaa', offPrice: 100, neededCredit: 1000 },
-          { description: 'aaa', offPrice: 100, neededCredit: 1000 }
-        ],
+        myCouponData: [],
         systemCouponData: [
-          { description: 'aaa', offPrice: 100, neededCredit: 1000 }
+          { neededCredit: 100, offPrice: 5, description: '快来尝试使用优惠券吧' },
+          { neededCredit: 1000, offPrice: 100, description: '使用 1000 分即可减免最多 100 元' },
+          { neededCredit: 2000, offPrice: 150, description: '特惠！2000 分即可减免最多 150 元' }
         ]
       }
+    },
+    mounted: function() {
+      console.log('member index mounted')
+      new Promise((resolve, reject) => {
+        getUser(this.token).then(response => {
+          if (response.state === 'OK') {
+            this.curMember = JSON.parse(response.object)
+            console.log(this.curMember)
+
+            const nextLevelCredit = this.creditTableData[this.curMember.level].credit
+            this.nextCredit = nextLevelCredit - this.curMember.creditTotal
+            this.nextPercent = this.curMember.creditTotal / nextLevelCredit * 100
+
+            this.myCouponData = this.curMember.coupons
+          }
+        }).catch(error => {
+          reject(error)
+        })
+      }).then(() => {
+      }).catch(() => {
+      })
     },
     methods: {
       // 【提供给父组件中button调用】修改用户数据，跳转页面
@@ -176,7 +208,36 @@
         this.creditTableVisible = true
       },
       convertCoupon(index, row) {
-        console.log(row)
+        new Promise((resolve, reject) => {
+          couponConvert(this.token, row.description, row.offPrice, row.neededCredit).then(response => {
+            console.log(response)
+            if (response.state === 'OK') {
+              Message({
+                message: '您已成功兑换该优惠券！',
+                type: 'success',
+                duration: 3 * 1000,
+                center: true,
+                showClose: true
+              })
+
+              // 界面进行相应改动
+              this.myCouponData.push(row)
+              this.curMember.creditRemain -= row.neededCredit
+            } else if (response.state === 'COUPON_CONVERT_CREDIT_NOT_ENOUGH') {
+              Message({
+                message: '您的积分余额不足以兑换哦～',
+                type: 'error',
+                duration: 3 * 1000,
+                center: true,
+                showClose: true
+              })
+            }
+          }).catch(error => {
+            reject(error)
+          })
+        }).then(() => {
+        }).catch(() => {
+        })
       }
     }
   }
@@ -189,5 +250,9 @@
 
   .basic_content {
     margin-top: 12px;
+  }
+
+  .coupon_table {
+    width: 100%;
   }
 </style>

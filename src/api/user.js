@@ -45,3 +45,19 @@ export function getSpot(scheduleId) {
     method: 'get'
   })
 }
+
+/**
+ * 用户兑换优惠券
+ */
+export function couponConvert(token, description, offPrice, neededCredit) {
+  return request({
+    url: '/user/coupon_convert',
+    method: 'post',
+    data: qs.stringify({
+      token,
+      description,
+      offPrice,
+      neededCredit
+    })
+  })
+}

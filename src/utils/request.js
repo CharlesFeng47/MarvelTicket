@@ -25,7 +25,7 @@ service.interceptors.request.use(config => {
 // respone拦截器
 service.interceptors.response.use(
   response => {
-    console.log(response)
+    console.log('请求的response被拦截')
     console.log('response state: ' + response.data.state)
     return response.data
   },
