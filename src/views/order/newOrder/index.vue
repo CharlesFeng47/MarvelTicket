@@ -71,7 +71,6 @@
 
       // 取数据
       this.fetchData()
-      console.log('index created')
       console.log(this.scheduleDetail)
     },
     methods: {
@@ -105,7 +104,7 @@
       handleOrder: function() {
         new Promise((resolve, reject) => {
           saveOrder(this.token, this.$route.query.scheduleId, this.order_type, this.order_num, this.order_seat_name, this.order_price,
-            this.choose_seats, this.choose_seats_count, this.order_did_use_coupon,  this.order_used_coupon, this.order_total_price).then(response => {
+            this.choose_seats, this.choose_seats_count, this.order_did_use_coupon, this.order_used_coupon, this.order_total_price).then(response => {
             if (response.state === 'OK') {
               Message({
                 message: '您已成功下达订单！',

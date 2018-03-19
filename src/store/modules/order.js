@@ -21,7 +21,7 @@ const order = {
 
     // 订单中是否使用优惠券
     order_did_use_coupon: false,
-    // 订单中使用的优惠券Id
+    // 订单中使用的优惠券
     order_used_coupon: '',
     // 订单最终总价
     order_total_price: 0
@@ -84,13 +84,17 @@ const order = {
       commit('SET_ORDER_TOTAL_PRICE', order_total_price)
     },
 
-    StoreUploadedData({ commit }, { order_type, order_num, order_seat_name, order_price, choose_seats, choose_seats_count }) {
+    // 将从后端下载下来的值存进store
+    StoreDownloadedData({ commit }, { order_type, order_num, order_seat_name, order_price, choose_seats, choose_seats_count, order_did_use_coupon, order_used_coupon, order_total_price }) {
       commit('SET_ORDER_TYPE', order_type)
       commit('SET_ORDER_NUM', order_num)
       commit('SET_ORDER_SEAT_NAME', order_seat_name)
-      commit('SET_ORDER_PRICE', order_price)
       commit('SET_CHOOSE_SEATS', choose_seats)
       commit('SET_CHOOSE_SEATS_COUNT', choose_seats_count)
+      commit('SET_ORDER_PRICE', order_price)
+      commit('SET_ORDER_DID_USE_COUPON', order_did_use_coupon)
+      commit('SET_ORDER_USED_COUPON', order_used_coupon)
+      commit('SET_ORDER_TOTAL_PRICE', order_total_price)
     }
   }
 }

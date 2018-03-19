@@ -63,13 +63,15 @@
           <h3>优惠券使用</h3>
         </el-col>
         <el-col :span="1">
-          <el-switch v-model="didUseCoupon" style="margin-top: 18px"
+          <el-switch v-model="didUseCoupon" style="margin-top: 18px" :disabled="!this.$route.meta.isNew"
                      active-color="#13ce66"
                      inactive-color="#ff4949">
           </el-switch>
         </el-col>
         <el-col :span="20" v-show="didUseCoupon">
-          <el-button type="text" @click="dialogTableVisible = true" style="margin-top: 10px">{{ wantToUseCouponDescription }}</el-button>
+          <el-button type="text" @click="dialogTableVisible = true" style="margin-top: 10px" :disabled="!this.$route.meta.isNew">
+            {{ wantToUseCouponDescription }}
+          </el-button>
         </el-col>
 
         <el-dialog title="收货地址" :visible.sync="dialogTableVisible">
@@ -142,10 +144,15 @@
 
         'order_num',
         'order_seat_name',
-        'order_price',
 
         'choose_seats',
-        'choose_seats_count'
+        'choose_seats_count',
+
+        'order_price',
+
+        'order_did_use_coupon',
+        'order_used_coupon',
+        'order_total_price'
       ])
     },
     data() {
@@ -230,14 +237,24 @@
         } else {
           chooseSeats = []
         }
-        this.$store.dispatch('StoreUploadedData', {
+
+        this.$store.dispatch('StoreDownloadedData', {
           order_type: this.orderDetail.orderType,
           order_num: this.orderDetail.notChoseSeats.num,
           order_seat_name: this.orderDetail.notChoseSeats.seatName,
           order_price: this.orderDetail.notChoseSeats.price,
           choose_seats: chooseSeats,
-          choose_seats_count: chooseSeats.length
+          choose_seats_count: chooseSeats.length,
+          order_did_use_coupon: this.orderDetail.usedCoupon !== undefined,
+          order_used_coupon: this.orderDetail.usedCoupon,
+          order_total_price: this.orderDetail.totalPrice
         }).then(() => {
+          // 设置优惠券信息
+          this.didUseCoupon = this.order_did_use_coupon
+          if (this.didUseCoupon) {
+            this.wantToUseCouponDescription = this.order_used_coupon.description
+          }
+
           this.refillSeatPriceNumMap()
         }).catch(() => {
         })
@@ -316,36 +333,67 @@
       getCalculateProcess() {
         var totalPrice = 0
         var result = ''
+        if (this.$route.meta.isNew) {
+          // 基础价格
+          totalPrice += this.order_price
+          result += totalPrice
 
-        // 基础价格
-        totalPrice += this.order_price
-        result += totalPrice
+          // 会员折扣
+          const memberDiscount = this.getMemberLevelDiscount(this.memberLevel)
+          totalPrice *= parseInt(memberDiscount) / 100.0
+          result += ' * ' + memberDiscount
 
-        // 会员折扣
-        const memberDiscount = this.getMemberLevelDiscount(this.memberLevel)
-        totalPrice *= parseInt(memberDiscount) / 100.0
-        result += ' * ' + memberDiscount
+          // 优惠券
+          if (this.didUseCoupon && this.couponTableRow) {
+            const couponDiscount = this.couponTableRow.offPrice
+            totalPrice -= couponDiscount
+            if (totalPrice < 0) totalPrice = 0
+            result += ' - ' + couponDiscount
+          }
 
-        // 优惠券
-        if (this.didUseCoupon && this.couponTableRow) {
-          const couponDiscount = this.couponTableRow.offPrice
-          totalPrice -= couponDiscount
-          if (totalPrice < 0) totalPrice = 0
-          result += ' - ' + couponDiscount
+          result += ' = '
+          this.finalTotalPriceProcess = result
+          this.finalTotalPrice = totalPrice
+
+          // 同步到store中
+          this.$store.dispatch('StoreCoupon', {
+            order_did_use_coupon: this.didUseCoupon,
+            order_used_coupon: this.couponTableRow,
+            order_total_price: this.finalTotalPrice
+          }).then(() => {
+          }).catch(() => {
+          })
+        } else {
+          // 基础价格
+          var basicPrice = 0
+          if (this.order_type === 'CHOOSE_SEATS') {
+            for (var i = 0; i < this.choose_seats_count; i++) {
+              basicPrice += this.choose_seats[i].price
+            }
+          } else if (this.order_type === 'NOT_CHOOSE_SEATS') {
+            basicPrice = this.order_price
+          }
+          totalPrice += basicPrice
+          result += totalPrice
+
+          // 会员折扣
+          const memberDiscount = this.getMemberLevelDiscount(this.memberLevel)
+          totalPrice *= parseInt(memberDiscount) / 100.0
+          result += ' * ' + memberDiscount
+
+          // 优惠券
+          if (this.order_did_use_coupon) {
+            const usedCoupon = this.order_used_coupon
+            const couponDiscount = usedCoupon.offPrice
+            totalPrice -= couponDiscount
+            if (totalPrice < 0) totalPrice = 0
+            result += ' - ' + couponDiscount
+          }
+
+          result += ' = '
+          this.finalTotalPriceProcess = result
+          this.finalTotalPrice = totalPrice
         }
-
-        result += ' = '
-        this.finalTotalPriceProcess = result
-        this.finalTotalPrice = totalPrice
-
-        // 同步到store中
-        this.$store.dispatch('StoreCoupon', {
-          order_did_use_coupon: this.didUseCoupon,
-          order_used_coupon: this.couponTableRow,
-          order_total_price: this.finalTotalPrice
-        }).then(() => {
-        }).catch(() => {
-        })
       },
 
       getMemberLevelDiscount(level) {
