@@ -35,6 +35,7 @@ const getters = {
   choose_seats_count: state => state.order.choose_seats_count,
   order_modified: state => state.order.order_modified,
   // 优惠券和总价
+  order_did_use_coupon: state => state.order.order_did_use_coupon,
   order_used_coupon: state => state.order.order_used_coupon,
   order_total_price: state => state.order.order_total_price
 

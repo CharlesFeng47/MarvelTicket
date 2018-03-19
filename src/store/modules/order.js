@@ -19,6 +19,8 @@ const order = {
     // store中存的order订票信息较之前的是否已经被修改过
     order_modified: false,
 
+    // 订单中是否使用优惠券
+    order_did_use_coupon: false,
     // 订单中使用的优惠券Id
     order_used_coupon: '',
     // 订单最终总价
@@ -47,6 +49,9 @@ const order = {
     SET_ORDER_MODIFIED: (state, bool) => {
       state.order_modified = bool
     },
+    SET_ORDER_DID_USE_COUPON: (state, order_did_use_coupon) => {
+      state.order_did_use_coupon = order_did_use_coupon
+    },
     SET_ORDER_USED_COUPON: (state, order_used_coupon) => {
       state.order_used_coupon = order_used_coupon
     },
@@ -73,7 +78,8 @@ const order = {
       commit('SET_ORDER_MODIFIED', true)
     },
     // 提交选择的优惠券信息
-    StoreCoupon({ commit }, { order_used_coupon, order_total_price }) {
+    StoreCoupon({ commit }, { order_did_use_coupon, order_used_coupon, order_total_price }) {
+      commit('SET_ORDER_DID_USE_COUPON', order_did_use_coupon)
       commit('SET_ORDER_USED_COUPON', order_used_coupon)
       commit('SET_ORDER_TOTAL_PRICE', order_total_price)
     },

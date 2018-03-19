@@ -340,6 +340,7 @@
 
         // 同步到store中
         this.$store.dispatch('StoreCoupon', {
+          order_did_use_coupon: this.didUseCoupon,
           order_used_coupon: this.couponTableRow,
           order_total_price: this.finalTotalPrice
         }).then(() => {
