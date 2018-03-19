@@ -160,14 +160,13 @@
         // })
       }
     },
+    // TODO 离开下达订单页面即清楚页面缓存，使其下次重新加载
     beforeRouteLeave: function(to, from, next) {
-      if (to.meta.isNew !== from.meta.isNew) {
-        this.$store.dispatch('ResetSchedule').then(() => {
-          this.curStep = 0
-          console.log('reset the new schedule view stored data')
-        }).catch(() => {
-        })
-      }
+      // this.$store.dispatch('ResetOrder').then(() => {
+      //   console.log('clear the new order view stored data')
+      //
+      // }).catch(() => {
+      // })
       next()
     }
   }

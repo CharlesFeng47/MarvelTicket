@@ -34,13 +34,15 @@ export function saveOrder(token, scheduleId, order_type, order_num, order_seat_n
   console.log(not_chose_seats)
 
   // 订座的信息处理
-  var choose_seat_array = []
-  if (choose_seats_count !== '') {
-    for (var i = 0; i < choose_seats_count; i++) {
-      choose_seat_array[i] = {}
-      choose_seat_array[i].id = choose_seats[i].settings.id
-      choose_seat_array[i].seatName = choose_seats[i].data().category
-      choose_seat_array[i].price = choose_seats[i].data().price
+  if (order_type === 'CHOOSE_SEATS') {
+    var choose_seat_array = []
+    if (choose_seats_count !== '') {
+      for (var i = 0; i < choose_seats_count; i++) {
+        choose_seat_array[i] = {}
+        choose_seat_array[i].id = choose_seats[i].settings.id
+        choose_seat_array[i].seatName = choose_seats[i].data().category
+        choose_seat_array[i].price = choose_seats[i].data().price
+      }
     }
   }
 

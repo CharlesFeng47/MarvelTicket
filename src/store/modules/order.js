@@ -95,6 +95,19 @@ const order = {
       commit('SET_ORDER_DID_USE_COUPON', order_did_use_coupon)
       commit('SET_ORDER_USED_COUPON', order_used_coupon)
       commit('SET_ORDER_TOTAL_PRICE', order_total_price)
+    },
+
+    // 购买完成之后需要重置数据
+    ResetOrder({ commit }) {
+      commit('SET_ORDER_TYPE', '')
+      commit('SET_ORDER_NUM', '')
+      commit('SET_ORDER_SEAT_NAME', '')
+      commit('SET_CHOOSE_SEATS', [])
+      commit('SET_CHOOSE_SEATS_COUNT', '')
+      commit('SET_ORDER_PRICE', '')
+      commit('SET_ORDER_DID_USE_COUPON', false)
+      commit('SET_ORDER_USED_COUPON', '')
+      commit('SET_ORDER_TOTAL_PRICE', 0)
     }
   }
 }
