@@ -5,6 +5,7 @@
     <!--可进行的操作-->
     <el-row type="flex" justify="space-around" style="margin-top: 47px">
       <div class="but-group" v-if="roles[0]==='SPOT'">
+        <el-button @click.native.prevent="buyTicketOnSpot" type="success" round>现场购票</el-button>
         <el-button @click.native.prevent="goToModify" type="primary" round>修改</el-button>
         <el-button @click.native.prevent="deleteSchedule" type="danger" round>删除</el-button>
       </div>
@@ -31,6 +32,16 @@
       ScheduleDetail
     },
     methods: {
+      // 场馆现场购票
+      buyTicketOnSpot() {
+        this.$router.push({
+          path: '/order/buy_on_spot',
+          query: {
+            scheduleId: this.$route.params.scheduleId
+          }
+        })
+      },
+
       // 修改日程数据，跳转页面
       goToModify() {
         this.$refs.detail.goToModify()

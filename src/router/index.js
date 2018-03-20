@@ -174,6 +174,19 @@ export const asyncRouterMap = [
         ]
       },
       {
+        path: 'buy_on_spot',
+        name: 'SpotBuy',
+        hidden: true,
+        component: () => import('@/views/order/newOrder/index'),
+        meta: { title: '新增', icon: 'plus', roles: ['SPOT'] },
+        children: [
+          { path: '', hidden: true, component: () => import('@/views/order/newOrder/step1'), meta: { isNew: true, roles: ['SPOT'] }},
+          { path: 'step1', hidden: true, component: () => import('@/views/order/newOrder/step1'), meta: { isNew: true, roles: ['SPOT'] }},
+          { path: 'step2', hidden: true, component: () => import('@/views/order/newOrder/step2'), meta: { isNew: true, roles: ['SPOT'] }},
+          { path: 'step3', hidden: true, component: () => import('@/views/order/newOrder/step3'), meta: { isNew: true, roles: ['SPOT'] }}
+        ]
+      },
+      {
         path: ':orderId',
         name: 'OrderOne',
         hidden: true,

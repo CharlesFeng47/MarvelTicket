@@ -45,6 +45,7 @@ export function isValidatePositiveIntegers(str) {
 
 /* 邮箱 */
 export function isValidateEmail(str) {
+  // [\w!#$%&'*+/=?^_`{|}~-]+(?:\.[\w!#$%&'*+/=?^_`{|}~-]+)*@(?:[\w](?:[\w-]*[\w])?\.)+[\w](?:[\w-]*[\w])?
   const reg = /^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
   return reg.test(str)
 }

@@ -5,7 +5,7 @@
     <el-row>
       <el-col :offset="2">
         <el-table :data="allOrderBriefs" style="width: 1000px" stripe>
-          <!--不加载计划ID-->
+          <!--不加载订单ID-->
           <el-table-column v-if="false"
                            prop="id"
                            label="订单Id"

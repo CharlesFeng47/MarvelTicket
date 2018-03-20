@@ -61,3 +61,16 @@ export function couponConvert(token, description, offPrice, neededCredit) {
     })
   })
 }
+
+/**
+ * 用户兑换优惠券
+ */
+export function spotGetMemberInfo(mid) {
+  return request({
+    url: '/user/spot_get_member_info',
+    method: 'post',
+    data: qs.stringify({
+      mid
+    })
+  })
+}

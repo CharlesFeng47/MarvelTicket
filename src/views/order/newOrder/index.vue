@@ -38,6 +38,7 @@
     computed: {
       ...mapGetters([
         'token',
+        'roles',
 
         'order_type',
 
@@ -102,6 +103,7 @@
         $('html,body').animate({ scrollTop: 0 }, 500)
       },
       handleOrder: function() {
+        // TODO
         new Promise((resolve, reject) => {
           saveOrder(this.token, this.$route.query.scheduleId, this.order_type, this.order_num, this.order_seat_name, this.order_price,
             this.choose_seats, this.choose_seats_count, this.order_did_use_coupon, this.order_used_coupon, this.order_total_price).then(response => {
@@ -132,8 +134,16 @@
       },
       handleNextStep: function() {
         this.curStep++
+        var pathVar
+        if (this.roles[0] === 'SPOT') {
+          // 现场购票
+          pathVar = 'buy_on_spot'
+        } else if (this.roles[0] === 'MEMBER') {
+          // 会员购票
+          pathVar = 'new_order'
+        }
         this.$router.push({
-          path: '/order/new_order/step2',
+          path: '/order/' + pathVar + '/step2',
           query: {
             scheduleId: this.$route.query.scheduleId
           }

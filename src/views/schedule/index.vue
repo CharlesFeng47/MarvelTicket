@@ -52,9 +52,8 @@
           </el-table-column>
           <el-table-column align="center" label="操作">
             <template slot-scope="scope">
-              <el-button
-                size="mini"
-                @click="handleCheck(scope.$index, scope.row)">查看</el-button>
+              <el-button size="mini" @click="handleCheck(scope.$index, scope.row)">查看</el-button>
+              <el-button v-if="roles[0] === 'SPOT'" size="mini" @click="buyTicketOnSpot(scope.$index, scope.row)">现场购票</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -95,9 +94,19 @@
       filterType(value, row) {
         return row.type === value
       },
+      // 查看计划详情
       handleCheck(index, row) {
         console.log(index, row)
         this.$router.push('/schedule/' + row.id)
+      },
+      // 场馆现场购票
+      buyTicketOnSpot(index, row) {
+        this.$router.push({
+          path: '/order/buy_on_spot',
+          query: {
+            scheduleId: row.id
+          }
+        })
       },
       fetchAllData() {
         console.log('fetch all data')

@@ -57,13 +57,37 @@
         </el-col>
       </el-row>
 
+      <el-alert
+        title="填写会员编号享受会员折扣，更可选择使用自己的优惠券哦～"
+        type="info"
+        close-text="已了解"
+        show-icon>
+      </el-alert>
+      <!--会员编号-->
+      <el-row class="basic_info" v-if="roles[0] === 'SPOT'">
+        <el-col :span="2">
+          <h3>会员购票</h3>
+        </el-col>
+        <el-col :span="1">
+          <el-switch v-model="buyOnSpotIsMember" style="margin-top: 18px" :disabled="!this.$route.meta.isNew"
+                     active-color="#13ce66"
+                     inactive-color="#ff4949">
+          </el-switch>
+        </el-col>
+        <el-col :span="20" v-show="buyOnSpotIsMember">
+          <el-button type="text" @click="buyOnSpotInputMemberId" style="margin-top: 10px" :disabled="!this.$route.meta.isNew">
+            {{ buyOnSpotMemberId }}
+          </el-button>
+        </el-col>
+      </el-row>
+
       <!--优惠券使用-->
       <el-row class="basic_info">
         <el-col :span="2">
           <h3>优惠券使用</h3>
         </el-col>
         <el-col :span="1">
-          <el-switch v-model="didUseCoupon" style="margin-top: 18px" :disabled="!this.$route.meta.isNew"
+          <el-switch v-model="didUseCoupon" style="margin-top: 18px" :disabled="!(this.$route.meta.isNew && buyOnSpotIsMember)"
                      active-color="#13ce66"
                      inactive-color="#ff4949">
           </el-switch>
@@ -127,7 +151,8 @@
 
 <script>
   import { mapGetters } from 'vuex'
-  import { getUser } from '../../../api/user'
+  import { getUser, spotGetMemberInfo } from '../../../api/user'
+  import { isValidUsername } from '@/utils/validate'
 
   // 订单详情
   export default {
@@ -140,6 +165,8 @@
     computed: {
       ...mapGetters([
         'token',
+        'roles',
+
         'order_type',
 
         'order_num',
@@ -172,6 +199,11 @@
         ],
         dialogTableVisible: false,
 
+        // 现场购票会员信息
+        buyOnSpotIsMember: false,
+        buyOnSpotMemberId: '点击输入会员编号',
+        buyOnSpotMemberIdValid: false,
+
         // 优惠券相关
         didUseCoupon: false,
         wantToUseCouponDescription: '点击选择优惠券',
@@ -200,26 +232,30 @@
       },
       wantToUseCouponDescription: function() {
         this.getCalculateProcess()
+      },
+
+      // 现场购票时会员编号改变导致积分的会员信息改变
+      buyOnSpotMemberId: function() {
+        if (this.buyOnSpotMemberId !== '点击输入会员编号') this.loadMemberInfo()
+      },
+
+      // 现场购票时是否是会员，导致优惠券改变
+      buyOnSpotIsMember: function(val, oldVal) {
+        if (!val) {
+          // 关闭
+          this.buyOnSpotMemberId = '点击输入会员编号'
+          this.buyOnSpotMemberIdValid = false
+          this.didUseCoupon = false
+          this.wantToUseCouponDescription = '点击选择优惠券'
+          this.couponTableRow = null
+          this.myCouponData = []
+          this.getCalculateProcess()
+        }
       }
     },
     // 获取用户等级
     mounted: function() {
-      new Promise((resolve, reject) => {
-        getUser(this.token).then(response => {
-          if (response.state === 'OK') {
-            const curMember = JSON.parse(response.object)
-            this.memberLevel = curMember.level
-            this.myCouponData = curMember.coupons
-            // 呈现计算结果
-            this.getCalculateProcess()
-          }
-          resolve()
-        }).catch(error => {
-          reject(error)
-        })
-      }).then(() => {
-      }).catch(() => {
-      })
+      this.loadMemberInfo()
     },
 
     activated: function() {
@@ -229,6 +265,67 @@
       this.fulfillStoredData()
     },
     methods: {
+      // 加载用户信息，进行选用优惠券和进行会员折扣
+      loadMemberInfo() {
+        if (this.roles[0] === 'MEMBER') {
+          // 会员自己购票
+          new Promise((resolve, reject) => {
+            getUser(this.token).then(response => {
+              if (response.state === 'OK') {
+                const curMember = JSON.parse(response.object)
+                this.memberLevel = curMember.level
+                this.myCouponData = curMember.coupons
+                // 呈现计算结果
+                this.getCalculateProcess()
+              }
+              resolve()
+            }).catch(error => {
+              reject(error)
+            })
+          }).then(() => {
+          }).catch(() => {
+          })
+        } else if (this.roles[0] === 'SPOT') {
+          // 场馆现场购票
+          if (this.buyOnSpotIsMember) {
+            new Promise((resolve, reject) => {
+              spotGetMemberInfo(this.buyOnSpotMemberId).then(response => {
+                if (response.state === 'OK') {
+                  const curContentMember = JSON.parse(response.object)
+                  this.memberLevel = curContentMember.level
+                  this.myCouponData = curContentMember.coupons
+                  this.buyOnSpotMemberIdValid = true
+                } else if (response.state === 'USER_NOT_EXIST') {
+                  this.$message({
+                    type: 'error',
+                    message: '会员编号不存在',
+                    duration: 3 * 1000,
+                    center: true,
+                    showClose: true
+                  })
+
+                  // 此用户不存在，重置数据
+                  this.didUseCoupon = false
+                  this.wantToUseCouponDescription = '点击选择优惠券'
+                  this.couponTableRow = null
+
+                  this.memberLevel = ''
+                  this.myCouponData = []
+                  this.buyOnSpotMemberIdValid = false
+                }
+                resolve()
+              }).catch(error => {
+                reject(error)
+              })
+            }).then(() => {
+              // 呈现计算结果
+              this.getCalculateProcess()
+            }).catch(() => {
+            })
+          }
+        }
+      },
+
       fetchPropsData() {
         // 给chooseSeats赋默认值
         var chooseSeats
@@ -339,9 +436,11 @@
           result += totalPrice
 
           // 会员折扣
-          const memberDiscount = this.getMemberLevelDiscount(this.memberLevel)
-          totalPrice *= parseInt(memberDiscount) / 100.0
-          result += ' * ' + memberDiscount
+          if ((this.roles[0] === 'MEMBER') || (this.roles[0] === 'SPOT' && this.buyOnSpotMemberIdValid)) {
+            const memberDiscount = this.getMemberLevelDiscount(this.memberLevel)
+            totalPrice *= parseInt(memberDiscount) / 100.0
+            result += ' * ' + memberDiscount
+          }
 
           // 优惠券
           if (this.didUseCoupon && this.couponTableRow) {
@@ -401,6 +500,26 @@
           '95%', '90%', '85%', '80%', '75%', '70%', '65%', '60%'
         ]
         return creditTableData[level - 1]
+      },
+
+      // 现场购票时输入会员编号
+      buyOnSpotInputMemberId() {
+        this.$prompt('请输入会员编号', '会员购票', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          inputValue: this.buyOnSpotMemberId === '点击输入会员编号' ? '' : this.buyOnSpotMemberId,
+          inputValidator: this.validateUserName,
+          inputErrorMessage: '会员编号格式不正确'
+        }).then(({ value }) => {
+          this.buyOnSpotMemberId = value
+        }).catch(() => {
+          // 取消操作
+        })
+      },
+
+      validateUserName(str) {
+        if (str === null || str === '') return '请输入会员编号'
+        else return isValidUsername
       }
     }
   }
