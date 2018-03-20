@@ -187,6 +187,8 @@
         'order_way',
         'order_did_use_coupon',
         'order_used_coupon',
+
+        'order_cal_process',
         'order_total_price'
       ])
     },
@@ -200,11 +202,7 @@
       return {
         seatPriceNumMap: [],
 
-        myCouponData: [
-          { neededCredit: 100, offPrice: 5, description: '快来尝试使用优惠券吧' },
-          { neededCredit: 1000, offPrice: 100, description: '使用 1000 分即可减免最多 100 元' },
-          { neededCredit: 2000, offPrice: 150, description: '特惠！2000 分即可减免最多 150 元' }
-        ],
+        myCouponData: [],
         dialogTableVisible: false,
 
         // 现场购票会员信息
@@ -261,9 +259,9 @@
         }
       }
     },
-    // 获取用户等级
     mounted: function() {
-      this.loadMemberInfo()
+      // 获取用户等级
+      if (this.$route.meta.isNew) this.loadMemberInfo()
     },
 
     activated: function() {
@@ -353,6 +351,7 @@
           order_way: this.orderDetail.orderWay,
           order_did_use_coupon: this.orderDetail.usedCoupon !== undefined,
           order_used_coupon: this.orderDetail.usedCoupon,
+          order_cal_process: this.orderDetail.calProcess,
           order_total_price: this.orderDetail.totalPrice
         }).then(() => {
           // 设置优惠券信息
@@ -476,40 +475,14 @@
           this.$store.dispatch('StoreCoupon', {
             order_did_use_coupon: this.didUseCoupon,
             order_used_coupon: this.couponTableRow,
+            order_cal_process: this.finalTotalPriceProcess,
             order_total_price: this.finalTotalPrice
           }).then(() => {
           }).catch(() => {
           })
         } else {
-          // 基础价格
-          var basicPrice = 0
-          if (this.order_type === 'CHOOSE_SEATS') {
-            for (var i = 0; i < this.choose_seats_count; i++) {
-              basicPrice += this.choose_seats[i].price
-            }
-          } else if (this.order_type === 'NOT_CHOOSE_SEATS') {
-            basicPrice = this.order_price
-          }
-          totalPrice += basicPrice
-          result += totalPrice
-
-          // 会员折扣
-          const memberDiscount = this.getMemberLevelDiscount(this.memberLevel)
-          totalPrice *= parseInt(memberDiscount) / 100.0
-          result += ' * ' + memberDiscount
-
-          // 优惠券
-          if (this.order_did_use_coupon) {
-            const usedCoupon = this.order_used_coupon
-            const couponDiscount = usedCoupon.offPrice
-            totalPrice -= couponDiscount
-            if (totalPrice < 0) totalPrice = 0
-            result += ' - ' + couponDiscount
-          }
-
-          result += ' = '
-          this.finalTotalPriceProcess = result
-          this.finalTotalPrice = totalPrice
+          this.finalTotalPriceProcess = this.order_cal_process
+          this.finalTotalPrice = this.order_total_price
         }
       },
 

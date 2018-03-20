@@ -9,7 +9,8 @@
           <h3>编号ID</h3>
         </el-col>
         <el-col :span="8">
-          <el-tag type="primary" class="basic_content">{{ spotBasic.id }}</el-tag>
+          <el-tag v-if="this.$route.meta.isNew" type="primary" class="basic_content">注册后自动生成哦</el-tag>
+          <el-tag v-else type="primary" class="basic_content">{{ spotBasic.id }}</el-tag>
         </el-col>
       </el-col>
       <el-col :span="4">

@@ -39,9 +39,11 @@ const getters = {
   // 现场购票时的会员情况
   on_spot_is_member: state => state.order.on_spot_is_member,
   on_spot_member_id: state => state.order.on_spot_member_id,
-  // 优惠券和总价
+  // 优惠券
   order_did_use_coupon: state => state.order.order_did_use_coupon,
   order_used_coupon: state => state.order.order_used_coupon,
+  // 总价相关
+  order_cal_process: state => state.order.order_cal_process,
   order_total_price: state => state.order.order_total_price
 
 }

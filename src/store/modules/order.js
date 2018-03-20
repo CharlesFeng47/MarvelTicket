@@ -30,6 +30,9 @@ const order = {
     order_did_use_coupon: false,
     // 订单中使用的优惠券
     order_used_coupon: '',
+
+    // 订单计算过程
+    order_cal_process: '',
     // 订单最终总价
     order_total_price: 0
   },
@@ -71,6 +74,9 @@ const order = {
     SET_ORDER_USED_COUPON: (state, order_used_coupon) => {
       state.order_used_coupon = order_used_coupon
     },
+    SET_CAL_PROCESS: (state, order_cal_process) => {
+      state.order_cal_process = order_cal_process
+    },
     SET_ORDER_TOTAL_PRICE: (state, order_total_price) => {
       state.order_total_price = order_total_price
     }
@@ -94,9 +100,10 @@ const order = {
       commit('SET_ORDER_MODIFIED', true)
     },
     // 提交选择的优惠券信息
-    StoreCoupon({ commit }, { order_did_use_coupon, order_used_coupon, order_total_price }) {
+    StoreCoupon({ commit }, { order_did_use_coupon, order_used_coupon, order_cal_process, order_total_price }) {
       commit('SET_ORDER_DID_USE_COUPON', order_did_use_coupon)
       commit('SET_ORDER_USED_COUPON', order_used_coupon)
+      commit('SET_CAL_PROCESS', order_cal_process)
       commit('SET_ORDER_TOTAL_PRICE', order_total_price)
     },
     // 提交会员信息
@@ -107,7 +114,7 @@ const order = {
     },
 
     // 将从后端下载下来的值存进store
-    StoreDownloadedData({ commit }, { order_type, order_num, order_seat_name, order_price, choose_seats, choose_seats_count, order_way, order_did_use_coupon, order_used_coupon, order_total_price }) {
+    StoreDownloadedData({ commit }, { order_type, order_num, order_seat_name, order_price, choose_seats, choose_seats_count, order_way, order_did_use_coupon, order_used_coupon, order_cal_process, order_total_price }) {
       commit('SET_ORDER_TYPE', order_type)
       commit('SET_ORDER_NUM', order_num)
       commit('SET_ORDER_SEAT_NAME', order_seat_name)
@@ -117,6 +124,7 @@ const order = {
       commit('SET_ORDER_WAY', order_way)
       commit('SET_ORDER_DID_USE_COUPON', order_did_use_coupon)
       commit('SET_ORDER_USED_COUPON', order_used_coupon)
+      commit('SET_CAL_PROCESS', order_cal_process)
       commit('SET_ORDER_TOTAL_PRICE', order_total_price)
     },
 

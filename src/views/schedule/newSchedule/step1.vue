@@ -181,7 +181,7 @@
 
                 var curTime = new Date()
                 var timeParts = timeString.split(':')
-                curTime.setHours(parseInt(timeParts[0]), parseInt(timeParts[1]), parseInt(timeParts[2]))
+                curTime.setHours(parseInt(timeParts[0]), parseInt(timeParts[1]), 0)
                 defaultBasicInfoForm.time = curTime
 
                 this.$store.dispatch('ChangeBasicInfo', defaultBasicInfoForm).then(() => {

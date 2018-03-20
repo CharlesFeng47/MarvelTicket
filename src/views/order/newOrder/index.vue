@@ -56,6 +56,8 @@
 
         'order_did_use_coupon',
         'order_used_coupon',
+
+        'order_cal_process',
         'order_total_price'
       ])
     },
@@ -111,7 +113,7 @@
         new Promise((resolve, reject) => {
           saveOrder(this.token, this.$route.query.scheduleId, this.order_type, this.order_num, this.order_seat_name, this.order_price,
             this.choose_seats, this.choose_seats_count, this.order_way, this.on_spot_is_member, this.on_spot_member_id,
-            this.order_did_use_coupon, this.order_used_coupon, this.order_total_price).then(response => {
+            this.order_did_use_coupon, this.order_used_coupon, this.order_cal_process, this.order_total_price).then(response => {
             if (response.state === 'OK') {
               Message({
                 message: '您已成功下达订单！',

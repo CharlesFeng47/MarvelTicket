@@ -4,6 +4,7 @@ const qs = require('qs')
 
 /**
  * 获取单条计划
+ * TODO newSchedule/step1 和 newSchedule/step2 均调用了此方法，可抽象出来在 newSchedule/index 中调用（参考 newOrder/index）
  */
 export function getSchedule(scheduleId) {
   return request({
