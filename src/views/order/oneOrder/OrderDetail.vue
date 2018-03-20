@@ -33,9 +33,12 @@
           <el-col :span="6">
             <h3>订票类型</h3>
           </el-col>
-          <el-col :span="18">
-            <el-tag type="primary" class="basic_content">{{ convertOrderTypeToChinese(order_type) }}</el-tag>
+          <el-col :span="5">
+            <el-tag type="primary" class="basic_content">{{ convertOrderWayToChinese(order_way) }}</el-tag>
           </el-col>
+          <el-col :span="10">
+          <el-tag type="primary" class="basic_content">{{ convertOrderTypeToChinese(order_type) }}</el-tag>
+        </el-col>
         </el-col>
         <el-col :span="8">
           <el-col :span="6">
@@ -57,7 +60,7 @@
         </el-col>
       </el-row>
 
-      <el-alert
+      <el-alert v-if="roles[0]==='SPOT' && this.$route.meta.isNew"
         title="填写会员编号享受会员折扣，更可选择使用自己的优惠券哦～"
         type="info"
         close-text="已了解"
@@ -87,7 +90,11 @@
           <h3>优惠券使用</h3>
         </el-col>
         <el-col :span="1">
-          <el-switch v-model="didUseCoupon" style="margin-top: 18px" :disabled="!(this.$route.meta.isNew && buyOnSpotIsMember)"
+          <el-switch v-if="roles[0]==='MEMBER'" v-model="didUseCoupon" style="margin-top: 18px" :disabled="!this.$route.meta.isNew"
+                     active-color="#13ce66"
+                     inactive-color="#ff4949">
+          </el-switch>
+          <el-switch v-if="roles[0]==='SPOT'" v-model="didUseCoupon" style="margin-top: 18px" :disabled="!(this.$route.meta.isNew && buyOnSpotIsMember)"
                      active-color="#13ce66"
                      inactive-color="#ff4949">
           </el-switch>
@@ -177,6 +184,7 @@
 
         'order_price',
 
+        'order_way',
         'order_did_use_coupon',
         'order_used_coupon',
         'order_total_price'
@@ -342,6 +350,7 @@
           order_price: this.orderDetail.notChoseSeats.price,
           choose_seats: chooseSeats,
           choose_seats_count: chooseSeats.length,
+          order_way: this.orderDetail.orderWay,
           order_did_use_coupon: this.orderDetail.usedCoupon !== undefined,
           order_used_coupon: this.orderDetail.usedCoupon,
           order_total_price: this.orderDetail.totalPrice
@@ -409,6 +418,15 @@
         return temp
       },
 
+      // order_way转中文展示
+      convertOrderWayToChinese(way) {
+        switch (way) {
+          case 'BUY_ON_MEMBER':
+            return '会员购买'
+          case 'BUY_ON_SPOT':
+            return '现场购票'
+        }
+      },
       // order_type转中文展示
       convertOrderTypeToChinese(type) {
         switch (type) {
@@ -520,6 +538,37 @@
       validateUserName(str) {
         if (str === null || str === '') return '请输入会员编号'
         else return isValidUsername
+      },
+
+      // 给父组件 newOrder/step2 提供的，并将参数保存到store中的方法
+      validateData() {
+        if (this.roles[0] === 'SPOT') {
+          // 校验场馆现场购票
+          if (this.buyOnSpotIsMember && !this.buyOnSpotMemberIdValid) {
+            this.$message({
+              message: '此会员编号不存在，无法使用哦～ 请输入合法会员编号或不使用会员购票～',
+              type: 'error',
+              duration: 3 * 1000,
+              center: true,
+              showClose: true
+            })
+          } else {
+            this.storeMemberInfoData()
+          }
+        } else {
+          // 会员购票直接购买
+          this.$emit('order')
+        }
+      },
+
+      storeMemberInfoData() {
+        this.$store.dispatch('StoreMemberInfo', {
+          on_spot_is_member: this.buyOnSpotIsMember,
+          on_spot_member_id: this.buyOnSpotMemberId
+        }).then(() => {
+          this.$emit('order')
+        }).catch(() => {
+        })
       }
     }
   }

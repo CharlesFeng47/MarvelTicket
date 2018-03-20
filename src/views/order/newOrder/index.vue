@@ -9,7 +9,7 @@
     <transition name="fade">
       <keep-alive>
         <router-view :cur-step.sync="curStep" :schedule-detail="scheduleDetail"
-                     ref="child" v-on:next="handleNextStep" class="view">
+                     ref="child" v-on:next="handleNextStep" v-on:order="handleOrder" class="view">
         </router-view>
       </keep-alive>
     </transition>
@@ -18,7 +18,7 @@
       <div class="but-group">
         <el-button @click="resetData" v-show="curStep===0" type="danger" round>重置</el-button>
         <el-button @click.native.prevent="handlePreStep" v-show="curStep===1" type="info" round>上一步</el-button>
-        <el-button @click.native.prevent="handleOrder" v-show="curStep===1" type="danger" round>下达订单</el-button>
+        <el-button @click.native.prevent="validateCurData" v-show="curStep===1" type="danger" round>下达订单</el-button>
         <el-button @click.native.prevent="validateCurData" v-show="curStep===0" type="primary" round>下一步</el-button>
         <el-button @click.native.prevent="handlePay" v-show="curStep===2" type="danger" round>去付款</el-button>
       </div>
@@ -48,6 +48,11 @@
 
         'choose_seats',
         'choose_seats_count',
+
+        'order_way',
+
+        'on_spot_is_member',
+        'on_spot_member_id',
 
         'order_did_use_coupon',
         'order_used_coupon',
@@ -103,10 +108,10 @@
         $('html,body').animate({ scrollTop: 0 }, 500)
       },
       handleOrder: function() {
-        // TODO
         new Promise((resolve, reject) => {
           saveOrder(this.token, this.$route.query.scheduleId, this.order_type, this.order_num, this.order_seat_name, this.order_price,
-            this.choose_seats, this.choose_seats_count, this.order_did_use_coupon, this.order_used_coupon, this.order_total_price).then(response => {
+            this.choose_seats, this.choose_seats_count, this.order_way, this.on_spot_is_member, this.on_spot_member_id,
+            this.order_did_use_coupon, this.order_used_coupon, this.order_total_price).then(response => {
             if (response.state === 'OK') {
               Message({
                 message: '您已成功下达订单！',
@@ -118,7 +123,7 @@
 
               this.curStep++
               this.$router.push({
-                path: '/order/new_order/step3',
+                path: '/order/' + this.getUrlPathVar() + '/step3',
                 query: {
                   scheduleId: this.$route.query.scheduleId
                 }
@@ -134,6 +139,16 @@
       },
       handleNextStep: function() {
         this.curStep++
+        this.$router.push({
+          path: '/order/' + this.getUrlPathVar() + '/step2',
+          query: {
+            scheduleId: this.$route.query.scheduleId
+          }
+        })
+        $('html,body').animate({ scrollTop: 0 }, 500)
+      },
+      // 因为是场馆现场购票和会员购票复用，所以路径参数不同
+      getUrlPathVar() {
         var pathVar
         if (this.roles[0] === 'SPOT') {
           // 现场购票
@@ -142,13 +157,7 @@
           // 会员购票
           pathVar = 'new_order'
         }
-        this.$router.push({
-          path: '/order/' + pathVar + '/step2',
-          query: {
-            scheduleId: this.$route.query.scheduleId
-          }
-        })
-        $('html,body').animate({ scrollTop: 0 }, 500)
+        return pathVar
       },
       handlePay: function() {
         // new Promise((resolve, reject) => {

@@ -185,7 +185,7 @@
 
             const nextLevelCredit = this.creditTableData[this.curMember.level].credit
             this.nextCredit = nextLevelCredit - this.curMember.creditTotal
-            this.nextPercent = this.curMember.creditTotal / nextLevelCredit * 100
+            this.nextPercent = Math.floor(this.curMember.creditTotal / nextLevelCredit * 100)
 
             this.myCouponData = this.curMember.coupons
           }

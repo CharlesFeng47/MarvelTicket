@@ -34,6 +34,11 @@ const getters = {
   choose_seats: state => state.order.choose_seats,
   choose_seats_count: state => state.order.choose_seats_count,
   order_modified: state => state.order.order_modified,
+  // 购票方式
+  order_way: state => state.order.order_way,
+  // 现场购票时的会员情况
+  on_spot_is_member: state => state.order.on_spot_is_member,
+  on_spot_member_id: state => state.order.on_spot_member_id,
   // 优惠券和总价
   order_did_use_coupon: state => state.order.order_did_use_coupon,
   order_used_coupon: state => state.order.order_used_coupon,

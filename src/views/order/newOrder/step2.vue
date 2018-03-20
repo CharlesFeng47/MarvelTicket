@@ -1,6 +1,7 @@
 <template>
   <div>
-    <OrderDetail is-new="true" :schedule-detail="scheduleDetail"></OrderDetail>
+    <OrderDetail is-new="true" :schedule-detail="scheduleDetail" ref="OrderDetail" v-on:order="gotoOrder">
+    </OrderDetail>
   </div>
 </template>
 
@@ -13,6 +14,16 @@
     props: ['scheduleDetail'],
     components: {
       OrderDetail
+    },
+    methods: {
+      // 验证座位信息
+      validateData() {
+        this.$refs.OrderDetail.validateData()
+      },
+      // 前往下一步预定
+      gotoOrder() {
+        this.$emit('order')
+      }
     }
   }
 </script>
