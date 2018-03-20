@@ -108,6 +108,7 @@ const order = {
       commit('SET_ORDER_DID_USE_COUPON', false)
       commit('SET_ORDER_USED_COUPON', '')
       commit('SET_ORDER_TOTAL_PRICE', 0)
+      commit('SET_ORDER_MODIFIED', false)
     }
   }
 }

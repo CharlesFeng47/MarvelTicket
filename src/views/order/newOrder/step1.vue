@@ -142,21 +142,19 @@
         seatPriceMap: []
       }
     },
-    // 因为created/mounted的时候scheduleDetail可能还没取到，所以watch取到之后再添加
+    // 因为created/mounted的时候scheduleDetail可能还没取到，所以watch取到之后再添加。
     watch: {
       scheduleDetail: function() {
-        this.initData()
-        if (this.order_modified === true) {
-          this.orderType = this.order_type
+        console.log('newOrder index scheduleDetail watched')
 
-          if (this.orderType === 'NOT_CHOOSE_SEATS') {
-            this.notChooseSeatsForm.orderNum = this.order_num
-            this.notChooseSeatsForm.orderSeatName = this.order_seat_name
-          }
-        } else {
-          // 默认加载情况
+        // scheduleDetail变动，重置store中值，使其默认加载
+        this.$store.dispatch('ResetOrder').then(() => {
           this.orderType = 'CHOOSE_SEATS'
-        }
+          console.log('clear the new order view stored data')
+        }).catch(() => {
+        })
+
+        this.initData()
       }
     },
     methods: {

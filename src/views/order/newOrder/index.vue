@@ -159,15 +159,6 @@
         // }).catch(() => {
         // })
       }
-    },
-    // TODO 离开下达订单页面即清楚页面缓存，使其下次重新加载
-    beforeRouteLeave: function(to, from, next) {
-      // this.$store.dispatch('ResetOrder').then(() => {
-      //   console.log('clear the new order view stored data')
-      //
-      // }).catch(() => {
-      // })
-      next()
     }
   }
 </script>
