@@ -21,9 +21,8 @@
   import $ from 'jquery'
   import { mapGetters } from 'vuex'
   import { Message } from 'element-ui'
-  import { getSpot } from '../../api/user'
 
-  // 用户选座用的
+  // 用户选择座位
   export default {
     name: 'MemberChoose',
     props: ['scheduleDetail'],
@@ -56,20 +55,11 @@
     },
     methods: {
       getSeatMapData() {
-        new Promise((resolve, reject) => {
-          getSpot(this.$route.query.scheduleId).then(response => {
-            if (response.state === 'OK') {
-              const curSpot = JSON.parse(response.object)
-              this.seatMap = JSON.parse(curSpot.allSeatsJson)
-              this.computeSeatLegendNames(curSpot.seatNames)
-              this.computeSeatPrices()
-            }
-          }).catch(error => {
-            reject(error)
-          })
-        }).then(() => {
-        }).catch(() => {
-        })
+        // TODO seatMap 格式与标注已预订与 this.seatChartInit() 一起考虑
+        console.log('getSeatMapData')
+        this.seatMap = JSON.parse(this.scheduleDetail.remainSeatsJson)
+        this.computeSeatLegendNames(this.scheduleDetail.seatNames)
+        this.computeSeatPrices()
       },
       // 计算图例的数据，填充seatLegendItems
       computeSeatLegendNames(seatNames) {
@@ -94,7 +84,7 @@
 
       // 填充seatPrices，并根据seatLegendItems把seat初始化的category补齐，填充之后再初始化 seat chart
       computeSeatPrices() {
-        const allPrices = this.scheduleDetail.all_prices
+        const allPrices = this.scheduleDetail.allrices
 
         // 把其他项也补齐0
         const allPricesLength = allPrices.length

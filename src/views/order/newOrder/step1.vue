@@ -83,6 +83,7 @@
   import MemberChoose from '../../seatChart/memberChoose'
   import { mapGetters } from 'vuex'
   import { isValidatePositiveIntegers } from '../../../utils/validate'
+  import { countSpecificChar } from '../../../utils/seat_chart_helper'
 
   // 选择订座类型并订座
   export default {
@@ -159,16 +160,17 @@
     },
     methods: {
       initData() {
+        const remainSeatMap = JSON.parse(this.scheduleDetail.remainSeatsJson)
+
         var seatPriceMapNew = []
-        var all_prices = this.scheduleDetail.all_prices
-        var all_seats = this.scheduleDetail.all_seats
+        var all_prices = this.scheduleDetail.allPrices
+        var all_seats = this.scheduleDetail.allSeats
         for (var i = 0; i < all_prices.length; i++) {
           seatPriceMapNew[i] = {}
           seatPriceMapNew[i].seatPrice = all_prices[i]
           seatPriceMapNew[i].seatName = all_seats[i].seatName
           seatPriceMapNew[i].seatNum = all_seats[i].num
-          // TODO 计算剩余数量
-          seatPriceMapNew[i].seatRemainNum = all_seats[i].num
+          seatPriceMapNew[i].seatRemainNum = countSpecificChar(remainSeatMap, String.fromCharCode(i + 97))
         }
         this.seatPriceMap = seatPriceMapNew
       },

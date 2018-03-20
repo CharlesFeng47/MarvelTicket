@@ -23,7 +23,7 @@ export function computeSeatNameNumMap(cur_seat_type_count, spot_seats_map, seat_
  * 在 seat_map 中查找指定的 char 的个数
  * 与 /src/view/user/spot/index.vue:128~139 冗余
  */
-function countSpecificChar(spot_seats_map, char) {
+export function countSpecificChar(spot_seats_map, char) {
   var count = 0
 
   const rowNum = spot_seats_map.length

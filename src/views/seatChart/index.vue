@@ -164,6 +164,7 @@
   import $ from 'jquery'
   import { mapGetters } from 'vuex'
 
+  // 场馆座位图生成
   export default {
     name: 'SeatChart',
     props: ['seatMapControlForm'],

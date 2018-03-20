@@ -46,7 +46,6 @@ const permission = {
     }
   },
   actions: {
-    // TODO 实现不完美，在页面刷新之后就只会404了
     GenerateRoutes({ commit }, data) {
       console.log('GenerateRoutes')
       return new Promise(resolve => {

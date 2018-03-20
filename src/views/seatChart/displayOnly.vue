@@ -24,6 +24,7 @@
   import $ from 'jquery'
   import { mapGetters } from 'vuex'
 
+  // 场馆座位图展示
   export default {
     name: 'SeatChartDisplayOnly',
     computed: {

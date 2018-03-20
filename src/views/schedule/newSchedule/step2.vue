@@ -129,8 +129,8 @@
               if (response.state === 'OK') {
                 const scheduleDetail = JSON.parse(response.object)
                 var seatPriceMapNew = []
-                var all_prices = scheduleDetail.all_prices
-                var all_seats = scheduleDetail.all_seats
+                var all_prices = scheduleDetail.allPrices
+                var all_seats = scheduleDetail.allSeats
                 for (var i = 0; i < all_prices.length; i++) {
                   seatPriceMapNew[i] = {}
                   seatPriceMapNew[i].seatPrice = all_prices[i]
