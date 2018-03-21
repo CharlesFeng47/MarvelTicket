@@ -35,8 +35,12 @@
     },
     data() {
       return {
+        // 图例项
         seatLegendItems: [],
+        // 座位图字符串数组
         seatMap: '',
+        // 已预订座位数组
+        alreadyBookedSeats: [],
 
         // 座位的价格
         seatPrices: [],
@@ -55,9 +59,10 @@
     },
     methods: {
       getSeatMapData() {
-        // TODO seatMap 格式与标注已预订与 this.seatChartInit() 一起考虑
         console.log('getSeatMapData')
-        this.seatMap = JSON.parse(this.scheduleDetail.remainSeatsJson)
+        this.seatMap = JSON.parse(this.scheduleDetail.allSeatsJson)
+        this.alreadyBookedSeats = JSON.parse(this.scheduleDetail.bookedSeatsIdJson)
+
         this.computeSeatLegendNames(this.scheduleDetail.seatNames)
         this.computeSeatPrices()
       },
@@ -84,7 +89,7 @@
 
       // 填充seatPrices，并根据seatLegendItems把seat初始化的category补齐，填充之后再初始化 seat chart
       computeSeatPrices() {
-        const allPrices = this.scheduleDetail.allrices
+        const allPrices = this.scheduleDetail.allPrices
 
         // 把其他项也补齐0
         const allPricesLength = allPrices.length
@@ -110,7 +115,7 @@
         $('#seat-member-choose').html('<div id="seat-map">\n' +
           '          <div class="front-indicator">Front</div>\n' +
           '        </div>')
-        $('#seat-map').seatCharts({
+        var sc = $('#seat-map').seatCharts({
           map: _this.seatMap,
           seats: {
             a: {
@@ -207,7 +212,8 @@
           }
         })
 
-        // TODO 设置已预订的座位
+        // 设置已预订的座位
+        sc.get(this.alreadyBookedSeats).status('unavailable')
       },
 
       // 给父组件 newOrder/step1 提供的，将参数保存到store中的方法
