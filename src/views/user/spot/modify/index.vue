@@ -34,7 +34,7 @@
     name: 'SpotModifyIndex',
     computed: {
       ...mapGetters([
-        'name',
+        'token',
         'spot_basic',
         'spot_seats_map',
         'cur_seat_type_count',
@@ -88,7 +88,7 @@
       handleModify: function() {
         console.log(this.spot_basic)
         new Promise((resolve, reject) => {
-          spotModify(this.name, this.spot_basic, this.spot_seats_map, this.cur_seat_type_count, this.seat_names).then(response => {
+          spotModify(this.token, this.spot_basic, this.spot_seats_map, this.cur_seat_type_count, this.seat_names).then(response => {
             console.log(response)
             if (response.state === 'OK') {
               Message({

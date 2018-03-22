@@ -89,8 +89,7 @@ export const asyncRouterMap = [
           { path: 'step3', hidden: true, component: () => import('@/views/user/spot/modify/step3'), meta: { isNew: false, roles: ['SPOT'] }}
         ]
       },
-      { path: 'modify_member', hidden: true, component: () => import('@/views/user/member/modify'), meta: { roles: ['MEMBER'] }},
-      { path: 'modify_manager', hidden: true, component: () => import('@/views/user/manager/modify'), meta: { roles: ['MANAGER'] }}
+      { path: 'modify_member', hidden: true, component: () => import('@/views/user/member/modify'), meta: { roles: ['MEMBER'] }}
     ]
   },
 

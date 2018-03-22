@@ -15,9 +15,23 @@ export function getUser(token) {
 }
 
 /**
+ * 会员修改数据
+ */
+export function memberModify(token, pwd) {
+  return request({
+    url: '/user/member_modify',
+    method: 'post',
+    data: qs.stringify({
+      token,
+      pwd
+    })
+  })
+}
+
+/**
  * 场馆修改数据
  */
-export function spotModify(spotId, spot_basic, spot_seats_map, cur_seat_type_count, seat_names) {
+export function spotModify(token, spot_basic, spot_seats_map, cur_seat_type_count, seat_names) {
   const seatInfos = computeSeatNameNumMap(cur_seat_type_count, spot_seats_map, seat_names)
   console.log(seatInfos)
 
@@ -25,7 +39,7 @@ export function spotModify(spotId, spot_basic, spot_seats_map, cur_seat_type_cou
     url: '/user/spot_modify',
     method: 'post',
     data: qs.stringify({
-      id: spotId,
+      token,
       password: spot_basic.password,
       name: spot_basic.name,
       site: spot_basic.site,
@@ -63,7 +77,7 @@ export function couponConvert(token, description, offPrice, neededCredit) {
 }
 
 /**
- * 用户兑换优惠券
+ * 场馆获取用户信息
  */
 export function spotGetMemberInfo(mid) {
   return request({
