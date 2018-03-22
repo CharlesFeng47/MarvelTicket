@@ -67,3 +67,21 @@ export function saveOrder(token, scheduleId, order_type, order_num, order_seat_n
       })
   })
 }
+
+/**
+ * 订单付款
+ */
+export function payOrder(token, oid, payment_id, payment_pwd) {
+  return request({
+    url: '/order/pay',
+    method: 'post',
+    data:
+      qs.stringify({
+        // 用于获取此会员用户
+        token,
+        oid,
+        payment_id,
+        payment_pwd
+      })
+  })
+}

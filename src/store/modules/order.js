@@ -128,7 +128,7 @@ const order = {
       commit('SET_ORDER_TOTAL_PRICE', order_total_price)
     },
 
-    // 购买完成之后需要重置数据
+    // 每次购买之前需要重置数据
     ResetOrder({ commit }) {
       commit('SET_ORDER_TYPE', '')
       commit('SET_ORDER_NUM', '')

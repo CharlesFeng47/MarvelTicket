@@ -160,6 +160,7 @@
   import { mapGetters } from 'vuex'
   import { getUser, spotGetMemberInfo } from '../../../api/user'
   import { isValidUsername } from '@/utils/validate'
+  import { makeUpOrderId } from '../../../utils/order_helper'
 
   // 订单详情
   export default {
@@ -410,11 +411,7 @@
 
       // 订单id转为8位标准展示
       makeUpOrderId(id) {
-        var temp = id + ''
-        while (temp.length < 8) {
-          temp = '0' + temp
-        }
-        return temp
+        makeUpOrderId(id)
       },
 
       // order_way转中文展示

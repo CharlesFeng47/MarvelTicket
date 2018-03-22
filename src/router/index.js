@@ -204,16 +204,10 @@ export const asyncRouterMap = [
     hidden: true,
     children: [
       {
-        path: '',
+        path: ':orderId',
         name: 'PaymentIndex',
         component: () => import('@/views/payment/index'),
         meta: { title: '订单支付', roles: ['MEMBER'] }
-      },
-      {
-        path: 'alipay',
-        name: 'Alipay',
-        component: () => import('@/views/payment/Alipay'),
-        meta: { title: '支付宝', roles: ['MEMBER'] }
       }
     ]
   },

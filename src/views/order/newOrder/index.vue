@@ -32,6 +32,7 @@
   import { Message } from 'element-ui'
   import { getSchedule } from '../../../api/schedule'
   import { saveOrder } from '../../../api/order'
+  import { makeUpOrderId } from '../../../utils/order_helper'
 
   export default {
     name: 'NewOrder',
@@ -66,7 +67,10 @@
         curStep: 0,
 
         // 子组件需要用的计划、场馆等信息
-        scheduleDetail: ''
+        scheduleDetail: '',
+
+        // 最终购买成功之后的订单ID
+        finalOrderId: ''
       }
     },
     created: function() {
@@ -115,6 +119,8 @@
             this.choose_seats, this.choose_seats_count, this.order_way, this.on_spot_is_member, this.on_spot_member_id,
             this.order_did_use_coupon, this.order_used_coupon, this.order_cal_process, this.order_total_price).then(response => {
             if (response.state === 'OK') {
+              this.finalOrderId = makeUpOrderId(JSON.parse(response.object))
+
               Message({
                 message: '您已成功下达订单！',
                 type: 'success',
@@ -162,23 +168,7 @@
         return pathVar
       },
       handlePay: function() {
-        // new Promise((resolve, reject) => {
-        //   saveOrder(this.token, this.order_type, this.order_num, this.order_seat_name, this.order_price,
-        //     this.choose_seats, this.choose_seats_count).then(response => {
-        //     console.log(response)
-        //     if (response.state === 'OK') {
-        //       this.curStep++
-        //       this.$store.dispatch('ResetSchedule', this.seatPriceMap).then(() => {
-        //       }).catch(() => {
-        //       })
-        //     }
-        //     resolve()
-        //   }).catch(error => {
-        //     reject(error)
-        //   })
-        // }).then(() => {
-        // }).catch(() => {
-        // })
+        this.$router.push('/payment/' + this.finalOrderId)
       }
     }
   }
