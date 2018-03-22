@@ -50,3 +50,9 @@ export function isValidateEmail(str) {
   return reg.test(str)
 }
 
+/* 8位订单号 */
+export function isValidateOrderId(str) {
+  const reg = /^[0-9]{8}$/
+  return reg.test(str)
+}
+

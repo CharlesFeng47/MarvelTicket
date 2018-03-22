@@ -85,3 +85,19 @@ export function payOrder(token, oid, payment_id, payment_pwd) {
       })
   })
 }
+
+/**
+ * 订单检票登记
+ */
+export function checkTicket(token, oid) {
+  return request({
+    url: '/order/check_ticket',
+    method: 'post',
+    data:
+      qs.stringify({
+        // 用于获取此会员用户
+        token,
+        oid
+      })
+  })
+}

@@ -84,6 +84,22 @@
                     center: true,
                     showClose: true
                   })
+                } else if (response.state === 'PAY_WRONG_PWD') {
+                  Message({
+                    message: '您的账号密码错误，请检查后重试！',
+                    type: 'error',
+                    duration: 3 * 1000,
+                    center: true,
+                    showClose: true
+                  })
+                } else if (response.state === 'PAY_BALANCE_NOT_ADEQUATE') {
+                  Message({
+                    message: '您的支付宝余额不足，请充值后重试！',
+                    type: 'error',
+                    duration: 3 * 1000,
+                    center: true,
+                    showClose: true
+                  })
                 }
                 resolve()
               }).catch(error => {

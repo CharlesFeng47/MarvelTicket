@@ -102,6 +102,13 @@ export const asyncRouterMap = [
     meta: { title: '计划', icon: 'example' },
     children: [
       {
+        path: 'check_ticket',
+        name: 'CheckTicket',
+        hidden: false,
+        component: () => import('@/views/schedule/CheckTicket'),
+        meta: { title: '检票登记', icon: 'check_ticket', roles: ['SPOT'] }
+      },
+      {
         path: 'overall',
         name: 'ScheduleAll',
         hidden: false,

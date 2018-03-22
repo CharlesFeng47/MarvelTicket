@@ -2,6 +2,12 @@
   <div>
     <OrderDetail is-new="false" :schedule-detail="scheduleDetail" :order-detail="orderDetail">
     </OrderDetail>
+
+    <el-row type="flex" justify="space-around">
+      <div class="but-group">
+        <el-button @click.native.prevent="handlePay" v-show="orderDetail.orderState === '已下单'" type="danger" round>去付款</el-button>
+      </div>
+    </el-row>
   </div>
 </template>
 
@@ -35,6 +41,11 @@
       }).then(() => {
       }).catch(() => {
       })
+    },
+    methods: {
+      handlePay() {
+        this.$router.push('/payment/' + this.orderDetail.id)
+      }
     }
   }
 </script>

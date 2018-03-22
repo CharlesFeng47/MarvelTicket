@@ -411,7 +411,7 @@
 
       // 订单id转为8位标准展示
       makeUpOrderId(id) {
-        makeUpOrderId(id)
+        return makeUpOrderId(id)
       },
 
       // order_way转中文展示
