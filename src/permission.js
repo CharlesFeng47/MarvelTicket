@@ -31,8 +31,13 @@ router.beforeEach((to, from, next) => {
           })
         })
       } else {
-        // 没有动态改变权限的需求可直接next()
-        next()
+        if (store.getters.roles[0] === 'SPOT' && to.path === '/schedule/new_schedule' && !store.getters.spot_examined) {
+          // 此场馆正在审核中
+          Message.error('此场馆正在被审核中，暂不能增加计划哦～如有需要还请联系管理员～')
+          NProgress.done() // 结束Progress
+        } else {
+          next()
+        }
       }
     }
   } else {

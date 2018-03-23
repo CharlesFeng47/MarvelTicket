@@ -7,7 +7,8 @@ const user = {
     token: getToken(),
     name: '',
     // avatar: '',
-    roles: []
+    roles: [],
+    spot_examined: false
   },
 
   mutations: {
@@ -22,6 +23,9 @@ const user = {
     // },
     SET_ROLES: (state, roles) => {
       state.roles = roles
+    },
+    SET_SPOT_EXAMINED: (state, spot_examined) => {
+      state.spot_examined = spot_examined
     }
   },
 
@@ -133,6 +137,8 @@ const user = {
             console.log(data)
             commit('SET_ROLES', data.role)
             commit('SET_NAME', data.user.id)
+            // 场馆多一个是否已被审核通过的属性
+            if (data.role[0] === 'SPOT') commit('SET_SPOT_EXAMINED', data.examined)
             // commit('SET_AVATAR', data.avatar)
           }
           resolve(response)
@@ -150,6 +156,7 @@ const user = {
             commit('SET_TOKEN', '')
             commit('SET_ROLES', [])
             commit('SET_NAME', '')
+            commit('SET_SPOT_EXAMINED', false)
             removeToken()
           }
           resolve()
