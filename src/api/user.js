@@ -88,3 +88,16 @@ export function spotGetMemberInfo(mid) {
     })
   })
 }
+
+/**
+ * 会员注销
+ */
+export function memberInvalidate(token) {
+  return request({
+    url: '/user/member_invalidate',
+    method: 'post',
+    data: qs.stringify({
+      token
+    })
+  })
+}

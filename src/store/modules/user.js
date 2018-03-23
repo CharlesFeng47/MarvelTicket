@@ -38,18 +38,24 @@ const user = {
             // 因为是根据token再使用GetInfo()获取的用户编号，但是因为一开始刚登录还未根据token去获取，所以先设置一下。。
             commit('SET_NAME', username)
             console.log('login finish')
-          } else if (response.state === 'USER_NOT_EXIST') {
-            var errorMsg
-            switch (userInfo.userType) {
-              case 'member':
-                errorMsg = '此会员名还未被注册，请先注册哦～'
-                break
-              case 'spot':
-                errorMsg = '此场馆名还未被注册，快来加入我们吧～'
-                break
-              case 'manager':
-                errorMsg = '此管理员不存在！'
-                break
+          } else {
+            var errorMsg = '未知错误，请联系管理员！'
+            if (response.state === 'USER_NOT_EXIST') {
+              switch (userInfo.userType) {
+                case 'member':
+                  errorMsg = '此会员名还未被注册，请先注册哦～'
+                  break
+                case 'spot':
+                  errorMsg = '此场馆名还未被注册，快来加入我们吧～'
+                  break
+                case 'manager':
+                  errorMsg = '此管理员不存在！'
+                  break
+              }
+            } else if (response.state === 'MEMBER_INVALIDATE') {
+              errorMsg = '此用户已被注销，不能登录！'
+            } else if (response.state === 'MEMBER_INACTIVE') {
+              errorMsg = '此用户还未被激活哦～'
             }
             Message({
               message: errorMsg,
