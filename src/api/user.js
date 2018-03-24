@@ -51,16 +51,6 @@ export function spotModify(token, spot_basic, spot_seats_map, cur_seat_type_coun
 }
 
 /**
- * 获取场馆信息
- */
-export function getSpot(scheduleId) {
-  return request({
-    url: '/user/spot?scheduleId=' + scheduleId,
-    method: 'get'
-  })
-}
-
-/**
  * 用户兑换优惠券
  */
 export function couponConvert(token, description, offPrice, neededCredit) {
@@ -98,6 +88,47 @@ export function memberInvalidate(token) {
     method: 'post',
     data: qs.stringify({
       token
+    })
+  })
+}
+
+/**
+ * 经理获得所有未审批的场馆
+ */
+export function getUnexaminedSpots(token) {
+  return request({
+    url: '/user/unexamined_spots',
+    method: 'post',
+    data: qs.stringify({
+      token
+    })
+  })
+}
+
+/**
+ * 经理获取场馆信息
+ */
+export function getSpot(token, spotId) {
+  return request({
+    url: '/user/spot',
+    method: 'post',
+    data: qs.stringify({
+      token,
+      spotId
+    })
+  })
+}
+
+/**
+ * 经理获得所有未审批的场馆
+ */
+export function examineSpot(token, spotId) {
+  return request({
+    url: '/user/examine',
+    method: 'post',
+    data: qs.stringify({
+      token,
+      spotId
     })
   })
 }

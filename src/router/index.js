@@ -98,7 +98,7 @@ export const asyncRouterMap = [
     component: Layout,
     redirect: '/schedule/overall',
     name: 'Schedule',
-    meta: { title: '计划', icon: 'example' },
+    meta: { title: '计划', icon: 'example', roles: ['MEMBER', 'SPOT'] },
     children: [
       {
         path: 'check_ticket',
@@ -157,14 +157,14 @@ export const asyncRouterMap = [
     component: Layout,
     redirect: '/order/overall',
     name: 'Order',
-    meta: { title: '订单', icon: 'example' },
+    meta: { title: '订单', icon: 'example', roles: ['MEMBER', 'SPOT'] },
     children: [
       {
         path: 'overall',
         name: 'OrderAll',
         hidden: false,
         component: () => import('@/views/order/index'),
-        meta: { title: '查看', icon: 'schedule', roles: ['MEMBER'] }
+        meta: { title: '查看', icon: 'schedule', roles: ['MEMBER', 'SPOT'] }
       },
       {
         path: 'new_order',
@@ -214,6 +214,39 @@ export const asyncRouterMap = [
         name: 'PaymentIndex',
         component: () => import('@/views/payment/index'),
         meta: { title: '订单支付', roles: ['MEMBER'] }
+      }
+    ]
+  },
+
+  {
+    path: '/examine',
+    component: Layout,
+    redirect: '/examine/spot',
+    name: 'Examine',
+    meta: { title: '审核', icon: 'example', roles: ['MANAGER'] },
+    children: [
+      {
+        path: 'spot',
+        name: 'ExamineSpot',
+        hidden: false,
+        component: () => import('@/views/examine/spot/index'),
+        meta: { title: '场馆审批', icon: 'schedule', roles: ['MANAGER'] },
+        children: [
+          { path: '', component: () => import('@/views/examine/spot/overall/index'), meta: { roles: ['MANAGER'] }},
+          {
+            path: ':spotId',
+            name: 'UnexaminedSpotDetail',
+            component: () => import('@/views/examine/spot/unexaminedSpotDetail/index'),
+            meta: { title: '场馆详情', roles: ['MANAGER'] }
+          }
+        ]
+      },
+      {
+        path: 'schedule',
+        name: 'SettleSchedule',
+        hidden: false,
+        component: () => import('@/views/examine/schedule/index'),
+        meta: { title: '计划结算', icon: 'schedule', roles: ['MANAGER'] }
       }
     ]
   },

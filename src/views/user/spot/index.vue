@@ -66,12 +66,12 @@
 <script>
   import SeatChartDisplayOnly from '../../seatChart/displayOnly'
   import { mapGetters } from 'vuex'
-  import { getUser } from '../../../api/user'
+  import { getUser, getSpot } from '../../../api/user'
   import { computeSeatNameNumMap } from '../../../utils/seat_chart_helper'
 
   export default {
     name: 'SpotInfo',
-    props: ['isNew'],
+    props: ['isNew', 'toCheck'],
     components: {
       SeatChartDisplayOnly
     },
@@ -118,41 +118,40 @@
       },
       // 后端得值
       fetchData() {
-        new Promise((resolve, reject) => {
-          getUser(this.token).then(response => {
-            console.log(response)
-            if (response.state === 'OK') {
-              const curSpot = JSON.parse(response.object)
-              console.log(curSpot)
-
-              this.spotBasic.id = this.name
-              this.spotBasic.name = curSpot.spotName
-              this.spotBasic.password = curSpot.pwd
-              this.spotBasic.site = curSpot.site
-              this.seatNameNumMap = curSpot.seatInfos
-              const curSeatNames = this.convertToSeatNames(curSpot.seatInfos, curSpot.curSeatTypeCount)
-
-              console.log('allSeatsJson')
-              console.log(curSpot.allSeatsJson)
-
-              this.$store.dispatch('ChangeSpotBasicInfo', this.spotBasic).then(() => {
-                this.$store.dispatch('ChangeSpotSeatsMap', {
-                  spot_seats_map: JSON.parse(curSpot.allSeatsJson),
-                  cur_seat_type_count: curSpot.curSeatTypeCount,
-                  seat_names: curSeatNames
-                }).then(() => {
-                  resolve()
-                }).catch(() => {
-                })
-              }).catch(() => {
-              })
-            }
-          }).catch(error => {
-            reject(error)
+        var curSpot
+        if (this.toCheck === 'true') {
+          // 管理员检查
+          new Promise((resolve, reject) => {
+            getSpot(this.token, this.$route.params.spotId).then(response => {
+              console.log(response)
+              if (response.state === 'OK') {
+                curSpot = JSON.parse(response.object)
+              }
+              this.prepareReadyData(curSpot)
+              resolve()
+            }).catch(error => {
+              reject(error)
+            })
+          }).then(() => {
+          }).catch(() => {
           })
-        }).then(() => {
-        }).catch(() => {
-        })
+        } else {
+          // 场馆自己查看
+          new Promise((resolve, reject) => {
+            getUser(this.token).then(response => {
+              console.log(response)
+              if (response.state === 'OK') {
+                curSpot = JSON.parse(response.object)
+              }
+              this.prepareReadyData(curSpot)
+              resolve()
+            }).catch(error => {
+              reject(error)
+            })
+          }).then(() => {
+          }).catch(() => {
+          })
+        }
       },
       // 填充store里面的值
       fulfillData() {
@@ -161,6 +160,32 @@
         this.spotBasic.password = this.spot_basic.password
         this.spotBasic.site = this.spot_basic.site
         this.seatNameNumMap = computeSeatNameNumMap(this.cur_seat_type_count, this.spot_seats_map, this.seat_names)
+      },
+
+      // 从后端取得值之后填充到data中
+      prepareReadyData(curSpot) {
+        console.log(curSpot)
+        this.spotBasic.id = curSpot.id
+        this.spotBasic.name = curSpot.spotName
+        this.spotBasic.password = curSpot.pwd
+        this.spotBasic.site = curSpot.site
+        this.seatNameNumMap = curSpot.seatInfos
+
+        const curSeatNames = this.convertToSeatNames(curSpot.seatInfos, curSpot.curSeatTypeCount)
+
+        console.log('allSeatsJson')
+        console.log(curSpot.allSeatsJson)
+
+        this.$store.dispatch('ChangeSpotBasicInfo', this.spotBasic).then(() => {
+          this.$store.dispatch('ChangeSpotSeatsMap', {
+            spot_seats_map: JSON.parse(curSpot.allSeatsJson),
+            cur_seat_type_count: curSpot.curSeatTypeCount,
+            seat_names: curSeatNames
+          }).then(() => {
+          }).catch(() => {
+          })
+        }).catch(() => {
+        })
       },
       // 从后端的seatInfos得到数据seat_names填充到store
       convertToSeatNames(seatInfos, curSeatTypeCount) {
