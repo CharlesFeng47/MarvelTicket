@@ -47,6 +47,7 @@ export function spotSignUp(spot_basic, spot_seats_map, cur_seat_type_count, seat
       password: spot_basic.password,
       name: spot_basic.name,
       site: spot_basic.site,
+      alipayId: spot_basic.alipayId,
       seatInfos: JSON.stringify(seatInfos),
       seatsMap: JSON.stringify(spot_seats_map),
       curSeatTypeCount: cur_seat_type_count

@@ -5,18 +5,24 @@
         <el-input v-model="spotBasic.name"></el-input>
       </el-form-item>
       <el-form-item label="密码" prop="password">
-        <el-input name="password" :type="pwdType" v-model="spotBasic.password" autoComplete="on" placeholder="">
+        <el-input name="password" :type="pwdType" v-model="spotBasic.password" placeholder="">
         </el-input>
-        <span class="show-pwd" @click="showPwd"><svg-icon icon-class="eye" /></span>
+        <span class="show-pwd" @click="showPwd"><svg-icon icon-class="eye"/></span>
       </el-form-item>
       <el-form-item label="密码确认" prop="password2">
-        <el-input name="password" :type="pwdType" v-model="spotBasic.password2" autoComplete="on" placeholder="">
+        <el-input name="password2" :type="pwdType" v-model="spotBasic.password2" placeholder="">
         </el-input>
-        <span class="show-pwd" @click="showPwd"><svg-icon icon-class="eye" /></span>
+        <span class="show-pwd" @click="showPwd"><svg-icon icon-class="eye"/></span>
       </el-form-item>
       <el-form-item label="地址" prop="site">
-        <el-input name="password" v-model="spotBasic.site" autoComplete="on" placeholder="">
+        <el-input v-model="spotBasic.site" placeholder="">
         </el-input>
+      </el-form-item>
+      <el-form-item label="支付宝账号" prop="alipayId">
+        <el-tooltip effect="light" content="注意：此支付宝账号用于接受会员付款参加计划的分成款项，请反复确认！" placement="bottom-start">
+          <el-input v-model="spotBasic.alipayId" placeholder="">
+          </el-input>
+        </el-tooltip>
       </el-form-item>
     </el-form>
   </div>
@@ -61,12 +67,20 @@
           callback()
         }
       }
+      const validateAlipayId = (rule, value, callback) => {
+        if (value === '') {
+          callback(new Error('请输入支付宝账号'))
+        } else {
+          callback()
+        }
+      }
       return {
         spotBasic: {
           name: '',
           password: '',
           password2: '',
-          site: ''
+          site: '',
+          alipayId: ''
         },
         rules: {
           name: [
@@ -75,7 +89,8 @@
           ],
           password: [{ required: true, trigger: 'blur', validator: validatePassword }],
           password2: [{ required: true, trigger: 'blur', validator: validatePassword2 }],
-          site: [{ required: true, trigger: 'blur', validator: validateSite }]
+          site: [{ required: true, trigger: 'blur', validator: validateSite }],
+          alipayId: [{ required: true, trigger: 'blur', validator: validateAlipayId }]
 
         },
         pwdType: 'password'
@@ -129,6 +144,7 @@
         this.spotBasic.password = this.spot_basic.password
         this.spotBasic.password2 = this.spot_basic.password2
         this.spotBasic.site = this.spot_basic.site
+        this.spotBasic.alipayId = this.spot_basic.alipayId
       }
     }
   }

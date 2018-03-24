@@ -46,7 +46,7 @@
       return {
         seatMapControlForm: {
           seatRow: 9,
-          seatCol: 5
+          seatCol: 50
         },
         seatMapControlFormRules: {
           seatRow: [{ required: true, trigger: 'blur', validator: validatePositiveInteger }],

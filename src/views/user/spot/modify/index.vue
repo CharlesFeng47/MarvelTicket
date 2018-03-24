@@ -98,13 +98,22 @@
                 center: true,
                 showClose: true
               })
-              this.$router.push({ path: '/user_info' })
+              resolve()
+            } else if (response.state === 'ALIPAY_ENTITY_NOT_EXIST') {
+              Message({
+                message: '此支付宝账号不存在，请检查后重新注册！',
+                type: 'error',
+                duration: 3 * 1000,
+                center: true,
+                showClose: true
+              })
+              reject()
             }
-            resolve()
           }).catch(error => {
             reject(error)
           })
         }).then(() => {
+          this.$router.push({ path: '/user_info' })
         }).catch(() => {
         })
       },

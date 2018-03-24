@@ -21,6 +21,14 @@
           <el-tag type="warning" class="basic_content">{{ spotBasic.password }}</el-tag>
         </el-col>
       </el-col>
+      <el-col :span="4">
+        <el-col :span="12">
+          <h3>支付宝账户</h3>
+        </el-col>
+        <el-col :span="8">
+          <el-tag type="danger" class="basic_content">{{ spotBasic.alipayId }}</el-tag>
+        </el-col>
+      </el-col>
     </el-row>
 
     <!--地址-->
@@ -159,6 +167,7 @@
         this.spotBasic.name = this.spot_basic.name
         this.spotBasic.password = this.spot_basic.password
         this.spotBasic.site = this.spot_basic.site
+        this.spotBasic.alipayId = this.spot_basic.alipayId
         this.seatNameNumMap = computeSeatNameNumMap(this.cur_seat_type_count, this.spot_seats_map, this.seat_names)
       },
 
@@ -169,6 +178,7 @@
         this.spotBasic.name = curSpot.spotName
         this.spotBasic.password = curSpot.pwd
         this.spotBasic.site = curSpot.site
+        this.spotBasic.alipayId = curSpot.alipayId
         this.seatNameNumMap = curSpot.seatInfos
 
         const curSeatNames = this.convertToSeatNames(curSpot.seatInfos, curSpot.curSeatTypeCount)
