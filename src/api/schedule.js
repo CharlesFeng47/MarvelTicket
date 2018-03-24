@@ -48,6 +48,21 @@ export function deleteSchedule(scheduleId) {
 }
 
 /**
+ * 结算单条计划
+ */
+export function settleSchedule(token, scheduleId) {
+  return request({
+    url: '/schedule/settle',
+    method: 'post',
+    data:
+      qs.stringify({
+        token,
+        scheduleId
+      })
+  })
+}
+
+/**
  * 保存单条计划
  */
 export function saveSchedule(token, basic_info_form, seat_price_map) {
