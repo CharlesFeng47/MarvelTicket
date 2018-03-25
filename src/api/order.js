@@ -87,6 +87,23 @@ export function payOrder(token, oid, payment_id, payment_pwd) {
 }
 
 /**
+ * 订单退订
+ */
+export function unsubscribe(token, oid, payment_id) {
+  return request({
+    url: '/order/unsubscribe',
+    method: 'post',
+    data:
+      qs.stringify({
+        // 用于获取此会员用户
+        token,
+        oid,
+        payment_id
+      })
+  })
+}
+
+/**
  * 订单检票登记
  */
 export function checkTicket(token, oid) {
