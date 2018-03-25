@@ -173,10 +173,10 @@ export const asyncRouterMap = [
         component: () => import('@/views/order/newOrder/index'),
         meta: { title: '新增', icon: 'plus', roles: ['MEMBER'] },
         children: [
-          { path: '', hidden: true, component: () => import('@/views/order/newOrder/step1'), meta: { isNew: true, roles: ['MEMBER'] }},
-          { path: 'step1', hidden: true, component: () => import('@/views/order/newOrder/step1'), meta: { isNew: true, roles: ['MEMBER'] }},
-          { path: 'step2', hidden: true, component: () => import('@/views/order/newOrder/step2'), meta: { isNew: true, roles: ['MEMBER'] }},
-          { path: 'step3', hidden: true, component: () => import('@/views/order/newOrder/step3'), meta: { isNew: true, roles: ['MEMBER'] }}
+          { path: '', hidden: true, component: () => import('@/views/order/newOrder/step1'), meta: { isNew: true, buyOnSpot: false, roles: ['MEMBER'] }},
+          { path: 'step1', hidden: true, component: () => import('@/views/order/newOrder/step1'), meta: { isNew: true, buyOnSpot: false, roles: ['MEMBER'] }},
+          { path: 'step2', hidden: true, component: () => import('@/views/order/newOrder/step2'), meta: { isNew: true, buyOnSpot: false, roles: ['MEMBER'] }},
+          { path: 'step3', hidden: true, component: () => import('@/views/order/newOrder/step3'), meta: { isNew: true, buyOnSpot: false, roles: ['MEMBER'] }}
         ]
       },
       {
@@ -186,10 +186,10 @@ export const asyncRouterMap = [
         component: () => import('@/views/order/newOrder/index'),
         meta: { title: '新增', icon: 'plus', roles: ['SPOT'] },
         children: [
-          { path: '', hidden: true, component: () => import('@/views/order/newOrder/step1'), meta: { isNew: true, roles: ['SPOT'] }},
-          { path: 'step1', hidden: true, component: () => import('@/views/order/newOrder/step1'), meta: { isNew: true, roles: ['SPOT'] }},
-          { path: 'step2', hidden: true, component: () => import('@/views/order/newOrder/step2'), meta: { isNew: true, roles: ['SPOT'] }},
-          { path: 'step3', hidden: true, component: () => import('@/views/order/newOrder/step3'), meta: { isNew: true, roles: ['SPOT'] }}
+          { path: '', hidden: true, component: () => import('@/views/order/newOrder/step1'), meta: { isNew: true, buyOnSpot: true, roles: ['SPOT'] }},
+          { path: 'step1', hidden: true, component: () => import('@/views/order/newOrder/step1'), meta: { isNew: true, buyOnSpot: true, roles: ['SPOT'] }},
+          { path: 'step2', hidden: true, component: () => import('@/views/order/newOrder/step2'), meta: { isNew: true, buyOnSpot: true, roles: ['SPOT'] }},
+          { path: 'step3', hidden: true, component: () => import('@/views/order/newOrder/step3'), meta: { isNew: true, buyOnSpot: true, roles: ['SPOT'] }}
         ]
       },
       {

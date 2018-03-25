@@ -11,7 +11,7 @@
               <el-radio label="CHOOSE_SEATS">选座购买</el-radio>
             </el-tooltip>
             <el-tooltip class="item" effect="light" content="每单限 20 张，演出前两周统一配票，若配票失败则退款。" placement="top-start">
-              <el-radio label="NOT_CHOOSE_SEATS">立即购买不选座</el-radio>
+              <el-radio :disabled="this.$route.meta.buyOnSpot" label="NOT_CHOOSE_SEATS">立即购买不选座</el-radio>
             </el-tooltip>
           </el-radio-group>
         </el-form-item>
