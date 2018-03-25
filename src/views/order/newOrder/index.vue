@@ -18,7 +18,7 @@
       <div class="but-group">
         <el-button @click="resetData" v-show="curStep===0" type="danger" round>重置</el-button>
         <el-button @click.native.prevent="handlePreStep" v-show="curStep===1" type="info" round>上一步</el-button>
-        <el-button @click.native.prevent="validateCurData" v-show="curStep===1" type="danger" round>下达订单</el-button>
+        <el-button @click.native.prevent="validateCurData" v-show="curStep===1" type="danger" round :loading="orderLoading">下达订单</el-button>
         <el-button @click.native.prevent="validateCurData" v-show="curStep===0" type="primary" round>下一步</el-button>
         <el-button @click.native.prevent="handlePay" v-show="curStep===2" type="danger" round>去付款</el-button>
       </div>
@@ -69,6 +69,9 @@
         // 子组件需要用的计划、场馆等信息
         scheduleDetail: '',
 
+        // 下达订单的loading
+        orderLoading: false,
+
         // 最终购买成功之后的订单ID
         finalOrderId: ''
       }
@@ -114,6 +117,7 @@
         $('html,body').animate({ scrollTop: 0 }, 500)
       },
       handleOrder: function() {
+        this.orderLoading = true
         new Promise((resolve, reject) => {
           saveOrder(this.token, this.$route.query.scheduleId, this.order_type, this.order_num, this.order_seat_name, this.order_price,
             this.choose_seats, this.choose_seats_count, this.order_way, this.on_spot_is_member, this.on_spot_member_id,
@@ -142,7 +146,9 @@
             reject(error)
           })
         }).then(() => {
+          this.orderLoading = false
         }).catch(() => {
+          this.orderLoading = false
         })
       },
       handleNextStep: function() {

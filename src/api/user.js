@@ -133,3 +133,16 @@ export function examineSpot(token, spotId) {
     })
   })
 }
+
+/**
+ * 会员激活
+ */
+export function memberActivate(activeUrl) {
+  return request({
+    url: '/user/member_active',
+    method: 'post',
+    data: qs.stringify({
+      activeUrl
+    })
+  })
+}

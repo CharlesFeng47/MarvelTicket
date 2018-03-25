@@ -84,6 +84,7 @@
                     center: true,
                     showClose: true
                   })
+                  resolve()
                 } else if (response.state === 'PAY_WRONG_PWD') {
                   Message({
                     message: '您的账号密码错误，请检查后重试！',
@@ -101,12 +102,13 @@
                     showClose: true
                   })
                 }
-                resolve()
+                reject()
               }).catch(error => {
                 reject(error)
               })
             }).then(() => {
               this.loading = false
+              this.$router.push('/order/')
             }).catch(() => {
             })
           } else {

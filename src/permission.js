@@ -31,7 +31,7 @@ router.beforeEach((to, from, next) => {
           })
         })
       } else {
-        if (store.getters.roles[0] === 'SPOT' && to.path === '/schedule/new_schedule' && !store.getters.spot_examined) {
+        if (store.getters.roles[0] === 'SPOT' && to.path.startsWith('/schedule/new_schedule') && !store.getters.spot_examined) {
           // 此场馆正在审核中
           Message.error('此场馆正在被审核中，暂不能增加计划哦～如有需要还请联系管理员～')
           NProgress.done() // 结束Progress
@@ -42,11 +42,15 @@ router.beforeEach((to, from, next) => {
     }
   } else {
     // 未登录
-    if (whiteList.indexOf(to.path) !== -1) {
-      // 可直接白名单的网址
+    if (to.path.startsWith('/member_active')) {
       next()
     } else {
-      next('/login')
+      if (whiteList.indexOf(to.path) !== -1) {
+        // 可直接白名单的网址
+        next()
+      } else {
+        next('/login')
+      }
     }
   }
 })
