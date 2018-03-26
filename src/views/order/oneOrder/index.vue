@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading="oneOrderLoading">
     <OrderDetail is-new="false" :schedule-detail="scheduleDetail" :order-detail="orderDetail">
     </OrderDetail>
 
@@ -32,7 +32,9 @@
     data: function() {
       return {
         scheduleDetail: '',
-        orderDetail: ''
+        orderDetail: '',
+
+        oneOrderLoading: true
       }
     },
     mounted: function() {
@@ -48,6 +50,7 @@
           reject(error)
         })
       }).then(() => {
+        this.oneOrderLoading = false
       }).catch(() => {
       })
     },

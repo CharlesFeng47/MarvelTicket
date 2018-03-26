@@ -4,7 +4,7 @@
 
     <el-row>
       <el-col :offset="2">
-        <el-table :data="allScheduleBrief" style="width: 1000px" stripe>
+        <el-table v-loading="schedulesLoading" :data="allScheduleBrief" style="width: 1000px" stripe>
           <!--不加载计划ID-->
           <el-table-column v-if="false"
             prop="id"
@@ -71,7 +71,8 @@
     name: 'schedule',
     data() {
       return {
-        allScheduleBrief: []
+        allScheduleBrief: [],
+        schedulesLoading: true
       }
     },
     computed: {
@@ -121,6 +122,7 @@
             reject(error)
           })
         }).then(() => {
+          this.schedulesLoading = false
         }).catch(() => {
         })
       },
@@ -137,6 +139,7 @@
             reject(error)
           })
         }).then(() => {
+          this.schedulesLoading = false
         }).catch(() => {
         })
       },

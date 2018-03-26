@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading="scheduleDetailLoading">
     <h1>{{ basicInfo.scheduleName }}</h1>
 
     <!--基本信息-->
@@ -95,7 +95,9 @@
           startTime: '',
           textArea: ''
         },
-        seatPriceMap: []
+        seatPriceMap: [],
+
+        scheduleDetailLoading: true
       }
     },
     mounted: function() {
@@ -164,6 +166,7 @@
             reject(error)
           })
         }).then(() => {
+          this.scheduleDetailLoading = false
         }).catch(() => {
         })
       },
@@ -201,6 +204,7 @@
             reject(error)
           })
         }).then(() => {
+          this.scheduleDetailLoading = false
         }).catch(() => {
         })
       }

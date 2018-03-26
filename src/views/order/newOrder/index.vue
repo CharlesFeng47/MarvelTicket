@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading="newOrderLoading">
     <el-steps :active="curStep" simple finish-status="success">
       <el-step title="选座订票" icon="el-icon-edit"></el-step>
       <el-step title="预览账单" icon="el-icon-circle-check-outline"></el-step>
@@ -71,6 +71,8 @@
 
         // 下达订单的loading
         orderLoading: false,
+        // 页面加载的loading
+        newOrderLoading: true,
 
         // 最终购买成功之后的订单ID
         finalOrderId: ''
@@ -100,6 +102,7 @@
             reject(error)
           })
         }).then(() => {
+          this.newOrderLoading = false
         }).catch(() => {
         })
       },

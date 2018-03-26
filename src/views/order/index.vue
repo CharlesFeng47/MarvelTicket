@@ -4,7 +4,7 @@
 
     <el-row>
       <el-col :offset="2">
-        <el-table :data="allOrderBriefs" style="width: 1000px" stripe>
+        <el-table v-loading="ordersLoading" :data="allOrderBriefs" style="width: 1000px" stripe>
           <!--不加载订单ID-->
           <el-table-column v-if="false"
                            prop="id"
@@ -71,7 +71,8 @@
     },
     data() {
       return {
-        allOrderBriefs: []
+        allOrderBriefs: [],
+        ordersLoading: true
       }
     },
     mounted: function() {
@@ -94,6 +95,7 @@
             reject(error)
           })
         }).then(() => {
+          this.ordersLoading = false
         }).catch(() => {
         })
       },
