@@ -14,11 +14,21 @@ export function getSchedule(scheduleId) {
 }
 
 /**
- * 获取所有计划
+ * （会员／场馆）获取所有可见计划
  */
 export function getAllSchedules() {
   return request({
     url: '/schedule/all',
+    method: 'get'
+  })
+}
+
+/**
+ * （经理）获取所有计划
+ */
+export function getAllAllSchedules() {
+  return request({
+    url: '/schedule/all_all',
     method: 'get'
   })
 }

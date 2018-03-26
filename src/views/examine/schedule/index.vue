@@ -54,7 +54,7 @@
           <el-table-column
             align="center"
             prop="balance"
-            label="举行场馆"
+            label="结算金额"
             width="250">
           </el-table-column>
           <el-table-column align="center" label="操作">
@@ -71,7 +71,7 @@
 <script>
   import { Message } from 'element-ui'
   import { mapGetters } from 'vuex'
-  import { getAllSchedules, settleSchedule } from '../../../api/schedule'
+  import { getAllAllSchedules, settleSchedule } from '../../../api/schedule'
 
   export default {
     computed: {
@@ -86,7 +86,7 @@
     },
     mounted: function() {
       new Promise((resolve, reject) => {
-        getAllSchedules().then(response => {
+        getAllAllSchedules().then(response => {
           if (response.state === 'OK') {
             const allSchedules = JSON.parse(response.object)
             this.prepareReadyData(allSchedules)

@@ -253,6 +253,37 @@ export const asyncRouterMap = [
     ]
   },
 
+  {
+    path: '/statistics',
+    component: Layout,
+    name: 'Statistics',
+    hidden: false,
+    meta: { title: '统计', icon: 'example', roles: ['MEMBER', 'SPOT'] },
+    children: [
+      {
+        path: 'subscribe',
+        name: 'StatisticsSubscribe',
+        hidden: false,
+        component: () => import('@/views/statistics/subscribe'),
+        meta: { title: '预订', icon: 'schedule', roles: ['MEMBER', 'SPOT'] }
+      },
+      {
+        path: 'unsubscribe',
+        name: 'StatisticsUnsubscribe',
+        hidden: false,
+        component: () => import('@/views/statistics/unsubscribe'),
+        meta: { title: '退订', icon: 'schedule', roles: ['MEMBER', 'SPOT'] }
+      },
+      {
+        path: 'consumption',
+        name: 'StatisticsConsumption',
+        hidden: false,
+        component: () => import('@/views/statistics/consumption'),
+        meta: { title: '金库', icon: 'schedule', roles: ['MEMBER', 'SPOT'] }
+      }
+    ]
+  },
+
   { path: '*', redirect: '/404', hidden: true }
 ]
 
