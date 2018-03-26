@@ -10,7 +10,7 @@
               <el-input v-model="paymentForm.id"></el-input>
             </el-form-item>
             <el-form-item label="密码" prop="pwd" style="margin-top: 30px">
-              <el-input v-model="paymentForm.pwd"></el-input>
+              <el-input type="password" v-model="paymentForm.pwd"></el-input>
             </el-form-item>
             <el-form-item>
               <el-button type="primary" style="width:100%;" :loading="paymentLoading" @click.native.prevent="handlePayment">

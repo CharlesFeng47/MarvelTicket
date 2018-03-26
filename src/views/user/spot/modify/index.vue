@@ -16,7 +16,7 @@
           <el-button @click="resetData" v-show="curStep===0||curStep===1" type="danger" round>重置</el-button>
           <el-button @click.native.prevent="handlePreStep" v-show="stepControl.preStep" type="info" round>上一步</el-button>
           <el-button @click.native.prevent="validateCurData" v-show="stepControl.nextStep" type="primary" round>下一步</el-button>
-          <el-button @click.native.prevent="handlePublish" v-if="this.$route.meta.isNew&&stepControl.publish" type="danger" round>注册</el-button>
+          <el-button @click.native.prevent="handleSignUp" :loading="signUpLoading" v-if="this.$route.meta.isNew&&stepControl.publish" type="danger" round>注册</el-button>
           <el-button @click.native.prevent="handleModify" v-if="!this.$route.meta.isNew&&stepControl.publish" type="danger" round>修改</el-button>
         </div>
       </el-row>
@@ -48,7 +48,9 @@
           preStep: false,
           nextStep: true,
           publish: false
-        }
+        },
+
+        signUpLoading: false
       }
     },
     methods: {
@@ -74,15 +76,18 @@
         }
         $('html,body').animate({ scrollTop: 0 }, 500)
       },
-      handlePublish: function() {
+      handleSignUp: function() {
+        this.signUpLoading = true
         this.$store.dispatch('SpotSignUp', {
           spot_basic: this.spot_basic,
           spot_seats_map: this.spot_seats_map,
           cur_seat_type_count: this.cur_seat_type_count,
           seat_names: this.seat_names
         }).then(() => {
+          this.signUpLoading = false
           this.$router.push({ path: '/' })
         }).catch(() => {
+          this.signUpLoading = false
         })
       },
       handleModify: function() {

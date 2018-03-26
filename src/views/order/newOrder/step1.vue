@@ -170,7 +170,7 @@
           seatPriceMapNew[i].seatPrice = all_prices[i]
           seatPriceMapNew[i].seatName = all_seats[i].seatName
           seatPriceMapNew[i].seatNum = all_seats[i].num
-          seatPriceMapNew[i].seatRemainNum = countSpecificChar(remainSeatMap, String.fromCharCode(i + 97))
+          seatPriceMapNew[i].seatRemainNum = countSpecificChar(remainSeatMap, all_seats[i].seatChar)
         }
         this.seatPriceMap = seatPriceMapNew
       },

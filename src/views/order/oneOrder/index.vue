@@ -7,6 +7,7 @@
       <div class="but-group">
         <el-button @click.native.prevent="handlePay" v-show="orderDetail.orderState === '已下单'" type="danger" round>去付款</el-button>
         <el-button @click.native.prevent="handleUnsubscribe" v-show="orderDetail.orderState === '已支付'" type="danger" round>退订</el-button>
+        <el-button @click.native.prevent="handleRefund" v-show="orderDetail.orderState === '配票失败'" type="danger" round>申请退款</el-button>
       </div>
     </el-row>
   </div>
@@ -57,8 +58,18 @@
       },
       // 退订
       handleUnsubscribe() {
-        const confirmMsg = '确定退订订单 ' + makeUpOrderId(this.$route.params.orderId) + ' 并在下方输入退款到达账户'
-        this.$prompt(confirmMsg, '提示', {
+        const promptMsg = '确定退订订单 ' + makeUpOrderId(this.$route.params.orderId) + ' 并在下方输入退款到达账户'
+        this.getRefund(promptMsg)
+      },
+
+      // 配票失败退款
+      handleRefund() {
+        const promptMsg = '订单 ' + makeUpOrderId(this.$route.params.orderId) + ' 配票失败，请在下方输入退款到达账户'
+        this.getRefund(promptMsg)
+      },
+
+      getRefund(promptMsg) {
+        this.$prompt(promptMsg, '提示', {
           confirmButtonText: '确定',
           cancelButtonText: '取消',
           inputValidator: this.validateRefundAccount
@@ -67,7 +78,7 @@
             unsubscribe(this.token, this.$route.params.orderId, value).then(response => {
               if (response.state === 'OK') {
                 this.$message({
-                  message: '退订成功！',
+                  message: '退款成功！',
                   type: 'success',
                   duration: 3 * 1000,
                   center: true,
@@ -101,12 +112,13 @@
         }).catch(() => {
           this.$message({
             type: 'info',
-            message: '您已取消退订',
+            message: '您已取消退款',
             center: true,
             showClose: true
           })
         })
       },
+
       validateRefundAccount(str) {
         if (str === null || str === '') return '请输入退款到达账户'
         else return true

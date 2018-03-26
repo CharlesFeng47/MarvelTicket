@@ -141,6 +141,16 @@
         </el-col>
       </el-row>
 
+      <!--座位号-->
+      <el-row class="basic_info" v-if="seatIds!==''">
+        <el-col :span="3">
+          <h3>订单座位号</h3>
+        </el-col>
+        <el-col :span="18" class="basic_content">
+          <div style="margin-top: 7px">{{ seatIds }}</div>
+        </el-col>
+      </el-row>
+
       <!--最终价格-->
       <el-row class="basic_info">
         <el-col :span="2">
@@ -215,6 +225,9 @@
         didUseCoupon: false,
         wantToUseCouponDescription: '点击选择优惠券',
         couponTableRow: null,
+
+        // 订单中的座位号
+        seatIds: '',
 
         // 会员等级
         memberLevel: '',
@@ -361,10 +374,23 @@
             this.wantToUseCouponDescription = this.order_used_coupon.description
           }
 
+          this.showSeatIds()
           this.refillSeatPriceNumMap()
         }).catch(() => {
         })
       },
+      // 呈现座位号
+      showSeatIds() {
+        if (this.orderDetail.orderedSeatsJson) {
+          const seats = JSON.parse(this.orderDetail.orderedSeatsJson)
+
+          for (var j = 0; j < seats.length - 1; j++) {
+            this.seatIds += seats[j].id + ', '
+          }
+          this.seatIds += seats[seats.length - 1].id
+        }
+      },
+
       // 根据后后端获取的值填充
       refillSeatPriceNumMap() {
         var seatPriceNumMapNew = []

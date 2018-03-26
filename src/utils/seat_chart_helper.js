@@ -12,6 +12,7 @@ export function computeSeatNameNumMap(cur_seat_type_count, spot_seats_map, seat_
   for (var temp in seat_names) {
     result[i] = {}
     result[i].seatName = seat_names[temp]
+    result[i].seatChar = seatRepreChar[i]
     result[i].num = countSpecificChar(spot_seats_map, seatRepreChar[i])
     i++
     if (i >= cur_seat_type_count) break
