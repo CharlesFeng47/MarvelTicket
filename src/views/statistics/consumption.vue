@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading="consumptionLoading">
     <h1>账单统计</h1>
 
     <el-row>
@@ -55,7 +55,9 @@
     },
     data() {
       return {
-        allConsumptions: []
+        allConsumptions: [],
+
+        consumptionLoading: true
       }
     },
     mounted: function() {
@@ -69,7 +71,9 @@
           reject(error)
         })
       }).then(() => {
+        this.consumptionLoading = false
       }).catch(() => {
+        this.consumptionLoading = false
       })
     },
     methods: {

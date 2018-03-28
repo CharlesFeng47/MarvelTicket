@@ -159,14 +159,14 @@ export const asyncRouterMap = [
     component: Layout,
     redirect: '/order/overall',
     name: 'Order',
-    meta: { title: '订单', icon: 'example', roles: ['MEMBER', 'SPOT'] },
+    meta: { title: '订单', icon: 'example', roles: ['MEMBER'] },
     children: [
       {
         path: 'overall',
         name: 'OrderAll',
         hidden: false,
         component: () => import('@/views/order/index'),
-        meta: { title: '查看', icon: 'schedule', roles: ['MEMBER', 'SPOT'] }
+        meta: { title: '查看', icon: 'schedule', roles: ['MEMBER'] }
       },
       {
         path: 'new_order',
@@ -182,8 +182,25 @@ export const asyncRouterMap = [
         ]
       },
       {
-        path: 'buy_on_spot',
-        name: 'SpotBuy',
+        path: ':orderId',
+        name: 'OrderOne',
+        hidden: true,
+        component: () => import('@/views/order/oneOrder/index'),
+        meta: { title: '详情', isNew: false, roles: ['MEMBER'] }
+      }
+    ]
+  },
+  {
+    path: '/buy_on_spot',
+    component: Layout,
+    redirect: '/buy_on_spot/new',
+    name: 'SpotBuy',
+    hidden: true,
+    meta: { title: '订单', icon: 'example', roles: ['SPOT'] },
+    children: [
+      {
+        path: 'new',
+        name: 'SpotBuyNew',
         hidden: true,
         component: () => import('@/views/order/newOrder/index'),
         meta: { title: '新增', icon: 'plus', roles: ['SPOT'] },
@@ -193,13 +210,6 @@ export const asyncRouterMap = [
           { path: 'step2', hidden: true, component: () => import('@/views/order/newOrder/step2'), meta: { isNew: true, buyOnSpot: true, roles: ['SPOT'] }},
           { path: 'step3', hidden: true, component: () => import('@/views/order/newOrder/step3'), meta: { isNew: true, buyOnSpot: true, roles: ['SPOT'] }}
         ]
-      },
-      {
-        path: ':orderId',
-        name: 'OrderOne',
-        hidden: true,
-        component: () => import('@/views/order/oneOrder/index'),
-        meta: { title: '详情', isNew: false, roles: ['MEMBER'] }
       }
     ]
   },
@@ -264,15 +274,8 @@ export const asyncRouterMap = [
         path: 'subscribe',
         name: 'StatisticsSubscribe',
         hidden: false,
-        component: () => import('@/views/statistics/subscribe'),
-        meta: { title: '预订', icon: 'schedule', roles: ['MEMBER', 'SPOT'] }
-      },
-      {
-        path: 'unsubscribe',
-        name: 'StatisticsUnsubscribe',
-        hidden: false,
-        component: () => import('@/views/statistics/unsubscribe'),
-        meta: { title: '退订', icon: 'schedule', roles: ['MEMBER', 'SPOT'] }
+        component: () => import('@/views/statistics/subscribe/index'),
+        meta: { title: '预订与退订', icon: 'schedule', roles: ['MEMBER', 'SPOT'] }
       },
       {
         path: 'consumption',

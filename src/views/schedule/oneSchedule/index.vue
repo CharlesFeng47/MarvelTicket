@@ -35,7 +35,7 @@
       // 场馆现场购票
       buyTicketOnSpot() {
         this.$router.push({
-          path: '/order/buy_on_spot',
+          path: '/buy_on_spot/new',
           query: {
             scheduleId: this.$route.params.scheduleId
           }

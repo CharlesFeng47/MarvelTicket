@@ -157,7 +157,7 @@
       handleNextStep: function() {
         this.curStep++
         this.$router.push({
-          path: '/order/' + this.getUrlPathVar() + '/step2',
+          path: this.getUrlPathVar() + '/step2',
           query: {
             scheduleId: this.$route.query.scheduleId
           }
@@ -169,10 +169,10 @@
         var pathVar
         if (this.roles[0] === 'SPOT') {
           // 现场购票
-          pathVar = 'buy_on_spot'
+          pathVar = 'buy_on_spot/new'
         } else if (this.roles[0] === 'MEMBER') {
           // 会员购票
-          pathVar = 'new_order'
+          pathVar = '/order/new_order'
         }
         return pathVar
       },
