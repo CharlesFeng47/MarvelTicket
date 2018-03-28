@@ -1,17 +1,20 @@
 <template>
-  <div v-loading="orderStatisticsLoading">
-    <div class="chart-wrapper">
-      <pie-chart :order-statistics="orderStatistics">
-      </pie-chart>
+  <div>
+    <h1>订单情况</h1>
+    <div v-loading="orderStatisticsLoading">
+      <PieChart
+        :data="orderStatistics"
+        :legend-data="orderStatisticsLegend"
+        :title-name="orderStatisticsTitleName">
+      </PieChart>
     </div>
   </div>
 </template>
 
 <script>
-  import PieChart from './PieChart'
-
+  import PieChart from '../PieChart'
   import { mapGetters } from 'vuex'
-  import { getOrderStatistics } from '../../../api/statistics'
+  import { getOrdersStatistics } from '../../../api/statistics'
 
   export default {
     components: {
@@ -25,6 +28,8 @@
     data() {
       return {
         // 订单的统计数据
+        orderStatisticsTitleName: '订单统计',
+        orderStatisticsLegend: ['已下单', '逾期未付款自动取消', '已支付', '配票失败', '已检票', '已过期', '已退款'],
         orderStatistics: [],
 
         orderStatisticsLoading: true
@@ -32,7 +37,7 @@
     },
     mounted: function() {
       new Promise((resolve, reject) => {
-        getOrderStatistics(this.token).then(response => {
+        getOrdersStatistics(this.token).then(response => {
           if (response.state === 'OK') {
             this.orderStatistics = JSON.parse(response.object)
             console.log(this.orderStatistics)
@@ -51,7 +56,5 @@
 </script>
 
 <style scoped>
-  .chart-wrapper {
-    margin-top: 20px;
-  }
+
 </style>

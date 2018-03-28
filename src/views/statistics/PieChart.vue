@@ -23,9 +23,14 @@
         default: '300px'
       },
 
-      orderStatistics: {
-        type: Array,
-        required: true
+      titleName: {
+        type: String
+      },
+      legendData: {
+        type: Array
+      },
+      data: {
+        type: Array
       }
     },
     data() {
@@ -34,7 +39,7 @@
       }
     },
     watch: {
-      orderStatistics: function() {
+      data: function() {
         this.initChart()
         this.__resizeHanlder = debounce(() => {
           if (this.chart) {
@@ -65,17 +70,17 @@
           legend: {
             left: 'center',
             bottom: '10',
-            data: ['已下单', '逾期未付款自动取消', '已支付', '配票失败', '已检票', '已过期', '已退款']
+            data: _this.legendData
           },
           calculable: true,
           series: [
             {
-              name: 'd订单统计',
+              name: _this.titleName,
               type: 'pie',
               roseType: 'area',
               radius: [15, 95],
               center: ['50%', '38%'],
-              data: _this.orderStatistics,
+              data: _this.data,
               animationEasing: 'bounceInOut',
               animationDuration: 2300
             }

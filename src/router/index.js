@@ -268,21 +268,35 @@ export const asyncRouterMap = [
     component: Layout,
     name: 'Statistics',
     hidden: false,
-    meta: { title: '统计', icon: 'example', roles: ['MEMBER', 'SPOT'] },
+    meta: { title: '统计', icon: 'example', roles: ['MEMBER', 'SPOT', 'MANAGER'] },
     children: [
       {
-        path: 'subscribe',
-        name: 'StatisticsSubscribe',
+        path: 'orders',
+        name: 'StatisticsOrder',
         hidden: false,
-        component: () => import('@/views/statistics/subscribe/index'),
-        meta: { title: '预订与退订', icon: 'schedule', roles: ['MEMBER', 'SPOT'] }
+        component: () => import('@/views/statistics/orders/index'),
+        meta: { title: '订单情况', icon: 'schedule', roles: ['MEMBER', 'SPOT'] }
+      },
+      {
+        path: 'members',
+        name: 'StatisticsMember',
+        hidden: false,
+        component: () => import('@/views/statistics/members/index'),
+        meta: { title: '会员统计', icon: 'schedule', roles: ['MANAGER'] }
+      },
+      {
+        path: 'spots',
+        name: 'StatisticsSpot',
+        hidden: false,
+        component: () => import('@/views/statistics/spots/index'),
+        meta: { title: '场馆统计', icon: 'schedule', roles: ['MANAGER'] }
       },
       {
         path: 'consumption',
         name: 'StatisticsConsumption',
         hidden: false,
         component: () => import('@/views/statistics/consumption'),
-        meta: { title: '金库', icon: 'schedule', roles: ['MEMBER', 'SPOT'] }
+        meta: { title: '交易记录', icon: 'schedule', roles: ['MEMBER', 'SPOT', 'MANAGER'] }
       }
     ]
   },

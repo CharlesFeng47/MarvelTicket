@@ -1,6 +1,6 @@
 <template>
   <div v-loading="consumptionLoading">
-    <h1>账单统计</h1>
+    <h1>交易记录</h1>
 
     <el-row>
       <el-col :offset="2">
