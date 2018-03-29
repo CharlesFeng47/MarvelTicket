@@ -27,7 +27,7 @@
             filter-placement="right-start">
             <template slot-scope="scope">
               <el-tag
-                type="warning"
+                :type="scope.row.type=='预订'? 'primary': 'danger'"
                 close-transition>{{scope.row.type}}</el-tag>
             </template>
           </el-table-column>

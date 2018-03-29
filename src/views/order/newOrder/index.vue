@@ -138,7 +138,7 @@
 
               this.curStep++
               this.$router.push({
-                path: '/order/' + this.getUrlPathVar() + '/step3',
+                path: this.getUrlPathVar() + '/step3',
                 query: {
                   scheduleId: this.$route.query.scheduleId
                 }
