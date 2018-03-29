@@ -74,6 +74,8 @@
                     errorMsg = '此订单不可被检票！'
                   } else if (response.state === 'TICKET_NOT_EXIST') {
                     errorMsg = '此订单编号不存在，请检查后重试！'
+                  } else if (response.state === 'TICKET_CHECKER_WRONG') {
+                    errorMsg = '此订单不属于您的场馆哦～您不能对此订单检票，请检查后重试！'
                   }
                   Message({
                     message: errorMsg,
