@@ -20,7 +20,7 @@
         <el-button @click.native.prevent="handlePreStep" v-show="curStep===1" type="info" round>上一步</el-button>
         <el-button @click.native.prevent="validateCurData" v-show="curStep===1" type="danger" round :loading="orderLoading">下达订单</el-button>
         <el-button @click.native.prevent="validateCurData" v-show="curStep===0" type="primary" round>下一步</el-button>
-        <el-button @click.native.prevent="handlePay" v-show="curStep===2" type="danger" round>去付款</el-button>
+        <el-button @click.native.prevent="handlePay" v-show="curStep===2&&this.roles[0]==='MEMBER'" type="danger" round>去付款</el-button>
       </div>
     </el-row>
   </div>
@@ -138,7 +138,7 @@
 
               this.curStep++
               this.$router.push({
-                path: this.getUrlPathVar() + '/step3',
+                path: '/order/' + this.getUrlPathVar() + '/step3',
                 query: {
                   scheduleId: this.$route.query.scheduleId
                 }
@@ -157,7 +157,7 @@
       handleNextStep: function() {
         this.curStep++
         this.$router.push({
-          path: this.getUrlPathVar() + '/step2',
+          path: '/order/' + this.getUrlPathVar() + '/step2',
           query: {
             scheduleId: this.$route.query.scheduleId
           }
@@ -169,10 +169,10 @@
         var pathVar
         if (this.roles[0] === 'SPOT') {
           // 现场购票
-          pathVar = 'buy_on_spot/new'
+          pathVar = 'buy_on_spot'
         } else if (this.roles[0] === 'MEMBER') {
           // 会员购票
-          pathVar = '/order/new_order'
+          pathVar = 'new_order'
         }
         return pathVar
       },

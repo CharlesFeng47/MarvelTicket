@@ -159,7 +159,7 @@ export const asyncRouterMap = [
     component: Layout,
     redirect: '/order/overall',
     name: 'Order',
-    meta: { title: '订单', icon: 'example', roles: ['MEMBER'] },
+    meta: { title: '订单', icon: 'example', roles: ['MEMBER', 'SPOT'] },
     children: [
       {
         path: 'overall',
@@ -182,25 +182,8 @@ export const asyncRouterMap = [
         ]
       },
       {
-        path: ':orderId',
-        name: 'OrderOne',
-        hidden: true,
-        component: () => import('@/views/order/oneOrder/index'),
-        meta: { title: '详情', isNew: false, roles: ['MEMBER'] }
-      }
-    ]
-  },
-  {
-    path: '/buy_on_spot',
-    component: Layout,
-    redirect: '/buy_on_spot/new',
-    name: 'SpotBuy',
-    hidden: true,
-    meta: { title: '订单', icon: 'example', roles: ['SPOT'] },
-    children: [
-      {
-        path: 'new',
-        name: 'SpotBuyNew',
+        path: 'buy_on_spot',
+        name: 'SpotBuy',
         hidden: true,
         component: () => import('@/views/order/newOrder/index'),
         meta: { title: '新增', icon: 'plus', roles: ['SPOT'] },
@@ -210,6 +193,13 @@ export const asyncRouterMap = [
           { path: 'step2', hidden: true, component: () => import('@/views/order/newOrder/step2'), meta: { isNew: true, buyOnSpot: true, roles: ['SPOT'] }},
           { path: 'step3', hidden: true, component: () => import('@/views/order/newOrder/step3'), meta: { isNew: true, buyOnSpot: true, roles: ['SPOT'] }}
         ]
+      },
+      {
+        path: ':orderId',
+        name: 'OrderOne',
+        hidden: true,
+        component: () => import('@/views/order/oneOrder/index'),
+        meta: { title: '详情', isNew: false, roles: ['MEMBER'] }
       }
     ]
   },
