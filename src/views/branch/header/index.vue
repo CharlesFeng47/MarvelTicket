@@ -18,7 +18,7 @@
       <div style="margin-top: 35px">
         <span class="svg-container">
           <svg-icon icon-class="user" />
-        <span style="font-size: 16px">登录</span>
+        <LoginPanel></LoginPanel>
         </span>
 
       </div>
@@ -30,10 +30,11 @@
 <script>
 import Popover from '../dropdown/index'
 import InputGroup from '../inputgroup/index'
+import LoginPanel from '../login/index'
 export default {
   name: 'top',
   components: {
-    Popover, InputGroup
+    Popover, InputGroup, LoginPanel
   },
   data() {
     return {

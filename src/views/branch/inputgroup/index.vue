@@ -4,8 +4,8 @@
       <el-form-item class="input-block">
         <el-input  placeholder="搜索演出信息"></el-input>
       </el-form-item>
-      <el-form-item>
-        <el-button type="danger" @click="onSubmit"><i class="el-icon-search"></i>查询</el-button>
+      <el-form-item class="button-block">
+        <el-button type="danger" @click="onSubmit"><i class="el-icon-search"></i>&nbsp;查询</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -54,12 +54,17 @@
     .el-input{
       width: 100%;
     }
+    .button-block{
+      width: 20%;
+      margin: 0px;
+    }
     button {
-      margin-top: 3px;
-      margin-bottom: 2px;
+      margin-top: 4px;
+      margin-bottom: 3px;
       border-radius: 16px;
-      height: 35px;
+      height: 33px;
       padding-top: 10px;
+      width: 100%;
     }
     /*.el-input {*/
       /*display: inline-block;*/
