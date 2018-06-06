@@ -238,15 +238,15 @@ export default function charts(Vue, options) {
                             findAvailable($rows, $seats, $newRow) : $newSeat;
 
                         })($seat
-                          //get a reference to the parent container and then select all rows but the header
+                          //get a reference to the parent container and then select all rows but the myHeader
                             .parents('.seatCharts-container')
-                            .find('.seatCharts-row:not(.seatCharts-header)'),
+                            .find('.seatCharts-row:not(.seatCharts-myHeader)'),
                           $seat
                           //get a reference to the parent row and then find all seat cells (both seats & spaces)
                             .parents('.seatCharts-row:first')
                             .find('.seatCharts-seat,.seatCharts-space'),
                           //get a reference to the current row
-                          $seat.parents('.seatCharts-row:not(.seatCharts-header)')
+                          $seat.parents('.seatCharts-row:not(.seatCharts-myHeader)')
                         );
 
                         //we couldn't determine the new seat, so we better give up
@@ -338,7 +338,7 @@ export default function charts(Vue, options) {
 
         if (settings.naming.top) {
           var $headerRow = $('<div></div>')
-            .addClass('seatCharts-row seatCharts-header');
+            .addClass('seatCharts-row seatCharts-myHeader');
 
           if (settings.naming.left) {
             $headerRow.append($('<div></div>').addClass('seatCharts-cell'));

@@ -7,7 +7,7 @@
 </template>
 
 <script>
-  import Top from '../header/index'
+  import Top from '../myHeader/index'
   export default {
     name: 'home',
     components: { Top },

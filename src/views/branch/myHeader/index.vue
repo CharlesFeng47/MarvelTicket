@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="my-header">
   <el-row>
     <el-col :span="3" :offset="2">
       <div class="logo">
@@ -28,9 +28,9 @@
 </template>
 
 <script>
-import Popover from '../dropdown/index'
-import InputGroup from '../inputgroup/index'
-import LoginPanel from '../login/index'
+import Popover from './dropdown/index'
+import InputGroup from './inputgroup/index'
+import LoginPanel from './login/index'
 export default {
   name: 'top',
   components: {
@@ -73,5 +73,8 @@ export default {
     display: inline-block;
     font-size: 22px;
     font-weight: bold;
+  }
+  .my-header{
+    border-bottom: #E5EAEF solid 1px;
   }
 </style>
