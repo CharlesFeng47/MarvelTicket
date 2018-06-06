@@ -3,7 +3,7 @@
     <el-row>
       <el-col :span="3" :offset="2">
         <div class="logo">
-          <img src="../../../assets/logo.png" width="100%"/>
+          <img src="../../assets/logo.png" width="100%"/>
         </div>
       </el-col>
       <el-col :span="2" class="location">
