@@ -1,5 +1,5 @@
 <template>
-  <div class="login-container">
+  <span class="login-container">
     <el-form autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left" label-width="0px"
              class="card-box login-form">
       <h3 class="title">Marvel Ticket</h3>
@@ -45,7 +45,7 @@
         </el-button>
       </el-form-item>
     </el-form>
-  </div>
+  </span>
 </template>
 
 <script>
