@@ -2,31 +2,11 @@
   <div>
     <MyHeader/>
     <Carousel/>
-
-    <!--方案一-->
-    <el-row type="flex" class="row-bg" justify="space-around">
-      <el-col :span="2"></el-col>
-      <el-col :span="3">
-        <Item/>
-      </el-col>
-      <el-col :span="3">
-        <Item/>
-      </el-col>
-      <el-col :span="3">
-        <Item/>
-      </el-col>
-      <el-col :span="3">
-        <Item/>
-      </el-col>
-      <el-col :span="3">
-        <Item/>
-      </el-col>
-      <el-col :span="2"></el-col>
+    <el-row>
+     <el-col :span="20" :offset="2">
+       <Recommendation></Recommendation>
+     </el-col>
     </el-row>
-
-    <!--方案二-->
-    <Recommendation></Recommendation>
-
   </div>
 </template>
 
@@ -35,10 +15,12 @@
   import Carousel from './carousel/index'
   import Item from './recommendation/line/item/Item'
   import Recommendation from './recommendation/index'
+  import ElRow from "element-ui/packages/row/src/row";
 
   export default {
     name: 'home',
     components: {
+      ElRow,
       Item,
       MyHeader,
       Carousel,

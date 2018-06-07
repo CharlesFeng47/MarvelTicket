@@ -1,8 +1,8 @@
 <template>
   <div class="carousel">
-    <el-row>
-      <el-col :span="18" :offset="3">
-        <el-carousel indicator-position="outside" type="card">
+    <el-row class="carousel1">
+      <el-col :span="22" :offset="1">
+        <el-carousel interval="1000000000" indicator-position="outside" type="card">
           <el-carousel-item v-for="(img,index) in recommendList" :key="index">
             <img v-bind:src="img.url"/>
           </el-carousel-item>
@@ -10,7 +10,7 @@
       </el-col>
     </el-row>
     <el-row>
-      <el-col :span="18" :offset="3">
+      <el-col :span="20" :offset="2">
         <el-carousel indicator-position="outside">
           <el-carousel-item v-for="(img,index) in recommendList" :key="index">
             <img v-bind:src="img.url"/>
@@ -53,7 +53,10 @@
       height: 100%;
     }
   }
-
+  .carousel1 .el-carousel__container .is-active{
+    margin-left: -10%;
+    width: 70%;
+  }
   .el-carousel__container {
     /*height: 250px;*/
     .el-icon-arrow-left {

@@ -8,7 +8,7 @@
         </a>
         <ul class="more_info">
           <li>
-            <i>{{ scheduleBrief.spot }}}</i>
+            <i>{{ scheduleBrief.spot }}</i>
           </li>
           <li>
             <i>{{ scheduleBrief.time }}</i>

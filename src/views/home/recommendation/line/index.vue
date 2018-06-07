@@ -1,5 +1,5 @@
 <template>
-  <div style="margin: 20px">
+  <div>
     <el-row>
       <el-col :span="12">
         <h1>{{ line.title }}</h1>
@@ -12,19 +12,19 @@
     </el-row>
     <el-row type="flex" justify="space-between">
       <el-col :span="4">
-        <RecommendationItem :schedule-brief="line.recommendations[0]"></RecommendationItem>
+        <Item :schedule-brief="line.recommendations[0]"></Item>
       </el-col>
       <el-col :span="4">
-        <RecommendationItem :schedule-brief="line.recommendations[1]"></RecommendationItem>
+        <Item :schedule-brief="line.recommendations[1]"></Item>
       </el-col>
       <el-col :span="4">
-        <RecommendationItem :schedule-brief="line.recommendations[2]"></RecommendationItem>
+        <Item :schedule-brief="line.recommendations[2]"></Item>
       </el-col>
       <el-col :span="4">
-        <RecommendationItem :schedule-brief="line.recommendations[3]"></RecommendationItem>
+        <Item :schedule-brief="line.recommendations[3]"></Item>
       </el-col>
       <el-col :span="4">
-        <RecommendationItem :schedule-brief="line.recommendations[4]"></RecommendationItem>
+        <Item :schedule-brief="line.recommendations[4]"></Item>
       </el-col>
     </el-row>
   </div>
@@ -32,11 +32,12 @@
 
 <script>
   import RecommendationItem from './item/RecommendationItem'
+  import Item from './item/Item'
 
   export default {
     name: 'RecommendationLine',
     components: {
-      RecommendationItem
+      RecommendationItem,Item
     },
     props: [
       'line'
