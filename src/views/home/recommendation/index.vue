@@ -47,7 +47,7 @@
               },
               {
                 posterSrc: 'https://api.ypiao.com/event/cover.json?event_code=70a76cfa6eaab7715104a01c9fa47620&platform=6&w=196&h=252&q=80',
-                name: '"绝色"莫文蔚巡回演唱会2018-上海站4',
+                name: '"绝色"莫文蔚巡回演唱会2018-上海站3',
                 basePrice: 400,
                 city: '上海',
                 spot: '虹口足球场',

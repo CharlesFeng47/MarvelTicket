@@ -2,22 +2,14 @@
   <div class="carousel">
     <el-row class="carousel1">
       <el-col :span="22" :offset="1">
-        <el-carousel interval="1000000000" indicator-position="outside" type="card">
+        <el-carousel indicator-position="outside" type="card">
           <el-carousel-item v-for="(img,index) in recommendList" :key="index">
             <img v-bind:src="img.url"/>
           </el-carousel-item>
         </el-carousel>
       </el-col>
     </el-row>
-    <el-row>
-      <el-col :span="20" :offset="2">
-        <el-carousel indicator-position="outside">
-          <el-carousel-item v-for="(img,index) in recommendList" :key="index">
-            <img v-bind:src="img.url"/>
-          </el-carousel-item>
-        </el-carousel>
-      </el-col>
-    </el-row>
+
   </div>
 </template>
 
@@ -28,10 +20,11 @@
     data() {
       return {
         recommendList: [
-          { url: 'http://images.ypiao.com/block/2017/20171220151847850.jpg' },
-          { url: 'http://images.ypiao.com/block/2018/20180531145110267.jpg' },
-          { url: 'http://images.ypiao.com/block/2017/20171220151847850.jpg' },
-          { url: 'http://images.ypiao.com/block/2018/20180531145110267.jpg' }
+          { url: require('../../../assets/【上海站】《2018光辉岁月致敬黄家驹》逝世25周年纪念演唱会.jpg')},
+          { url: require('../../../assets/【南京站】2018德云社全国巡演》.jpg') },
+          { url: require('../../../assets/【南京站】喜剧《蒋公的面子》.jpg') },
+          { url: require('../../../assets/【南京站】2018谢天笑“那不是我”巡回演唱会.jpg') },
+          { url: require('../../../assets/【南京站】阿加莎推理巨作《谋杀启事》.jpg') },
         ]
       }
     },
@@ -54,8 +47,8 @@
     }
   }
   .carousel1 .el-carousel__container .is-active{
-    margin-left: -10%;
-    width: 70%;
+    margin-left: -5%;
+    width: 60%;
   }
   .el-carousel__container {
     /*height: 250px;*/
