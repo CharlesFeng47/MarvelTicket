@@ -29,6 +29,12 @@ export const constantRouterMap = [
   },
   { path: '/login', component: () => import('@/views/login/index'), hidden: true },
   { path: '/404', component: () => import('@/views/404'), hidden: true },
+  { path: '/loginAndRegister', component: () => import('@/views/loginAndRegister/index'), hidden: true,
+    children: [
+      { path: 'login', component: () => import('@/views/loginAndRegister/login/index'), hidden: true },
+      { path: 'register', component: () => import('@/views/loginAndRegister/register/index'), hidden: true }
+    ]
+  },
 
   {
     path: '/spot_sign_up', component: () => import('@/views/user/spot/modify/index'), hidden: true,

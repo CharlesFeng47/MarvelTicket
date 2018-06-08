@@ -3,10 +3,11 @@
     <MyHeader/>
     <Carousel/>
     <el-row>
-     <el-col :span="20" :offset="2">
-       <Recommendation></Recommendation>
-     </el-col>
+      <el-col :span="20" :offset="2">
+        <Recommendation></Recommendation>
+      </el-col>
     </el-row>
+    <MyFooter/>
   </div>
 </template>
 
@@ -15,7 +16,8 @@
   import Carousel from './carousel/index'
   import Item from './recommendation/line/item/Item'
   import Recommendation from './recommendation/index'
-  import ElRow from "element-ui/packages/row/src/row";
+  import ElRow from 'element-ui/packages/row/src/row'
+  import MyFooter from '../../components/myFooter/index'
 
   export default {
     name: 'home',
@@ -24,7 +26,8 @@
       Item,
       MyHeader,
       Carousel,
-      Recommendation
+      Recommendation,
+      MyFooter
     },
     data() {
       return {
