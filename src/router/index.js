@@ -35,7 +35,7 @@ export const constantRouterMap = [
       { path: 'register', component: () => import('@/views/loginAndRegister/register/index'), hidden: true }
     ]
   },
-
+  { path: '/orderConfirm', component: () => import('@/views/orderConfirm/index'), hidden: true },
   {
     path: '/spot_sign_up', component: () => import('@/views/user/spot/modify/index'), hidden: true,
     children: [

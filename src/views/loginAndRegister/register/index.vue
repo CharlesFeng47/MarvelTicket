@@ -13,7 +13,6 @@
   export default {
     name: 'MyRegister',
     mounted: function() {
-      console.log('触发事件register')
       this.$emit('register')
     }
   }

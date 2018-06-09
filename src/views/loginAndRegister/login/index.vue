@@ -15,7 +15,6 @@
   export default {
     name: 'MyLogin',
     mounted: function() {
-      console.log('触发时间login')
       this.$emit('login')
     }
   }
