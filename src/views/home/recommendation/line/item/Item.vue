@@ -97,8 +97,8 @@
     color: #b399a6;
   }
   .other-description{
-    color: rgba(49,125,243,0.8);
-    background-color: rgba(49,125,243,0.8);
+    /*color: rgba(49,125,243,0.8);*/
+    background-color: rgba(245,108,108,0.8);
     z-index: 10;
     width: 100%;
     position: absolute;

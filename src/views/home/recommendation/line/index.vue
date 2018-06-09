@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="recommendation">
     <el-row>
       <el-col :span="12">
         <h1>{{ line.title }}</h1>
@@ -46,5 +46,7 @@
 </script>
 
 <style scoped>
-
+  .recommendation{
+    padding-bottom: 30px;
+  }
 </style>

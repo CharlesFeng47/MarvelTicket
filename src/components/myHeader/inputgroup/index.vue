@@ -59,12 +59,12 @@
       margin: 0px;
     }
     button {
+      width: 100%;
       margin-top: 4px;
       margin-bottom: 3px;
       border-radius: 16px;
-      height: 33px;
-      padding-top: 10px;
-      width: 100%;
+      height: 32px;
+      padding-top: 9px;
     }
     /*.el-input {*/
       /*display: inline-block;*/

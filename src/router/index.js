@@ -25,6 +25,7 @@ import Layout from '../views/layout/Layout'
  **/
 export const constantRouterMap = [
   { path: '/home', component: () => import('@/views/home/index'), hidden: true },
+  { path: '/detail', component: () => import('@/views/detail/index'), hidden: true },
   { path: '/member_active/:activeUrl', component: () => import('@/views/memberActive/index'), hidden: true
   },
   { path: '/login', component: () => import('@/views/login/index'), hidden: true },
