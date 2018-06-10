@@ -7,6 +7,7 @@ import Router from 'vue-router'
 Vue.use(Router)
 
 /* Layout */
+import HomeLayout from '../components/HomeLayout/index'
 import Layout from '../views/layout/Layout'
 
 /**
@@ -24,7 +25,18 @@ import Layout from '../views/layout/Layout'
   }
  **/
 export const constantRouterMap = [
-  { path: '/home', component: () => import('@/views/home/index'), hidden: true },
+  {
+    path: '/home', component: HomeLayout, hidden: true,
+    children: [
+      { path: '', hidden: true, component: () => import('@/views/home/index') }
+    ]
+  },
+
+  { path: '/schedule', component: HomeLayout, hidden: true,
+    children: [
+      { path: '', hidden: true, component: () => import('@/views/schedule/index') }
+    ]
+  },
   { path: '/detail', component: () => import('@/views/detail/index'), hidden: true },
   { path: '/center', component: () => import('@/views/center/index'), hidden: true },
   { path: '/member_active/:activeUrl', component: () => import('@/views/memberActive/index'), hidden: true
