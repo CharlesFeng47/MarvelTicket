@@ -3,6 +3,7 @@ import Vue from 'vue'
 // 使axios每次访问服务器的session是一个
 import axios from 'axios'
 axios.defaults.withCredentials = true
+Vue.prototype.$axios = axios
 
 import 'normalize.css/normalize.css'// A modern alternative to CSS resets
 

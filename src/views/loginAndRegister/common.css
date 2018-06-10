@@ -1,25 +1,16 @@
-.dz-ipu {
-  border: 1px solid #e0e7eb;
-  border-radius: 3px;
-  color: #7f8c8d;
-  font-size: 13px;
-  font-weight: 500;
+.login-register-input {
+  font-weight: 400;
   height: 40px;
   margin-bottom: 15px;
   /* margin-left: 8px; */
-  padding-left: 14px;
   width: 366px;
-}
-
-input {
-  font-size: 100%;
   outline: medium none;
   resize: none;
-  font: 12px/1.5 "Microsoft YaHei", 微软雅黑, STHeiti, MingLiu;
+  font: 13px "Microsoft YaHei", 微软雅黑, STHeiti, MingLiu;
   color: #666;
 }
 
-.dz-denglu {
+.login-btn {
   background-color: #ff6633;
   border: 0 none;
   border-radius: 3px;
