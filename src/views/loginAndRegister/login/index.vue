@@ -1,7 +1,7 @@
 <template>
   <form id="login" method="post">
-    <input name="mobile" type="text" class="dz-ipu dz-ipu-sj" maxlength="11" placeholder="请输入手机号">
-    <input name="password" type="password" class="dz-ipu dz-ipu-mima" placeholder="请输入密码">
+    <input v-model="user.email" name="email" type="text" class="dz-ipu dz-ipu-sj" placeholder="请输入电子邮箱">
+    <input v-model="user.password" name="password" type="password" class="dz-ipu dz-ipu-mima" placeholder="请输入密码">
     <input type="submit" class="dz-denglu dz-denglu1" value="立即登录">
     <!-- todo click -->
     <a>
@@ -14,6 +14,14 @@
 <script>
   export default {
     name: 'MyLogin',
+    data: function() {
+      return {
+        user: {
+          email: '',
+          password: ''
+        }
+      }
+    },
     mounted: function() {
       this.$emit('login')
     }
