@@ -3,31 +3,39 @@
     <MyHeader></MyHeader>
     <el-row>
       <el-col :offset="3" :span="18">
-        <el-row>
-          <BreadCrumb/>
-        </el-row>
-        <el-row>
-          <Ticket/>
+        <el-row :gutter="60" style="margin-top: 40px">
+          <el-col span="4">
+            <LeftNav/>
+          </el-col>
+          <el-col span="20">
+            <OrderPanel/>
+            <Like/>
+          </el-col>
         </el-row>
       </el-col>
     </el-row>
     <MyFooter></MyFooter>
   </div>
-
 </template>
 
 <script>
   import MyFooter from '../../components/myFooter/index'
   import MyHeader from '../../components/myHeader/index'
   import BreadCrumb from '../../components/MyBreadCrumb/index'
-  import Ticket from './ticket/index'
+  import Like from './like/index'
+  import LeftNav from './nav/index'
+  import OrderPanel from './order/index'
+  import ElRow from "element-ui/packages/row/src/row";
   export default {
-    name: 'detail',
+    name: 'center',
     components: {
+      ElRow,
       BreadCrumb,
-      Ticket,
       MyHeader,
-      MyFooter
+      MyFooter,
+      OrderPanel,
+      LeftNav,
+      Like
     },
     data() {
       return {

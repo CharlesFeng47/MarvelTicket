@@ -87,7 +87,7 @@
   import ElRow from "element-ui/packages/row/src/row";
 
   export default {
-    name: 'ticket',
+    name: 'nav',
     components: {
       ElRow
     },

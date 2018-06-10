@@ -52,7 +52,7 @@
       checkTicket() {
         this.$refs.checkTicketForm.validate(valid => {
           if (valid) {
-            console.log('check ticket')
+            console.log('check nav')
             this.loading = true
 
             new Promise((resolve, reject) => {

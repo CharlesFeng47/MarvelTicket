@@ -34,15 +34,12 @@
     padding-top: 20px;
     padding-bottom: 20px;
     color: #aaa;
-  }
   ul{
     padding-left: 0px;
   }
   li{
     float: left;
     list-style-type: none!important;
-  }
-  .breadcrumb li {
     text-decoration: none;
     font-size: 14px;
     color: #aaa;
@@ -50,5 +47,6 @@
   a {
     text-decoration: none;
     cursor: pointer;
+  }
   }
 </style>
