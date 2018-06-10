@@ -28,13 +28,13 @@ export const constantRouterMap = [
   {
     path: '/home', component: HomeLayout, hidden: true,
     children: [
-      { path: '', hidden: true, component: () => import('@/views/home/index') }
+      { path: '', hidden: true, component: () => import('@/views/home/index'), meta: { isHome: true } }
     ]
   },
 
   { path: '/schedule', component: HomeLayout, hidden: true,
     children: [
-      { path: '', hidden: true, component: () => import('@/views/schedule/index') }
+      { path: '', hidden: true, component: () => import('@/views/schedule/index'), meta: { isHome: false } }
     ]
   },
   { path: '/detail', component: () => import('@/views/detail/index'), hidden: true },

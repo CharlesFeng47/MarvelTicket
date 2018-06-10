@@ -22,7 +22,7 @@
     </el-form>
 
     <!--  TODO 计划类型的路径参数 -->
-    <h1>{{ tagType }}</h1>
+    <h1>{{ type }}</h1>
 
     <template v-for="briefItem in  scheduleBriefs">
       <el-col :span="12">
@@ -124,8 +124,8 @@
       }
     },
     computed: {
-      tagType: function () {
-        return this.$route.query.tagType
+      type: function () {
+        return this.$route.query.type
       }
     },
 

@@ -3,13 +3,13 @@
     <ul>
       <li class="active"><a href="">首页<div class="border-bottom"></div></a></li>
       <li><a href="">演唱会<div class="border-bottom"></div></a></li>
-      <li><a href="">话剧歌剧<div class="border-bottom"></div></a></li>
-      <li><a href="">体育赛事<div class="border-bottom"></div></a></li>
       <li><a href="">音乐会<div class="border-bottom"></div></a></li>
-      <li><a href="">儿童亲子<div class="border-bottom"></div></a></li>
       <li><a href="">舞蹈芭蕾<div class="border-bottom"></div></a></li>
-      <li><a href="">展览休闲<div class="border-bottom"></div></a></li>
+      <li><a href="">话剧歌剧<div class="border-bottom"></div></a></li>
       <li><a href="">曲艺杂谈<div class="border-bottom"></div></a></li>
+      <li><a href="">体育赛事<div class="border-bottom"></div></a></li>
+      <li><a href="">儿童亲子<div class="border-bottom"></div></a></li>
+      <li><a href="">展览休闲<div class="border-bottom"></div></a></li>
       <li style="display: inline-block;padding-left:100%;"></li>
     </ul>
   </div>

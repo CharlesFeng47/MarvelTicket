@@ -1,7 +1,5 @@
 <template>
   <div>
-    <Carousel/>
-
     <!-- 首页推荐 -->
     <el-row>
       <el-col :span="20" :offset="2">
@@ -19,13 +17,11 @@
 </template>
 
 <script>
-  import Carousel from './carousel/index'
   import Recommendation from './recommendation/index'
 
   export default {
     name: 'home',
     components: {
-      Carousel,
       Recommendation
     },
     data() {
