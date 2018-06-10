@@ -29,7 +29,7 @@
   }
 </script>
 
-<style rel="stylesheet/scss" lang="scss">
+<style rel="stylesheet/scss" lang="scss" scoped>
   .container {
     margin: 0px auto;
     padding-top: 40px;

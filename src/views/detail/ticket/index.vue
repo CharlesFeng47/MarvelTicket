@@ -113,6 +113,7 @@
     }
   }
 </script>
+
 <style rel="stylesheet/scss" lang="scss">
   $border-color:#f7f7f7;
   .container{

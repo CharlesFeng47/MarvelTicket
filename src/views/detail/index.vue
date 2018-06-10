@@ -17,7 +17,7 @@
 </template>
 
 <script>
-  import MyFooter from '../../components/myFooter/index'
+  import MyFooter from '../../components/MyFooter/index'
   import MyHeader from '../../components/myHeader/index'
   import BreadCrumb from '../../components/MyBreadCrumb/index'
   import Ticket from './ticket/index'
