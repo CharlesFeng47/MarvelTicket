@@ -27,6 +27,10 @@
       <div class="show-info">
         <i class="el-icon-location-outline"/><span style="font-size: 12px">{{ scheduleBrief.spot }}</span>
       </div>
+
+      <div style="float: right">
+        {{ scheduleBrief.basePrice }}&nbsp;起
+      </div>
     </div>
   </div>
 </template>

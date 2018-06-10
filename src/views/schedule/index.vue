@@ -54,7 +54,8 @@
             time: '2018.08.03-2018.08.05',
             spot: '广州友谊剧院',
             viewNum: 1480,
-            favoriteNum: 20
+            favoriteNum: 20,
+            basePrice: 248
           },
           {
             title: '【广州站】孟京辉戏剧作品《一个陌生女人的来信》',
@@ -62,7 +63,8 @@
             time: '2018.08.03-2018.08.05',
             spot: '广州友谊剧院',
             viewNum: 1480,
-            favoriteNum: 20
+            favoriteNum: 20,
+            basePrice: 248
           },
           {
             title: '【广州站】孟京辉戏剧作品《一个陌生女人的来信》',
@@ -70,7 +72,8 @@
             time: '2018.08.03-2018.08.05',
             spot: '广州友谊剧院',
             viewNum: 1480,
-            favoriteNum: 20
+            favoriteNum: 20,
+            basePrice: 248
           },
           {
             title: '【广州站】孟京辉戏剧作品《一个陌生女人的来信》',
@@ -78,7 +81,8 @@
             time: '2018.08.03-2018.08.05',
             spot: '广州友谊剧院',
             viewNum: 1480,
-            favoriteNum: 20
+            favoriteNum: 20,
+            basePrice: 248
           },
           {
             title: '【广州站】孟京辉戏剧作品《一个陌生女人的来信》',
@@ -86,7 +90,8 @@
             time: '2018.08.03-2018.08.05',
             spot: '广州友谊剧院',
             viewNum: 1480,
-            favoriteNum: 20
+            favoriteNum: 20,
+            basePrice: 248
           },
           {
             title: '【广州站】孟京辉戏剧作品《一个陌生女人的来信》',
@@ -94,7 +99,8 @@
             time: '2018.08.03-2018.08.05',
             spot: '广州友谊剧院',
             viewNum: 1480,
-            favoriteNum: 20
+            favoriteNum: 20,
+            basePrice: 248
           },
           {
             title: '【广州站】孟京辉戏剧作品《一个陌生女人的来信》',
@@ -102,7 +108,8 @@
             time: '2018.08.03-2018.08.05',
             spot: '广州友谊剧院',
             viewNum: 1480,
-            favoriteNum: 20
+            favoriteNum: 20,
+            basePrice: 248
           },
           {
             title: '【广州站】孟京辉戏剧作品《一个陌生女人的来信》',
@@ -110,7 +117,8 @@
             time: '2018.08.03-2018.08.05',
             spot: '广州友谊剧院',
             viewNum: 1480,
-            favoriteNum: 20
+            favoriteNum: 20,
+            basePrice: 248
           }
         ]
       }
