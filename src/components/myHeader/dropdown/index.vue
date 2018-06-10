@@ -16,6 +16,7 @@
         <el-col :span="3" :offset="1" ><div class="">热门城市:</div></el-col>
         <el-col :span="19" :offset="1" >
           <el-row>
+            <el-col :span="3"><div class="city">上海</div></el-col>
             <el-col :span="3"><div class="city">南京</div></el-col>
           </el-row>
         </el-col>

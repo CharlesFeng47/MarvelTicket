@@ -2,9 +2,12 @@
   <div class="my-header">
     <el-row>
       <el-col :span="3" :offset="2">
+        <a href="/home">
         <div class="logo">
-          <img src="../../assets/logo.png" width="100%"/>
+          Marvel
+          <!--<img src="../../assets/logo.png" width="100%"/>-->
         </div>
+        </a>
       </el-col>
       <el-col :span="2" class="location">
         <div class="location-choose">
@@ -17,8 +20,8 @@
       <el-col :span="3" :offset="3">
         <div style="margin-top: 35px">
           <span class="svg-container">
-          <svg-icon icon-class="user"/>
-        <LoginPanel></LoginPanel>
+            <a href="/center"><svg-icon icon-class="user"/></a>
+            <LoginPanel></LoginPanel>
         </span>
         </div>
       </el-col>
@@ -56,7 +59,10 @@
 
 <style scoped>
   .logo {
-    margin: 15px 0px 0px 30%;
+    margin: 30px 0px 20px 50%;
+    font-size: 30px;
+    color: #F78978;
+    font-weight: 600;
   }
 
   .location {

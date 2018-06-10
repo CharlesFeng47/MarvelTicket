@@ -105,6 +105,7 @@
         line-height: 40px;
         background-image: linear-gradient(-243deg,#ff4732 0,#e33c6d 100%);
         border-radius: 20px;
+        padding-top: 0px;
       }
     }
 

@@ -76,7 +76,9 @@
           </el-col>
         </el-row>
         <div class="list-box">
-          <button class="buy-ticket">立即购票</button>
+          <a href="/orderConfirm">
+            <button class="buy-ticket" @click="buyTicket">立即购票</button>
+          </a>
         </div>
       </div>
     </div>
@@ -109,6 +111,9 @@
         if(this.number--==1){
           this.number = 1;
         }
+      },
+      buyTicket:function (event) {
+
       }
     }
   }

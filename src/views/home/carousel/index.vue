@@ -4,7 +4,9 @@
       <el-col :span="22" :offset="1">
         <el-carousel indicator-position="outside" type="card">
           <el-carousel-item v-for="(img,index) in recommendList" :key="index">
-            <img v-bind:src="img.url"/>
+            <a href="/detail" target="_blank">
+              <img v-bind:src="img.url"/>
+            </a>
           </el-carousel-item>
         </el-carousel>
       </el-col>

@@ -2,7 +2,7 @@
   <div class="container">
     <ul>
       <li class="active"><a href="">首页<div class="border-bottom"></div></a></li>
-      <li><a href="">演唱会<div class="border-bottom"></div></a></li>
+      <li><a href="/schedule">演唱会<div class="border-bottom"></div></a></li>
       <li><a href="">音乐会<div class="border-bottom"></div></a></li>
       <li><a href="">舞蹈芭蕾<div class="border-bottom"></div></a></li>
       <li><a href="">话剧歌剧<div class="border-bottom"></div></a></li>

@@ -1,8 +1,10 @@
 <template>
   <div class="plan-panel">
     <div class="img-box">
-      <img alt="项目海报"
-           :src="scheduleBrief.posterSrc">
+      <a href="/detail" target="_blank">
+        <img alt="项目海报"
+             :src="scheduleBrief.posterSrc">
+      </a>
       <div class="other-description">
         <div class="modal-panel">
           <div><i class="icon-map-marker"></i><label>{{ scheduleBrief.spot }}</label></div>
