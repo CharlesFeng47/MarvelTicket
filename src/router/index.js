@@ -83,65 +83,6 @@ export const asyncRouterMap = [
   },
 
   {
-    path: '/schedule',
-    component: Layout,
-    redirect: '/schedule/overall',
-    name: 'Schedule',
-    meta: { title: '计划', icon: 'example', roles: ['MEMBER', 'SPOT'] },
-    children: [
-      {
-        path: 'check_ticket',
-        name: 'CheckTicket',
-        hidden: false,
-        component: () => import('@/views/schedule/CheckTicket'),
-        meta: { title: '检票登记', icon: 'check_ticket', roles: ['SPOT'] }
-      },
-      {
-        path: 'overall',
-        name: 'ScheduleAll',
-        hidden: false,
-        component: () => import('@/views/schedule/index'),
-        meta: { title: '查看', icon: 'schedule', roles: ['MEMBER', 'SPOT'] }
-      },
-      {
-        path: 'new_schedule',
-        name: 'ScheduleNew',
-        hidden: false,
-        component: () => import('@/views/schedule/newSchedule/index'),
-        meta: { title: '新增', icon: 'plus', roles: ['SPOT'] },
-        children: [
-          { path: '', hidden: true, component: () => import('@/views/schedule/newSchedule/step1'), meta: { isNew: true, roles: ['SPOT'] }},
-          { path: 'step1', hidden: true, component: () => import('@/views/schedule/newSchedule/step1'), meta: { isNew: true, roles: ['SPOT'] }},
-          { path: 'step2', hidden: true, component: () => import('@/views/schedule/newSchedule/step2'), meta: { isNew: true, roles: ['SPOT'] }},
-          { path: 'step3', hidden: true, component: () => import('@/views/schedule/newSchedule/step3'), meta: { isNew: true, roles: ['SPOT'] }}
-
-        ]
-      },
-      {
-        path: 'modify/:scheduleId',
-        name: 'ScheduleModify',
-        hidden: true,
-        component: () => import('@/views/schedule/newSchedule/index'),
-        meta: { title: '修改', roles: ['SPOT'] },
-        children: [
-          { path: '', hidden: true, component: () => import('@/views/schedule/newSchedule/step1'), meta: { isNew: false, roles: ['SPOT'] }},
-          { path: 'step1', hidden: true, component: () => import('@/views/schedule/newSchedule/step1'), meta: { isNew: false, roles: ['SPOT'] }},
-          { path: 'step2', hidden: true, component: () => import('@/views/schedule/newSchedule/step2'), meta: { isNew: false, roles: ['SPOT'] }},
-          { path: 'step3', hidden: true, component: () => import('@/views/schedule/newSchedule/step3'), meta: { isNew: false, roles: ['SPOT'] }}
-
-        ]
-      },
-      {
-        path: ':scheduleId',
-        name: 'ScheduleOne',
-        hidden: true,
-        component: () => import('@/views/schedule/oneSchedule/index'),
-        meta: { title: '详情', roles: ['MEMBER', 'SPOT'] }
-      }
-    ]
-  },
-
-  {
     path: '/order',
     component: Layout,
     redirect: '/order/overall',
