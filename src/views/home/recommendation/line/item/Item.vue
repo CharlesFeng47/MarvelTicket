@@ -33,7 +33,6 @@
     ],
     data() {
       return {
-        url: 'https://api.ypiao.com/event/cover.json?event_code=41947964e392efcf6b95c43e9aacba20&platform=6&w=196&h=252&q=80'
       }
     },
     methods: {}
@@ -58,7 +57,7 @@
     width: 100%;
     /*height: 230px;*/
     text-align: center;
-    height: 240px;
+    /*height: 250px;*/
     overflow: hidden;
   }
   .img-box img{
@@ -82,7 +81,7 @@
     overflow:hidden;
     max-lines: 2;
     /*text-align: center;*/
-    font: 12px/1.5 "Microsoft YaHei";
+    font: 15px "Microsoft YaHei"
   }
   .plan-description .price{
     margin: 0 auto;
@@ -91,7 +90,7 @@
     white-space:nowrap;/* 不换行 */
     overflow:hidden;
     /*text-align: center;*/
-    font: 12px/1.5 "Adobe 楷体 Std R";
+    font-size: 15px;
   }
   .plan-description .price label{
     color: #b399a6;

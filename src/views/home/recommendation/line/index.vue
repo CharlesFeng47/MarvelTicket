@@ -10,20 +10,20 @@
         <p style="text-align: right;margin-top: 30px">查看更多></p>
       </el-col>
     </el-row>
-    <el-row type="flex" justify="space-between">
-      <el-col :span="4">
+    <el-row type="flex" :gutter="30">
+      <el-col :span="5">
         <Item :schedule-brief="line.recommendations[0]"></Item>
       </el-col>
-      <el-col :span="4">
+      <el-col :span="5">
         <Item :schedule-brief="line.recommendations[1]"></Item>
       </el-col>
-      <el-col :span="4">
+      <el-col :span="5">
         <Item :schedule-brief="line.recommendations[2]"></Item>
       </el-col>
-      <el-col :span="4">
+      <el-col :span="5">
         <Item :schedule-brief="line.recommendations[3]"></Item>
       </el-col>
-      <el-col :span="4">
+      <el-col :span="5">
         <Item :schedule-brief="line.recommendations[4]"></Item>
       </el-col>
     </el-row>

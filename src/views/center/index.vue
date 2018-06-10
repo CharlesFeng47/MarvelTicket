@@ -25,11 +25,9 @@
   import Like from './like/index'
   import LeftNav from './nav/index'
   import OrderPanel from './order/index'
-  import ElRow from "element-ui/packages/row/src/row";
   export default {
     name: 'center',
     components: {
-      ElRow,
       BreadCrumb,
       MyHeader,
       MyFooter,
