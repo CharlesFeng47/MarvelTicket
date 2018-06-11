@@ -1,8 +1,8 @@
 <template>
   <div class="breadcrumb">
     <ul>
-      <li><a href="">首页<span>&gt;</span></a></li>
-      <li><a href="">话剧歌剧<span>&gt;</span></a></li>
+      <li><a href="/home">首页<span>&gt;</span></a></li>
+      <li><a href="/schedule">话剧歌剧<span>&gt;</span></a></li>
       <li class="active">【广州站】孟京辉戏剧作品《一个陌生女人的来信》</li>
     </ul>
   </div>

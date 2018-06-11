@@ -19,7 +19,7 @@
         {{ scheduleBrief.name }}
       </div>
       <div class="price">
-        <label>票价： ¥</label>{{ scheduleBrief.basePrice }}<label> 元左右</label>
+        <label>票价：¥</label>{{ scheduleBrief.basePrice }}<label>元起</label>
         <span style="float: right">{{ scheduleBrief.city }}</span>
       </div>
 
@@ -57,6 +57,8 @@
   .img-box{
     position: relative;
     width: 100%;
+    /*max-height: 60%;*/
+    height: 250px;
     /*height: 230px;*/
     text-align: center;
     /*height: 250px;*/
@@ -82,6 +84,11 @@
     /*white-space:nowrap;!* 不换行 *!*/
     overflow:hidden;
     max-lines: 2;
+    -webkit-line-clamp: 2;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+
     /*text-align: center;*/
     font: 15px "Microsoft YaHei"
   }
