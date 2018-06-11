@@ -10,7 +10,7 @@
         <p style="text-align: right;margin-top: 30px">查看更多></p>
       </el-col>
     </el-row>
-    <el-row type="flex" :gutter="30">
+    <el-row type="flex" :gutter="25">
       <el-col :span="5">
         <Item :schedule-brief="line.recommendations[0]"></Item>
       </el-col>

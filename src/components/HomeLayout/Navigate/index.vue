@@ -34,7 +34,7 @@
     margin: 0px auto;
     padding-top: 40px;
     padding-bottom: 20px;
-    width: 77%;
+    width: 100%;
   }
     ul {
       list-style: none;

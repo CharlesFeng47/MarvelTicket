@@ -1,7 +1,9 @@
 <template>
   <div class="brief_container">
     <div class="poster">
-      <img class="" src="https://img1.tking.cn/assets/img/8t72PWJdHE.jpg" data-src="https://img1.tking.cn/assets/img/8t72PWJdHE.jpg" alt="【广州站】孟京辉戏剧作品《一个陌生女人的来信》">
+      <img class="" src="https://img1.tking.cn/assets/img/8t72PWJdHE.jpg"
+           data-src="https://img1.tking.cn/assets/img/8t72PWJdHE.jpg"
+           alt="【广州站】孟京辉戏剧作品《一个陌生女人的来信》">
       <div class="count">
         <el-row>
           <i class="el-icon-view"></i>{{ scheduleBrief.viewNum }}人浏览
@@ -59,6 +61,7 @@
     box-shadow: 0 0 20px 0 #eee;
     margin-top: 100px;
     border: 1px solid #eee;
+    margin-left: 44px;
     .poster {
       float: left;
       width: 24%;

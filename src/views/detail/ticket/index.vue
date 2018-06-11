@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="detail-container">
     <div class="poster">
       <img class="" src="https://img1.tking.cn/assets/img/8t72PWJdHE.jpg" data-src="https://img1.tking.cn/assets/img/8t72PWJdHE.jpg" alt="【广州站】孟京辉戏剧作品《一个陌生女人的来信》">
         <div class="count">
@@ -121,13 +121,13 @@
 
 <style rel="stylesheet/scss" lang="scss">
   $border-color:#f7f7f7;
-  .container{
+  .detail-container{
+    margin: 3% auto;
     width: 94%;
     display: table;
     border-radius: 14px;
     background-color: #fff;
     box-shadow: 0 0 20px 0 #eee;
-    margin-top: 3%;
     border: 1px solid #eee;
     .poster {
       float: left;

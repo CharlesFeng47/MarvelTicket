@@ -1,10 +1,9 @@
 <template>
   <div>
-    <!-- 因为二级导航太向下了，把他向下的去掉 TODO gy解决一下 -->
-    <h1 style="margin-top: 80px">Hello</h1>
+    <!-- 因为二级导航太向下了，把他向下的去掉 TODO fjj看不懂-->
 
     <!-- 筛选排序表单 -->
-    <el-form ref="criteriaForm" :model="criteriaForm" label-width="80px">
+    <el-form class="schedule" ref="criteriaForm" :model="criteriaForm" label-width="80px">
       <el-form-item label="筛选">
         <el-radio-group v-model="criteriaForm.pick">
           <el-radio label="全部时间"></el-radio>
@@ -21,7 +20,7 @@
       </el-form-item>
     </el-form>
 
-    <!--  TODO 计划类型的路径参数 -->
+    <!--  TODO 计划类型的路径参数???看不懂 -->
     <h1>{{ type }}</h1>
 
     <template v-for="briefItem in  scheduleBriefs">
@@ -137,6 +136,8 @@
   }
 </script>
 
-<style scoped>
-
+<style>
+  .schedule .el-form-item__label {
+    text-align: left;
+  }
 </style>
