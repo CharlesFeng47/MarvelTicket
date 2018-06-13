@@ -2,7 +2,21 @@
   <div class="login-container">
     <el-form :inline="true">
       <el-form-item class="input-block">
-        <el-input  placeholder="搜索演出信息"></el-input>
+        <div style="position: relative">
+          <el-input v-bind="searchField" :value="searchField" @input="search" @click.stop="" placeholder="搜索演出信息"></el-input>
+        </div>
+        <div id="search-panel" @click.stop="" v-show="isShow">
+          <ul v-show = "!isLoading">
+            <li><a href="/">【杭州站】爱丽丝奇境缤纷之旅</a></li>
+            <li><a href="/">【上海站】黏黏怪物研究所</a></li>
+            <li><a href="/">【杭州站】爱丽丝奇境缤纷之旅</a></li>
+            <li><a href="/">【上海站】黏黏怪物研究所</a></li>
+            <li><a href="/">【上海站】黏黏怪物研究所</a></li>
+          </ul>
+          <div class="onLoading" v-show = "isLoading">
+            <i class="el-icon-loading"></i>
+          </div>
+        </div>
       </el-form-item>
       <el-form-item class="button-block">
         <el-button type="danger" @click="onSubmit"><i class="el-icon-search"></i>&nbsp;查询</el-button>
@@ -15,13 +29,29 @@
   export default {
     name: 'input-group',
     components: {},
+    data() {
+      return{
+        isLoading : true,
+        searchField : ""
+      }
+    },
+    props:[
+      "isShow"
+    ],
     methods: {
       onSubmit() {
         console.log('submit!')
-      }
+      },
+      search(str){
+        this.$emit('showPanel')
+        this.searchField = str;
+        this.isLoading = true;
+        // alert(str);
+      },
     }
   }
 </script>
+
 
 
 <style rel="stylesheet/scss" lang="scss">
@@ -33,7 +63,7 @@
     background-color: #F2F2F2;
     border-radius: 20px;
     height: 40px;
-    .input-block{
+    .input-block {
       width: 78%;
       margin: 0px;
     }
@@ -48,13 +78,13 @@
       width: 100%;
       padding-right: 0px;
     }
-    .el-form-item__content{
+    .el-form-item__content {
       width: 100%;
     }
-    .el-input{
+    .el-input {
       width: 100%;
     }
-    .button-block{
+    .button-block {
       width: 20%;
       margin: 0px;
     }
@@ -66,53 +96,44 @@
       height: 32px;
       padding-top: 9px;
     }
-    /*.el-input {*/
-      /*display: inline-block;*/
-      /*height: 47px;*/
-      /*width: 85%;*/
-    /*}*/
-    /*.tips {*/
-      /*font-size: 14px;*/
-      /*color: #fff;*/
-      /*margin-bottom: 10px;*/
-    /*}*/
-
-    /*.title {
-      font-size: 26px;
-      font-weight: 400;
-      color: $light_gray;
-      margin: 0px auto 40px auto;
-      text-align: center;
-      font-weight: bold;
-    }
-    .login-form {
+    #search-panel {
       position: absolute;
-      left: 0;
-      right: 0;
-      width: 400px;
-      padding: 35px 35px 15px 35px;
-      margin: 120px auto;
+      border: solid #EEEEEE 1px;
+      width: 100%;
+      margin-left: 4%;
+      background-color: white;
+      z-index: 1000;
+      .onLoading {
+        width: 100%;
+        text-align: center;
+        height: 100px;
+        font-size: 40px;
+        line-height: 100px;
+        i {
+          color: #F78989
+        }
+      }
+      ul {
+        padding: 0px;
+        margin: 5px 0px 5px;
+        li {
+          list-style-type: none !important;
+          line-height: 30px;
+          a{
+            padding: 2px;
+            font-size: 13px;
+          }
+          :hover{
+            background-color: #F3F5F8;
+          }
+        }
+      }
+      li>a {
+        padding: 14px;
+        display: block;
+        color: #212329;
+      }
     }
-    .el-form-item {
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      background: rgba(0, 0, 0, 0.1);
-      border-radius: 5px;
-      color: #454545;
-    }
-    .show-pwd {
-      position: absolute;
-      right: 10px;
-      top: 7px;
-      font-size: 16px;
-      color: $dark_gray;
-      cursor: pointer;
-      user-select: none;
-    }*/
-   /* .thirdparty-button {
-      position: absolute;
-      right: 35px;
-      bottom: 28px;
-    }*/
   }
 </style>
 

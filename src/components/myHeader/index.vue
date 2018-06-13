@@ -1,32 +1,67 @@
 <template>
   <div class="my-header">
     <el-row>
-      <el-col :span="3" :offset="2">
-        <a href="/home">
-        <div class="logo">
-          Marvel
-          <!--<img src="../../assets/logo.png" width="100%"/>-->
-        </div>
-        </a>
-      </el-col>
-      <el-col :span="2" class="location">
-        <div class="location-choose">
-          <Popover></Popover>
-        </div>
-      </el-col>
-      <el-col :span="7" :offset="2" class="search-group">
-        <InputGroup></InputGroup>
-      </el-col>
-      <el-col :span="3" :offset="3">
-        <div style="margin-top: 35px">
+      <el-col :span="20" :offset="2">
+        <el-row type="flex" justify="space-between">
+          <el-col :span="5" style="padding-left: 1.1%">
+            <a href="/home"  style="float: left">
+              <div class="logo">
+                Marvel
+                <!--<img src="../../assets/logo.png" width="100%"/>-->
+              </div>
+            </a>
+            <div class="location"  style="float: left">
+              <div class="location-choose">
+                <Popover></Popover>
+              </div>
+            </div>
+          </el-col>
+          <!--<el-col :span="2" class="location">-->
+
+          <!--</el-col>-->
+          <el-col :span="8"  class="search-group">
+            <InputGroup :isShow="isShow" v-on:showPanel="$emit('showPanel')"></InputGroup>
+          </el-col>
+          <el-col :span="3">
+            <div style="margin-top: 28px">
           <span class="svg-container">
             <a href="/center"><svg-icon icon-class="user"/></a>
             <LoginPanel></LoginPanel>
         </span>
-        </div>
+            </div>
+          </el-col>
+        </el-row>
       </el-col>
     </el-row>
   </div>
+  <!--<div class="my-header">-->
+    <!--<el-row>-->
+      <!--<el-col :span="3" :offset="2">-->
+        <!--<a href="/home">-->
+          <!--<div class="logo">-->
+            <!--Marvel-->
+            <!--&lt;!&ndash;<img src="../../assets/logo.png" width="100%"/>&ndash;&gt;-->
+          <!--</div>-->
+        <!--</a>-->
+      <!--</el-col>-->
+      <!--<el-col :span="2" class="location">-->
+        <!--<div class="location-choose">-->
+          <!--<Popover></Popover>-->
+        <!--</div>-->
+      <!--</el-col>-->
+      <!--<el-col :span="7" :offset="2" class="search-group">-->
+        <!--<InputGroup></InputGroup>-->
+      <!--</el-col>-->
+      <!--<el-col :span="3" :offset="3">-->
+        <!--<div style="margin-top: 35px">-->
+          <!--<span class="svg-container">-->
+            <!--<a href="/center"><svg-icon icon-class="user"/></a>-->
+            <!--<LoginPanel></LoginPanel>-->
+        <!--</span>-->
+        <!--</div>-->
+      <!--</el-col>-->
+    <!--</el-row>-->
+  <!--</div>-->
 </template>
 
 <script>
@@ -39,6 +74,9 @@
     components: {
       Popover, InputGroup, LoginPanel
     },
+    props:[
+      "isShow"
+    ],
     data() {
       return {
         formInline: {
@@ -49,9 +87,7 @@
       }
     },
     methods: {
-      onSubmit() {
-        console.log('submit!')
-      }
+
     }
   }
 </script>
@@ -67,13 +103,13 @@
 
   .location {
     margin-top: 40px;
-    margin-left: 25px;
+    margin-left: 65px;
     border-left: #dddddd 3px solid;
     padding-left: 15px;
   }
 
   .search-group {
-    margin-top: 35px;
+    margin-top: 25px;
   }
 
   .svg-container {

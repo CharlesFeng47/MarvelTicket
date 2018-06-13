@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <MyHeader/>
+  <div @click = "hideSearch">
+    <MyHeader :isShow="isShow" v-on:showPanel="isShow=true"/>
     <el-row>
       <el-col :span="18" :offset="3">
         <Navigate/>
@@ -31,6 +31,16 @@
       Carousel,
       MyFooter
     },
+    data(){
+      return{
+        isShow:false,
+      }
+    },
+    methods:{
+      hideSearch(){
+        this.isShow = false
+      }
+    }
   }
 </script>
 

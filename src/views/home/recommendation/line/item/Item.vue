@@ -7,8 +7,8 @@
       </a>
       <div class="other-description">
         <div class="modal-panel">
-          <div><i class="icon-map-marker"></i><label>{{ scheduleBrief.spot }}</label></div>
-          <div><i class="icon-time"></i><label>{{ scheduleBrief.time }}</label></div>
+          <div>{{ scheduleBrief.spot }}</div>
+          <div>{{ scheduleBrief.time }}</div>
         </div>
       </div>
     </div>
@@ -19,8 +19,8 @@
         {{ scheduleBrief.name }}
       </div>
       <div class="price">
-        <label>票价：¥</label>{{ scheduleBrief.basePrice }}<label>元起</label>
-        <span style="float: right">{{ scheduleBrief.city }}</span>
+        <label>¥ {{ scheduleBrief.basePrice }} </label>元起
+        <span style="margin-top:1px ;float: right">{{ scheduleBrief.city }}</span>
       </div>
 
     </div>
@@ -46,13 +46,13 @@
   .plan-panel {
     background-color: white;
     border-radius: 3px;
-    border: wheat solid 1px;
+    border: #E1E5E7 solid 1px;
     margin-top: 15px;
     padding: 10px;
     /*text-align: center;*/
   }
   .plan-panel:hover{
-    box-shadow: 0 0 10px wheat;
+    box-shadow: 3px 3px 3px #E1E5E7;
   }
   .img-box{
     position: relative;
@@ -80,7 +80,7 @@
   .plan-description .description{
     margin: 0 auto;
     vertical-align: middle;
-    /*word-break:keep-all;!* 不换行 *!*/
+    word-break:keep-all;/* 不换行 */
     /*white-space:nowrap;!* 不换行 *!*/
     overflow:hidden;
     max-lines: 2;
@@ -88,9 +88,9 @@
     text-overflow: ellipsis;
     display: -webkit-box;
     -webkit-box-orient: vertical;
-
     /*text-align: center;*/
-    font: 15px "Microsoft YaHei"
+    font: 14px "Microsoft YaHei";
+    margin: 10px 0 10px;
   }
   .plan-description .price{
     margin: 0 auto;
@@ -98,11 +98,11 @@
     word-break:keep-all;/* 不换行 */
     white-space:nowrap;/* 不换行 */
     overflow:hidden;
-    /*text-align: center;*/
-    font-size: 15px;
+    font-size: 13px;
   }
   .plan-description .price label{
-    color: #b399a6;
+    color: #F78978;
+    font-size: 16px;
   }
   .other-description{
     /*color: rgba(49,125,243,0.8);*/
@@ -112,7 +112,13 @@
     position: absolute;
     transition: margin-top 0.5s;
   }
-  .other-description .modal-panel{
+  .other-description .modal-panel div{
+    max-lines: 1;
+    -webkit-line-clamp: 1;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow:hidden;
     /*height: 52px;*/
     width: 100%;
     color:whitesmoke;
