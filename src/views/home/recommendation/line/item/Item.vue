@@ -78,7 +78,7 @@
     width: 100%;
   }
   .plan-description .description{
-    margin: 0 auto;
+    /*margin: 0 auto;*/
     vertical-align: middle;
     word-break:keep-all;/* 不换行 */
     /*white-space:nowrap;!* 不换行 *!*/
@@ -90,7 +90,7 @@
     -webkit-box-orient: vertical;
     /*text-align: center;*/
     font: 14px "Microsoft YaHei";
-    margin: 10px 0 10px;
+    margin: 6px 0 6px ;
   }
   .plan-description .price{
     margin: 0 auto;
@@ -126,9 +126,10 @@
     padding-top: 4px;
     background-color: rgba(49,125,243,0.1);
     line-height: 25px;
+
   }
   .img-box:hover .other-description{
-    margin-top: -54px;
+    margin-top: -58px;
   }
 
 </style>
