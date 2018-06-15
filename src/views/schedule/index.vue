@@ -33,17 +33,22 @@
         <BriefItem :schedule-brief="briefItem"/>
       </el-col>
     </template>
+
+    <div>
+      <Pagination :max_page=12 :current_page=1 />
+    </div>
+
   </div>
 </template>
 
 <script>
   import BriefItem from './brief/index'
-  import ElRow from "element-ui/packages/row/src/row";
+  import Pagination from '../../components/pagination/index'
 
   export default {
     components: {
-      ElRow,
-      BriefItem
+      BriefItem,
+      Pagination
     },
     data() {
       return {
