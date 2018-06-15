@@ -18,6 +18,8 @@
         {{ scheduleBrief.title }}
       </div>
 
+      <div class="message">只有这里才是你想要的</div>
+
       <el-tag type="info" v-if="scheduleBrief.saleType===1">未开售</el-tag>
       <el-tag type="warning" v-if="scheduleBrief.saleType===2">预售</el-tag>
       <el-tag type="success" v-if="scheduleBrief.saleType===3">售票中</el-tag>
@@ -31,7 +33,7 @@
       </div>
 
       <div style="float: right;margin-top: -20px;font-size: 18px">
-        <span style="color: #F2593F">{{ scheduleBrief.basePrice }}</span>&nbsp;起
+        <span style="color: #F2593F">￥ {{ scheduleBrief.basePrice }}</span>&nbsp;起
       </div>
     </div>
   </div>
@@ -89,14 +91,20 @@
     }
     .detail {
       width: 68%;
-      padding: 20px 30px 20px 30px;
+      padding: 20px 12px 20px 30px;
       float: left;
       .el-row {
         margin-bottom: 10px;
       }
       .el-tag{
-        margin-top: 20px;
+        margin-top: 15px;
         border-radius: 15px;
+      }
+      .message{
+        font-size: 12px;
+        color: #aaa;
+        padding: 5px 0;
+        line-height: 16px;
       }
       .show-title {
         font-size: 16px;
@@ -113,7 +121,7 @@
       }
       .show-info1 {
         margin-left: 0px;
-        margin-top: 30px;
+        margin-top: 20px;
         color: #F78989;
       }
       .show-info2 {

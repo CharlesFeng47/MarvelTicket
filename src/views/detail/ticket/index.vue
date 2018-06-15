@@ -57,11 +57,13 @@
           </el-col>
           <el-col :span="20" class="price-list">
             <div class="number-input-wrapper">
-              <span @click="reduce">-</span>
+              <span v-if="number==1">-</span>
+              <span v-if="number!=1" style="color: #F78978" @click="reduce">-</span>
               <input v-bind:value="number" class="buy-num" readonly>
-              <span @click="add" :plain="true">+</span>
+              <span v-if="number==6" style="padding-top: 1px">+</span>
+              <span  v-if="number!=6" style="color: #F78978;padding-top: 1px" @click="add">+</span>
             </div>
-            <div class="message">*三张以内为连座，3张以上尽量连座，不同张数、不同时间票价可能不同</div>
+            <div v-if="number==6" style="color: #97a8be;font-size: 12px;margin-top: -28px;margin-left: 120px">一次最多只能购买6张</div>
           </el-col>
         </el-row>
         <el-row style="margin-top: 10px">
@@ -89,7 +91,7 @@
   import ElRow from "element-ui/packages/row/src/row";
 
   export default {
-    name: 'nav',
+    name: 'Ticket',
     components: {
       ElRow
     },
@@ -144,7 +146,8 @@
       .count {
         line-height: 24px;
         color: #777;
-        font-size: 12px;
+        font-size: 14px;
+        margin-top: 6px;
         position: relative;
         text-align: center;
       }
@@ -201,11 +204,7 @@
           text-align: center;
           white-space: nowrap;
           display: inline-block;
-          .message{
-            color: #F78989;
-            font-size: 13px;
-            text-align: center;
-          }
+
           span {
             float: left;
             width: 38px;
