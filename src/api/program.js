@@ -3,7 +3,7 @@ import request from '@/utils/request'
 const qs = require('qs')
 
 /**
- * 获取单条计划
+ * 获取首页推荐
  */
 export function recommend(city) {
   return request({
@@ -11,4 +11,15 @@ export function recommend(city) {
     method: 'get'
   })
 }
+
+/**
+ * 获取该类型的所有节目
+ */
+export function getProgramsByType(city, type) {
+  return request({
+    url: '/program/getProgramsByType/?city=' + city + '&programType=' + type,
+    method: 'get'
+  })
+}
+
 

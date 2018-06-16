@@ -37,7 +37,8 @@
   export default {
     name: 'RecommendationLine',
     components: {
-      RecommendationItem,Item
+      RecommendationItem,
+      Item
     },
     props: [
       'line'

@@ -1,7 +1,5 @@
 <template>
-  <div>
-    <!-- 因为二级导航太向下了，把他向下的去掉 TODO fjj看不懂-->
-
+  <div v-loading="curTypeSchedulesLoading">
     <!-- 筛选排序表单 -->
     <el-form class="schedule" ref="criteriaForm" :model="criteriaForm" label-width="80px">
       <el-form-item label="筛选:">
@@ -22,18 +20,17 @@
       </el-form-item>
     </el-form>
 
-    <!--&lt;!&ndash;  TODO 计划类型的路径参数???看不懂 &ndash;&gt;-->
-    <!--<h1>{{ type }}</h1>-->
-
-    <template v-for="(briefItem,index) in  scheduleBriefs">
+    <!--TODO gy 运行试试，会有图片导致BriefItem错位-->
+    <template v-for="(briefItem,index) in  programBriefs">
       <el-col v-if="index%2==0" style="width: 48%">
-        <BriefItem :schedule-brief="briefItem"/>
+        <BriefItem :program-brief="briefItem"/>
       </el-col>
       <el-col v-if="index%2==1" style="width: 48%;margin-left: 4%">
-        <BriefItem :schedule-brief="briefItem"/>
+        <BriefItem :program-brief="briefItem"/>
       </el-col>
     </template>
 
+    <!--TODO gy 根据获取到的数据源进行实际分页-->
     <div>
       <Pagination :max_page=12 :current_page=1 />
     </div>
@@ -44,6 +41,8 @@
 <script>
   import BriefItem from './brief/index'
   import Pagination from '../../components/pagination/index'
+  import { getProgramsByType } from "../../api/program";
+  import { mapGetters } from 'vuex'
 
   export default {
     components: {
@@ -57,92 +56,51 @@
           sort: '按热度'
         },
 
-        // TODO 获取内容填充
-        scheduleBriefs: [
-          {
-            title: '【广州站】孟京辉戏剧作品《一个陌生女人的来信》',
-            saleType: 3,
-            time: '2018.08.03-2018.08.05',
-            spot: '广州友谊剧院',
-            viewNum: 1480,
-            favoriteNum: 20,
-            basePrice: 248
-          },
-          {
-            title: '【广州站】孟京辉戏剧作品《一个陌生女人的来信》',
-            saleType: 3,
-            time: '2018.08.03-2018.08.05',
-            spot: '广州友谊剧院',
-            viewNum: 1480,
-            favoriteNum: 20,
-            basePrice: 248
-          },
-          {
-            title: '【广州站】孟京辉戏剧作品《一个陌生女人的来信》',
-            saleType: 3,
-            time: '2018.08.03-2018.08.05',
-            spot: '广州友谊剧院',
-            viewNum: 1480,
-            favoriteNum: 20,
-            basePrice: 248
-          },
-          {
-            title: '【广州站】孟京辉戏剧作品《一个陌生女人的来信》',
-            saleType: 3,
-            time: '2018.08.03-2018.08.05',
-            spot: '广州友谊剧院',
-            viewNum: 1480,
-            favoriteNum: 20,
-            basePrice: 248
-          },
-          {
-            title: '【广州站】孟京辉戏剧作品《一个陌生女人的来信》',
-            saleType: 3,
-            time: '2018.08.03-2018.08.05',
-            spot: '广州友谊剧院',
-            viewNum: 1480,
-            favoriteNum: 20,
-            basePrice: 248
-          },
-          {
-            title: '【广州站】孟京辉戏剧作品《一个陌生女人的来信》',
-            saleType: 3,
-            time: '2018.08.03-2018.08.05',
-            spot: '广州友谊剧院',
-            viewNum: 1480,
-            favoriteNum: 20,
-            basePrice: 248
-          },
-          {
-            title: '【广州站】孟京辉戏剧作品《一个陌生女人的来信》',
-            saleType: 3,
-            time: '2018.08.03-2018.08.05',
-            spot: '广州友谊剧院',
-            viewNum: 1480,
-            favoriteNum: 20,
-            basePrice: 248
-          },
-          {
-            title: '【广州站】孟京辉戏剧作品《一个陌生女人的来信》',
-            saleType: 3,
-            time: '2018.08.03-2018.08.05',
-            spot: '广州友谊剧院',
-            viewNum: 1480,
-            favoriteNum: 20,
-            basePrice: 248
-          }
-        ]
+        curTypeSchedulesLoading: false,
+        programBriefs: []
       }
     },
     computed: {
-      type: function () {
-        return this.$route.query.type
-      }
+      ...mapGetters([
+        'cur_city'
+      ])
+    },
+    mounted: function () {
+      this.curTypeSchedulesLoading = true
+      new Promise((resolve, reject) => {
+        getProgramsByType(this.cur_city, this.$route.query.type).then(response => {
+          if (response.state === 'OK') {
+            const curPrograms = JSON.parse(response.object)
+            console.log(curPrograms)
+            this.fulfillProgramBriefs(curPrograms)
+          }
+          resolve()
+        }).catch(error => {
+          reject(error)
+        })
+      }).then(() => {
+        this.curTypeSchedulesLoading = false
+      }).catch(() => {
+        this.curTypeSchedulesLoading = false
+      })
     },
 
     methods: {
-      onSubmit() {
-        console.log('submit!');
+      fulfillProgramBriefs: function (curPrograms) {
+        this.programBriefs = []
+        for (var index = 0; index < curPrograms.length; index++) {
+          var brief = {}
+          brief.title = curPrograms[index].programName
+          brief.postSrc = curPrograms[index].poster
+          brief.saleType = curPrograms[index].saleType
+          brief.time = curPrograms[index].time
+          brief.spot = curPrograms[index].venueName
+          brief.viewNum = curPrograms[index].scanVolume
+          brief.favoriteNum = curPrograms[index].favoriteVolume
+          brief.basePrice = curPrograms[index].lowPrice
+          this.programBriefs.push(brief)
+        }
+        console.log("aaaa")
       }
     }
   }

@@ -45,7 +45,9 @@ const getters = {
   order_used_coupon: state => state.order.order_used_coupon,
   // 总价相关
   order_cal_process: state => state.order.order_cal_process,
-  order_total_price: state => state.order.order_total_price
+  order_total_price: state => state.order.order_total_price,
 
+  // 当前城市
+  cur_city: state => state.home.cur_city
 }
 export default getters
