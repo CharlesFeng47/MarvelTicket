@@ -17,9 +17,7 @@
         </el-radio-group>
       </el-form-item>
     </el-form>
-
-    <!--TODO gy 运行试试，会有图片导致BriefItem错位-->
-    <template v-for="(briefItem,index) in  programBriefs">
+    <template v-for="(briefItem,index) in  showBriefs">
       <el-col v-if="index%2==0" style="width: 48%">
         <BriefItem :program-brief="briefItem"/>
       </el-col>
@@ -27,10 +25,9 @@
         <BriefItem :program-brief="briefItem"/>
       </el-col>
     </template>
-
-    <!--TODO gy 根据获取到的数据源进行实际分页-->
+    <el-row></el-row>
     <div>
-      <Pagination :max_page=12 :current_page=1 />
+      <Pagination :max_page="maxPage" :current_page="currentPage" />
     </div>
 
   </div>
@@ -42,9 +39,11 @@
   import { getProgramsByType } from "../../api/program";
   import { getProgramTypeEnum } from "../../utils/program_type_helper";
   import { mapGetters } from 'vuex'
+  import ElRow from "element-ui/packages/row/src/row";
 
   export default {
     components: {
+      ElRow,
       BriefItem,
       Pagination
     },
@@ -56,7 +55,11 @@
         },
 
         curTypeSchedulesLoading: false,
-        programBriefs: []
+        programBriefs: [],
+        showBriefs: [],
+        currentPage : 1,
+        maxPage : 5,
+        everyPage : 12
       }
     },
     computed: {
@@ -90,6 +93,7 @@
               const curPrograms = JSON.parse(response.object)
               console.log(curPrograms)
               this.fulfillProgramBriefs(curPrograms)
+              this.flashBriefs()
             }
             resolve()
           }).catch(error => {
@@ -116,6 +120,19 @@
           brief.basePrice = curPrograms[index].lowPrice
           this.programBriefs.push(brief)
         }
+        this.maxPage = Math.ceil(this.programBriefs.length/this.everyPage)
+        this.currentPage = 1
+      },
+      flashBriefs:function () {
+        // console.log(this.everyPage)
+        this.showBriefs=[]
+        for(var index = (this.currentPage - 1) * this.everyPage; index < this.currentPage * this.everyPage; index++){
+          this.showBriefs.push(this.programBriefs[index])
+        }
+      },
+      changePage:function(){
+        // this.currentPage = page
+        alert(134)
       }
     }
   }
