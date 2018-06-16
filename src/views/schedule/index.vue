@@ -27,7 +27,7 @@
     </template>
     <el-row></el-row>
     <div>
-      <Pagination :max_page="maxPage" :current_page="currentPage" />
+      <Pagination :max_page="maxPage" :current_page="currentPage" v-on:changePage= "changePage" />
     </div>
 
   </div>
@@ -80,6 +80,11 @@
         handler: function (newVal, oldVal) {
           this.initCurProgramsByType(newVal)
         }
+      },
+      currentPage:{
+        handler: function (newVal, oldVal) {
+          this.flashBriefs()
+        }
       }
     },
 
@@ -130,9 +135,8 @@
           this.showBriefs.push(this.programBriefs[index])
         }
       },
-      changePage:function(){
-        // this.currentPage = page
-        alert(134)
+      changePage:function(page){
+        this.currentPage = page
       }
     }
   }

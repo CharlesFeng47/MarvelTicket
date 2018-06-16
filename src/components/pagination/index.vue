@@ -6,12 +6,12 @@
         <li class="el-icon-back icon inactive-icon"></li>
       </template>
       <template v-else>
-        <a href="/"><li class="el-icon-back icon active-icon"></li></a>
+        <a @click="change(last)"><li class="el-icon-back icon active-icon"></li></a>
       </template>
       <template v-for="page in pages">
         <li v-if="page=='…'" style="cursor: default">{{ page }}</li>
         <template v-else>
-          <a v-if="current_page == page" href="/"><li class="active">{{ page }}</li></a>
+          <a v-if="current_page == page"><li class="active">{{ page }}</li></a>
           <a v-else @click="change(page)"><li>{{ page }}</li></a>
         </template>
       </template>
@@ -19,7 +19,7 @@
         <li class="el-icon-back icon inactive-icon" style="transform: rotate(180deg)"></li>
       </template>
       <template v-else>
-        <a href="/"><li class="el-icon-back icon active-icon" style="transform: rotate(180deg)"></li></a>
+        <a @click="change(next)"><li class="el-icon-back icon active-icon" style="transform: rotate(180deg)"></li></a>
       </template>
     </ul>
   </div>
@@ -35,7 +35,9 @@
     data(){
       return {
         pages:[],
-        isNull:false
+        isNull:false,
+        next : 0,
+        last : 0
       }
     },
     watch: {
@@ -53,8 +55,11 @@
 
     methods:{
       initPages:function () {
+        this.pages = []
         var max = this.max_page
         var current = this.current_page
+        this.next = current+1;
+        this.last = current-1;
         console.log(max)
         if(max==0){
           this.isNull = true
@@ -92,8 +97,8 @@
         console.log(this.pages)
       },
       change:function (page) {
-        alert(page);
-        this.$emit('changePage')
+        window.scrollTo(0,0);
+        this.$emit('changePage',page)
       }
     }
   }
