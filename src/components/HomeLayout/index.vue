@@ -1,6 +1,6 @@
 <template>
-  <div @click = "hideSearch">
-    <MyHeader :isShow="isShow" v-on:showPanel="isShow=true"  v-on:hidePanel="isShow=false"/>
+  <div @click="hideSearch">
+    <MyHeader :isShow="isShow" v-on:showPanel="isShow=true" v-on:hidePanel="isShow=false"/>
     <el-row>
       <el-col :span="18" :offset="3">
         <Navigate/>
@@ -9,7 +9,11 @@
     <Carousel v-if="this.$route.meta.isHome"/>
     <el-row>
       <el-col :span="18" :offset="3">
-        <router-view></router-view>
+        <transition name="fade">
+          <keep-alive>
+            <router-view></router-view>
+          </keep-alive>
+        </transition>
       </el-col>
     </el-row>
     <MyFooter/>

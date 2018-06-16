@@ -42,6 +42,7 @@
   import BriefItem from './brief/index'
   import Pagination from '../../components/pagination/index'
   import { getProgramsByType } from "../../api/program";
+  import { getProgramTypeEnum } from "../../utils/program_type_helper";
   import { mapGetters } from 'vuex'
 
   export default {
@@ -63,29 +64,46 @@
     computed: {
       ...mapGetters([
         'cur_city'
-      ])
+      ]),
+      type: function () {
+        return this.$route.query.type
+      }
     },
     mounted: function () {
-      this.curTypeSchedulesLoading = true
-      new Promise((resolve, reject) => {
-        getProgramsByType(this.cur_city, this.$route.query.type).then(response => {
-          if (response.state === 'OK') {
-            const curPrograms = JSON.parse(response.object)
-            console.log(curPrograms)
-            this.fulfillProgramBriefs(curPrograms)
-          }
-          resolve()
-        }).catch(error => {
-          reject(error)
-        })
-      }).then(() => {
-        this.curTypeSchedulesLoading = false
-      }).catch(() => {
-        this.curTypeSchedulesLoading = false
-      })
+      this.initCurProgramsByType(this.$route.query.type)
+    },
+    watch: {
+      // 根据路由参数选定当前加载的类型
+      // TODO 讨论路由更换时原有内容要不要清空
+      type: {
+        handler: function (newVal, oldVal) {
+          this.initCurProgramsByType(newVal)
+        }
+      }
     },
 
     methods: {
+      // 从后端获取数据
+      initCurProgramsByType: function(type) {
+        this.curTypeSchedulesLoading = true
+        new Promise((resolve, reject) => {
+          getProgramsByType(this.cur_city, getProgramTypeEnum(type)).then(response => {
+            if (response.state === 'OK') {
+              const curPrograms = JSON.parse(response.object)
+              console.log(curPrograms)
+              this.fulfillProgramBriefs(curPrograms)
+            }
+            resolve()
+          }).catch(error => {
+            reject(error)
+          })
+        }).then(() => {
+          this.curTypeSchedulesLoading = false
+        }).catch(() => {
+          this.curTypeSchedulesLoading = false
+        })
+      },
+      // 将获取的数据装载到页面中
       fulfillProgramBriefs: function (curPrograms) {
         this.programBriefs = []
         for (var index = 0; index < curPrograms.length; index++) {
@@ -100,7 +118,6 @@
           brief.basePrice = curPrograms[index].lowPrice
           this.programBriefs.push(brief)
         }
-        console.log("aaaa")
       }
     }
   }
