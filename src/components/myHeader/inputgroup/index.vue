@@ -1,9 +1,9 @@
 <template>
-  <div class="login-container">
+  <div class="search-container">
     <el-form :inline="true">
       <el-form-item class="input-block">
         <div style="position: relative">
-          <el-input v-bind="searchField" :value="searchField" @input="search" @click.stop="" placeholder="搜索演出信息"></el-input>
+          <el-input @input="search" @click.stop="" placeholder="搜索演出信息"></el-input>
         </div>
         <div id="search-panel" @click.stop="" v-show="isShow">
           <ul v-show = "!isLoading">
@@ -44,6 +44,7 @@
       },
       search(str){
         if(str!="") {
+          console.log(str)
           this.$emit('showPanel')
           this.searchField = str;
           this.isLoading = true;
@@ -63,7 +64,7 @@
   $dark_gray: #889aa4;
   $light_gray: #eee;
 
-  .login-container {
+  .search-container {
     background-color: #F2F2F2;
     border-radius: 20px;
     height: 40px;

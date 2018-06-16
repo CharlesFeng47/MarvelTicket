@@ -76,6 +76,8 @@
         /*width: 160px;*/
         width: 100%;
         border-radius: 8px;
+        /*height: 180px;*/
+        height: 220px;
         background-color: #fff;
         box-shadow: 0 4px 16px 0 #ccc;
       }
