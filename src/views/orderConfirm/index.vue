@@ -79,13 +79,18 @@
   .confirm-body {
     font-size: 16px;
     color: #323232;
-    margin-top: 4%;
+    /*margin-top: 4%;*/
     overflow: hidden;
     border: 3px solid #eee;
-    border-top: 50px solid #fe6f61;
+    border-top: 0px;
     padding: 32px 20px 20px 20px;
   }
-
+  .top{
+    height: 50px;
+    background-color: #FD6857;
+    width: 100%;
+    margin-top: 100px;
+  }
   img {
     border: none;
     outline-style: none;

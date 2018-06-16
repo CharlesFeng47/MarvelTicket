@@ -84,8 +84,11 @@
   .pagination{
     text-align: center;
     ul {
+      margin-left: 0px;
+      padding-left: 0px;
       li {
         /*float: left;*/
+        margin: 0px 2px 0px 2px;
         list-style: none;
         display: inline-block;
         width: 51px;

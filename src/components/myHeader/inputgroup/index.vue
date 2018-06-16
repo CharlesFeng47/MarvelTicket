@@ -43,9 +43,13 @@
         console.log('submit!')
       },
       search(str){
-        this.$emit('showPanel')
-        this.searchField = str;
-        this.isLoading = true;
+        if(str!="") {
+          this.$emit('showPanel')
+          this.searchField = str;
+          this.isLoading = true;
+        }else{
+          this.$emit('hidePanel')
+        }
         // alert(str);
       },
     }

@@ -1,6 +1,6 @@
 <template>
   <div @click = "hideSearch">
-    <MyHeader :isShow="isShow" v-on:showPanel="isShow=true"/>
+    <MyHeader :isShow="isShow" v-on:showPanel="isShow=true"  v-on:hidePanel="isShow=false"/>
     <el-row>
       <el-col :span="18" :offset="3">
         <Navigate/>
