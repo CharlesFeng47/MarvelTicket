@@ -7,11 +7,18 @@
         </div>
         <div id="search-panel" @click.stop="" v-show="isShow">
           <ul v-show = "!isLoading">
-            <li><a href="/">【杭州站】爱丽丝奇境缤纷之旅</a></li>
-            <li><a href="/">【上海站】黏黏怪物研究所</a></li>
-            <li><a href="/">【杭州站】爱丽丝奇境缤纷之旅</a></li>
-            <li><a href="/">【上海站】黏黏怪物研究所</a></li>
-            <li><a href="/">【上海站】黏黏怪物研究所</a></li>
+            <li v-for="result in searchResults">
+              <a href="/">
+                <el-row>
+                  <el-col :span="17">
+                  <span class="name">{{ result.programName }}</span>
+                  </el-col>
+                  <el-col :offset="1" :span="6" style="text-align: right">
+                    <span class="time">{{ result.startTime }}</span>
+                  </el-col>
+                </el-row>
+              </a>
+            </li>
           </ul>
           <div class="onLoading" v-show = "isLoading">
             <i class="el-icon-loading"></i>
@@ -26,13 +33,15 @@
 </template>
 
 <script>
+  import { previewSearch } from "../../../api/program";
+  import ElRow from "element-ui/packages/row/src/row";
   export default {
     name: 'input-group',
-    components: {},
+    components: {ElRow},
     data() {
       return{
         isLoading : true,
-        searchField : ""
+        searchResults : []
       }
     },
     props:[
@@ -43,15 +52,39 @@
         console.log('submit!')
       },
       search(str){
+
+        this.searchResults=[]
         if(str!="") {
-          console.log(str)
+          // console.log(str)
           this.$emit('showPanel')
-          this.searchField = str;
           this.isLoading = true;
+          new Promise((resolve, reject) => {
+            previewSearch(str).then(response => {
+              if (response.state === 'OK') {
+                var recommends = JSON.parse(response.object)
+                // console.log(recommends)
+                for(var i =0 ;i < recommends.length;i++){
+                  var result = {}
+                  result.programID = recommends[i].programID.startTime + " "+ recommends[i].programID.venueID
+                  result.startTime = recommends[i].programID.startTime.split(" ")[0]
+                  result.programName = recommends[i].programName
+                  // console.log(result)
+                  this.searchResults.push(result)
+                }
+                console.log(this.searchResults)
+              }
+              resolve()
+            }).catch(error => {
+              reject(error)
+            })
+          }).then(() => {
+            this.isLoading = false
+          }).catch(() => {
+            this.isLoading = false
+          })
         }else{
           this.$emit('hidePanel')
         }
-        // alert(str);
       },
     }
   }
@@ -104,7 +137,7 @@
     #search-panel {
       position: absolute;
       border: solid #EEEEEE 1px;
-      width: 100%;
+      width: 120%;
       margin-left: 4%;
       background-color: white;
       z-index: 1000;
@@ -123,10 +156,21 @@
         margin: 5px 0px 5px;
         li {
           list-style-type: none !important;
-          line-height: 30px;
+          line-height: 26px;
           a{
             padding: 2px;
-            font-size: 13px;
+            font-size: 12px;
+            .name{
+              height: 26px;
+              /*width: 60%;*/
+              overflow: hidden;
+              max-lines: 1;
+              overflow:hidden;
+              -webkit-line-clamp: 1;
+              text-overflow: ellipsis;
+              display: -webkit-box;
+              -webkit-box-orient: vertical;
+            }
           }
           :hover{
             background-color: #F3F5F8;

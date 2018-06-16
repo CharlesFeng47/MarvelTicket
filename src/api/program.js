@@ -22,4 +22,14 @@ export function getProgramsByType(city, type) {
   })
 }
 
+/**
+ * 获取该类型的所有节目
+ */
+export function previewSearch(condition){
+  return request({
+    url: '/program/previewSearch?conditions=' + condition,
+    method: 'get'
+  })
+}
+
 
