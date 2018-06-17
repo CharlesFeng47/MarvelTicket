@@ -17,6 +17,7 @@
         </el-radio-group>
       </el-form-item>
     </el-form>
+
     <template v-for="(briefItem,index) in showingBriefs">
       <el-col v-if="index%2===0" style="width: 48%">
         <BriefItem :program-brief="briefItem"/>
@@ -25,6 +26,7 @@
         <BriefItem :program-brief="briefItem"/>
       </el-col>
     </template>
+
     <el-row></el-row>
     <div>
       <Pagination :max_page="maxPage" :current_page="currentPage" v-on:changePage="changePage"/>
@@ -120,6 +122,7 @@
           var brief = {}
           brief.id = curPrograms[index].id
           brief.title = curPrograms[index].programName
+          brief.description = curPrograms[index].description
           brief.posterSrc = curPrograms[index].poster
           brief.saleType = curPrograms[index].saleType
           brief.time = curPrograms[index].time

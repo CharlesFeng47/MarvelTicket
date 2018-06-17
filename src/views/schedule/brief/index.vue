@@ -16,7 +16,7 @@
         {{ programBrief.title }}
       </div>
 
-      <div class="message">只有这里才是你想要的</div>
+      <div class="message">{{ programBrief.description }}</div>
 
       <!--<el-tag type="info" v-if="programBrief.saleType===1">未开售</el-tag>-->
       <!--<el-tag type="warning" v-if="programBrief.saleType===2">预售</el-tag>-->
@@ -50,6 +50,7 @@
     methods: {
       // 查看详情
       checkDetail: function () {
+        console.log('aaa')
         this.$router.push('/detail/' + this.programBrief.id)
       }
     }
