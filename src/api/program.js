@@ -7,7 +7,7 @@ const qs = require('qs')
  */
 export function recommend(city) {
   return request({
-    url: '/program/recommend/?city=' + city,
+    url: '/program/recommend?city=' + city,
     method: 'get'
   })
 }
@@ -17,7 +17,7 @@ export function recommend(city) {
  */
 export function getProgramsByType(city, type) {
   return request({
-    url: '/program/getProgramsByType/?city=' + city + '&programType=' + type,
+    url: '/program/getProgramsByType?city=' + city + '&programType=' + type,
     method: 'get'
   })
 }
@@ -32,4 +32,15 @@ export function previewSearch(condition){
   })
 }
 
+
+/**
+ * 获取该节目详情
+ */
+export function getProgramDetail(programId) {
+  console.log(programId)
+  return request({
+    url: '/program/getProgramDetail?briefProgramID=' + programId,
+    method: 'get'
+  })
+}
 

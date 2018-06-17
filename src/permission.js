@@ -45,7 +45,7 @@ router.beforeEach((to, from, next) => {
     }
   } else {
     // 未登录
-    if (to.path.startsWith('/member_active')) {
+    if (to.path.startsWith('/member_active') || to.path.startsWith('/detail')) {
       next()
     } else {
       if (whiteList.indexOf(to.path) !== -1) {

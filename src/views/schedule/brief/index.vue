@@ -1,8 +1,7 @@
 <template>
-  <div class="brief_container">
+  <div class="brief_container" @click="checkDetail">
     <div class="poster">
-      <img :src="programBrief.postSrc"
-           alt="【广州站】孟京辉戏剧作品《一个陌生女人的来信》">
+      <img :src="programBrief.posterSrc">
       <div class="count">
         <el-row>
           <i class="el-icon-view"></i>{{ programBrief.viewNum }}人浏览
@@ -17,7 +16,7 @@
         {{ programBrief.title }}
       </div>
 
-      <div class="message">只有这里才是你想要的</div>
+      <div class="message">{{ programBrief.description }}</div>
 
       <!--<el-tag type="info" v-if="programBrief.saleType===1">未开售</el-tag>-->
       <!--<el-tag type="warning" v-if="programBrief.saleType===2">预售</el-tag>-->
@@ -48,7 +47,13 @@
       return {
       }
     },
-    methods: {}
+    methods: {
+      // 查看详情
+      checkDetail: function () {
+        console.log('aaa')
+        this.$router.push('/detail/' + this.programBrief.id)
+      }
+    }
   }
 </script>
 

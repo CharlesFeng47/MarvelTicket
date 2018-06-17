@@ -30,8 +30,8 @@
         'cur_city'
       ])
     },
-    methods:{
-      initHome(){
+    methods: {
+      initHome() {
         this.ordersLoading = true;
         new Promise((resolve, reject) => {
           recommend(this.cur_city).then(response => {
@@ -58,15 +58,15 @@
           type.title = key;
           type.recommendations = [];
           // console.log(data[key])
-          for (var i in data[key]){
+          for (var i in data[key]) {
             var recommendation = {};
             recommendation.programID = data[key][i]['id'];
             recommendation.posterSrc = data[key][i]['poster'];
             recommendation.name = data[key][i]['programName'];
             recommendation.basePrice = data[key][i]['lowPrice'];
-            recommendation.city= data[key][i]['city'];
-            recommendation.spot= data[key][i]['venueName'];
-            recommendation.time= data[key][i]['time'];
+            recommendation.city = data[key][i]['city'];
+            recommendation.spot = data[key][i]['venueName'];
+            recommendation.time = data[key][i]['time'];
             // console.log(type)
             type.recommendations.push(recommendation);
           }
