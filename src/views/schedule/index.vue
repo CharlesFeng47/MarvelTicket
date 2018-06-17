@@ -103,6 +103,12 @@
           console.log('after filter: ' + this.filteredProgramBriefs.length + '<==' + this.programBriefsOrigin.length)
 
           this.filteredProgramBriefs = toSort(this.criteriaForm.sort, this.filteredProgramBriefs)
+
+          // 筛选之后回到第一页，并且筛选可能更新分页页码数
+          this.currentPage = 1
+          this.maxPage = Math.ceil(this.filteredProgramBriefs.length / this.everyPage)
+
+          // 强制更新（因为currentPage实际可能未修改，不触发watch）
           this.refreshBriefs()
         }
       },
@@ -111,6 +117,11 @@
       'criteriaForm.sort': {
         handler: function (newVal, oldVal) {
           this.filteredProgramBriefs = toSort(newVal, this.filteredProgramBriefs)
+
+          // 排序之后回到第一页
+          this.currentPage = 1
+
+          // 强制更新（因为currentPage实际可能未修改，不触发watch）
           this.refreshBriefs()
         }
       }
