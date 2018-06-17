@@ -4,10 +4,10 @@
     <el-form class="schedule" ref="criteriaForm" :model="criteriaForm" label-width="80px">
       <el-form-item label="筛选:">
         <el-radio-group v-model="criteriaForm.pick">
-            <el-radio label="全部时间"></el-radio>
-            <el-radio label="本周末"></el-radio>
-            <el-radio label="一周内"></el-radio>
-            <el-radio label="一月内"></el-radio>
+          <el-radio label="全部时间"></el-radio>
+          <el-radio label="本周末"></el-radio>
+          <el-radio label="一周内"></el-radio>
+          <el-radio label="一月内"></el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item label="排序:">
@@ -17,17 +17,17 @@
         </el-radio-group>
       </el-form-item>
     </el-form>
-    <template v-for="(briefItem,index) in  showBriefs">
-      <el-col v-if="index%2==0" style="width: 48%">
+    <template v-for="(briefItem,index) in showingBriefs">
+      <el-col v-if="index%2===0" style="width: 48%">
         <BriefItem :program-brief="briefItem"/>
       </el-col>
-      <el-col v-if="index%2==1" style="width: 48%;margin-left: 4%">
+      <el-col v-if="index%2===1" style="width: 48%;margin-left: 4%">
         <BriefItem :program-brief="briefItem"/>
       </el-col>
     </template>
     <el-row></el-row>
     <div>
-      <Pagination :max_page="maxPage" :current_page="currentPage" v-on:changePage= "changePage" />
+      <Pagination :max_page="maxPage" :current_page="currentPage" v-on:changePage="changePage"/>
     </div>
 
   </div>
@@ -39,11 +39,9 @@
   import { getProgramsByType } from "../../api/program";
   import { getProgramTypeEnum } from "../../utils/program_type_helper";
   import { mapGetters } from 'vuex'
-  import ElRow from "element-ui/packages/row/src/row";
 
   export default {
     components: {
-      ElRow,
       BriefItem,
       Pagination
     },
@@ -55,11 +53,16 @@
         },
 
         curTypeSchedulesLoading: false,
+        // 全部的概况
         programBriefs: [],
-        showBriefs: [],
-        currentPage : 1,
-        maxPage : 5,
-        everyPage : 12
+        // 当前展示的当页概况
+        showingBriefs: [],
+        // 当前的页码
+        currentPage: 1,
+        // 最大页码
+        maxPage: 1,
+        // 每页的条数
+        everyPage: 12
       }
     },
     computed: {
@@ -81,16 +84,16 @@
           this.initCurProgramsByType(newVal)
         }
       },
-      currentPage:{
+      currentPage: {
         handler: function (newVal, oldVal) {
-          this.flashBriefs()
+          this.refreshBriefs()
         }
       }
     },
 
     methods: {
       // 从后端获取数据
-      initCurProgramsByType: function(type) {
+      initCurProgramsByType: function (type) {
         this.curTypeSchedulesLoading = true
         new Promise((resolve, reject) => {
           getProgramsByType(this.cur_city, getProgramTypeEnum(type)).then(response => {
@@ -98,7 +101,7 @@
               const curPrograms = JSON.parse(response.object)
               console.log(curPrograms)
               this.fulfillProgramBriefs(curPrograms)
-              this.flashBriefs()
+              this.refreshBriefs()
             }
             resolve()
           }).catch(error => {
@@ -127,14 +130,15 @@
           this.programBriefs.push(brief)
         }
         this.maxPage = Math.ceil(this.programBriefs.length / this.everyPage)
-        this.currentPage = 1
       },
-      // TODO 界面报错
-      flashBriefs: function () {
-        // console.log(this.everyPage)
-        this.showBriefs = []
-        for (var index = (this.currentPage - 1) * this.everyPage; index < this.currentPage * this.everyPage; index++) {
-          this.showBriefs.push(this.programBriefs[index])
+
+      // 因为当前页号修改导致界面展示的数据改变
+      refreshBriefs: function () {
+        this.showingBriefs = []
+        for (var index = (this.currentPage - 1) * this.everyPage;
+             index < this.currentPage * this.everyPage && index < this.programBriefs.length;
+             index++) {
+          this.showingBriefs.push(this.programBriefs[index])
         }
       },
       changePage: function (page) {
@@ -145,7 +149,7 @@
 </script>
 
 <style rel="stylesheet/scss" lang="scss">
-  $border-color:#f7f7f7;
+  $border-color: #f7f7f7;
   .schedule {
     .el-form-item {
       .el-form-item__label {
@@ -168,7 +172,7 @@
         .el-radio__input {
           display: none;
         }
-        .el-radio__label{
+        .el-radio__label {
           padding-left: 10px;
           padding-right: 10px;
           padding-top: 1px;

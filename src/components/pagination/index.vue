@@ -6,20 +6,28 @@
         <li class="el-icon-back icon inactive-icon"></li>
       </template>
       <template v-else>
-        <a @click="change(last)"><li class="el-icon-back icon active-icon"></li></a>
+        <a @click="change(last)">
+          <li class="el-icon-back icon active-icon"></li>
+        </a>
       </template>
       <template v-for="page in pages">
-        <li v-if="page=='…'" style="cursor: default">{{ page }}</li>
+        <li v-if="page==='…'" style="cursor: default">{{ page }}</li>
         <template v-else>
-          <a v-if="current_page == page"><li class="active">{{ page }}</li></a>
-          <a v-else @click="change(page)"><li>{{ page }}</li></a>
+          <a v-if="current_page === page">
+            <li class="active">{{ page }}</li>
+          </a>
+          <a v-else @click="change(page)">
+            <li>{{ page }}</li>
+          </a>
         </template>
       </template>
-      <template v-if="current_page == max_page">
+      <template v-if="current_page === max_page">
         <li class="el-icon-back icon inactive-icon" style="transform: rotate(180deg)"></li>
       </template>
       <template v-else>
-        <a @click="change(next)"><li class="el-icon-back icon active-icon" style="transform: rotate(180deg)"></li></a>
+        <a @click="change(next)">
+          <li class="el-icon-back icon active-icon" style="transform: rotate(180deg)"></li>
+        </a>
       </template>
     </ul>
   </div>
@@ -28,16 +36,16 @@
 <script>
   export default {
     name: 'Pagination',
-    props:[
+    props: [
       'max_page',
       'current_page'
     ],
-    data(){
+    data() {
       return {
-        pages:[],
-        isNull:false,
-        next : 0,
-        last : 0
+        pages: [],
+        isNull: false,
+        next: 0,
+        last: 0
       }
     },
     watch: {
@@ -46,45 +54,44 @@
           this.initPages()
         }
       },
-      current_page:{
+      current_page: {
         handler: function (newVal, oldVal) {
           this.initPages()
         }
       }
     },
 
-    methods:{
-      initPages:function () {
+    methods: {
+      initPages: function () {
         this.pages = []
         var max = this.max_page
         var current = this.current_page
-        this.next = current+1;
-        this.last = current-1;
-        console.log(max)
-        if(max==0){
+        this.next = current + 1;
+        this.last = current - 1;
+        if (max == 0) {
           this.isNull = true
-        }else{
+        } else {
           this.isNull = false
-          if( max <= 9) {
-            for(var i = 1;i <= max; i++) {
+          if (max <= 9) {
+            for (var i = 1; i <= max; i++) {
               this.pages.push(i)
             }
-          }else {
+          } else {
             this.pages.push(1)
-            if(current>5){
+            if (current > 5) {
               this.pages.push("…")
-              if(max-current<=4){
-                for (var i = max-6;i<=max;i++){
+              if (max - current <= 4) {
+                for (var i = max - 6; i <= max; i++) {
                   this.pages.push(i);
                 }
-              }else{
-                for (var i = current-2;i<=current+2;i++){
+              } else {
+                for (var i = current - 2; i <= current + 2; i++) {
                   this.pages.push(i);
                 }
                 this.pages.push("…")
                 this.pages.push(max)
               }
-            }else {
+            } else {
               for (var i = 2; i <= 7; i++) {
                 this.pages.push(i);
               }
@@ -94,11 +101,10 @@
             }
           }
         }
-        console.log(this.pages)
       },
-      change:function (page) {
-        window.scrollTo(0,0);
-        this.$emit('changePage',page)
+      change: function (page) {
+        window.scrollTo(0, 0);
+        this.$emit('changePage', page)
       }
     }
   }
@@ -106,7 +112,7 @@
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-  .pagination{
+  .pagination {
     text-align: center;
     ul {
       margin-left: 0px;
@@ -132,12 +138,12 @@
           cursor: pointer;
         }
       }
-      .icon{
+      .icon {
         font-weight: 700;
         font-size: 14px;
       }
-      .inactive-icon{
-        color:#C9C9C9
+      .inactive-icon {
+        color: #C9C9C9
       }
       .active {
         background-color: #fd6857;
