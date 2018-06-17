@@ -28,7 +28,7 @@
       </el-col>
     </template>
 
-    <el-row></el-row>
+    <div></div>
     <div>
       <Pagination :max_page="maxPage" :current_page="currentPage" v-on:changePage="changePage"/>
     </div>
