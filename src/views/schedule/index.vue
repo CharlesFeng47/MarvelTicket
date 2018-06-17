@@ -115,8 +115,9 @@
         this.programBriefs = []
         for (var index = 0; index < curPrograms.length; index++) {
           var brief = {}
+          brief.id = curPrograms[index].id
           brief.title = curPrograms[index].programName
-          brief.postSrc = curPrograms[index].poster
+          brief.posterSrc = curPrograms[index].poster
           brief.saleType = curPrograms[index].saleType
           brief.time = curPrograms[index].time
           brief.spot = curPrograms[index].venueName
@@ -125,17 +126,18 @@
           brief.basePrice = curPrograms[index].lowPrice
           this.programBriefs.push(brief)
         }
-        this.maxPage = Math.ceil(this.programBriefs.length/this.everyPage)
+        this.maxPage = Math.ceil(this.programBriefs.length / this.everyPage)
         this.currentPage = 1
       },
-      flashBriefs:function () {
+      // TODO 界面报错
+      flashBriefs: function () {
         // console.log(this.everyPage)
-        this.showBriefs=[]
-        for(var index = (this.currentPage - 1) * this.everyPage; index < this.currentPage * this.everyPage; index++){
+        this.showBriefs = []
+        for (var index = (this.currentPage - 1) * this.everyPage; index < this.currentPage * this.everyPage; index++) {
           this.showBriefs.push(this.programBriefs[index])
         }
       },
-      changePage:function(page){
+      changePage: function (page) {
         this.currentPage = page
       }
     }

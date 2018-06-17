@@ -1,18 +1,19 @@
 <template>
-  <div class="detail-container">
+  <div class="detail-container" v-loading="programDetailLoading">
     <div class="poster">
-      <img class="" src="https://img1.tking.cn/assets/img/8t72PWJdHE.jpg" data-src="https://img1.tking.cn/assets/img/8t72PWJdHE.jpg" alt="【广州站】孟京辉戏剧作品《一个陌生女人的来信》">
-        <div class="count">
-          <i class="el-icon-view"></i>1480人浏览
-          <i class="el-icon-star-on"></i><span id="favourNum">14</span>人想看
-        </div>
+      <img :src="programDetail.posterSrc">
+      <div class="count">
+        <i class="el-icon-view"></i>{{ programDetail.viewNum }}人浏览
+        <i class="el-icon-star-on"></i><span id="favourNum">{{ programDetail.favoriteNum }}</span>人想看
+      </div>
     </div>
-    <div class="detail" >
+    <div class="detail">
       <div class="show-title">
-        【广州站】孟京辉戏剧作品《一个陌生女人的来信》
+        {{ programDetail.title }}
       </div>
       <div class="show-info">
-        <i class="el-icon-time"/><span>2018.08.03-2018.08.05</span>&nbsp;&nbsp;&nbsp;&nbsp;<i class="el-icon-location-outline"/><span>广州友谊剧院</span>
+        <i class="el-icon-time"/><span>{{ programDetail.time }}</span>
+        <i class="el-icon-location-outline"/><span>{{ programDetail.spot }}</span>
       </div>
 
       <div class="ticket-info">
@@ -22,15 +23,9 @@
           </el-col>
           <el-col :span="20" class="time-list">
             <div>
-              <el-radio v-model="time" label="1" border size="medium">2018-08-03 星期五 20:00</el-radio>
-              <el-radio v-model="time" label="2" border size="medium">2018-08-03 星期五 20:00</el-radio>
-              <el-radio v-model="time" label="2" border size="medium">2018-08-03 星期五 20:00</el-radio>
-              <el-radio v-model="time" label="2" border size="medium">2018-08-03 星期五 20:00</el-radio>
-              <el-radio v-model="time" label="2" border size="medium">2018-08-03 星期五 20:00</el-radio>
-              <el-radio v-model="time" label="2" border size="medium">2018-08-03 星期五 20:00</el-radio>
-              <el-radio v-model="time" label="2" border size="medium">2018-08-03 星期五 20:00</el-radio>
-              <el-radio v-model="time" label="2" border size="medium">2018-08-03 星期五 20:00</el-radio>
-              <el-radio v-model="time" label="2" border size="medium">2018-08-03 星期五 20:00</el-radio>
+              <template v-for="field in programDetail.fields">
+                <el-radio v-model="curField" :label="field" border size="medium">{{ field }}</el-radio>
+              </template>
             </div>
           </el-col>
         </el-row>
@@ -40,14 +35,9 @@
           </el-col>
           <el-col :span="20" class="price-list">
             <div>
-              <el-radio v-model="price" label="1" border size="medium">100元</el-radio>
-              <el-radio v-model="price" label="2" border size="medium">200元</el-radio>
-              <el-radio v-model="price" label="3" border size="medium">300元</el-radio>
-              <el-radio v-model="price" label="4" border size="medium">400元</el-radio>
-              <el-radio v-model="price" label="5" border size="medium">500元</el-radio>
-              <el-radio v-model="price" label="6" border size="medium">600元</el-radio>
-              <el-radio v-model="price" label="7" border size="medium">700元</el-radio>
-              <el-radio v-model="price" label="8" border size="medium">800元</el-radio>
+              <template v-for="par in programDetail.pars">
+                <el-radio v-model="curParPrice" :label="par.basePrice" border size="medium">{{ par.basePrice }} | {{ par.comments }}</el-radio>
+              </template>
             </div>
           </el-col>
         </el-row>
@@ -57,13 +47,16 @@
           </el-col>
           <el-col :span="20" class="price-list">
             <div class="number-input-wrapper">
-              <span v-if="number==1">-</span>
-              <span v-if="number!=1" style="color: #F78978" @click="reduce">-</span>
-              <input v-bind:value="number" class="buy-num" readonly>
-              <span v-if="number==6" style="padding-top: 1px">+</span>
-              <span  v-if="number!=6" style="color: #F78978;padding-top: 1px" @click="add">+</span>
+              <span v-show="buyNum===1">-</span>
+              <span v-show="buyNum!==1" style="color: #F78978" @click="reduce">-</span>
+              <input v-model="buyNum" class="buy-num" readonly>
+              <span v-show="buyNum===6" style="padding-top: 1px">+</span>
+              <span v-show="buyNum!==6" style="color: #F78978;padding-top: 1px" @click="add">+</span>
             </div>
-            <div v-if="number==6" style="color: #97a8be;font-size: 12px;margin-top: -28px;margin-left: 120px">一次最多只能购买6张</div>
+            <!--TODO gy 警告色红色-->
+            <div v-show="buyNum===6" style="color: #b71a4c;font-size: 12px;margin-top: -28px;margin-left: 120px">
+              一次最多只能购买6张
+            </div>
           </el-col>
         </el-row>
         <el-row style="margin-top: 10px">
@@ -72,7 +65,7 @@
           </el-col>
           <el-col :span="20" class="price-list">
             <p class="money" style="margin-top: 4px">
-              <span class="order-price">177</span>
+              <span class="order-price">{{ price }}</span>
               <span class="unit">元</span>
             </p>
           </el-col>
@@ -88,33 +81,94 @@
 </template>
 
 <script>
-  import ElRow from "element-ui/packages/row/src/row";
+  import { getProgramDetail } from "../../../api/program";
 
   export default {
     name: 'Ticket',
-    components: {
-      ElRow
-    },
     data() {
       return {
-        time : "1",
-        price: "1",
-        number: 1
+        programDetailLoading: false,
+        programDetail: {
+          id: '',
+          title: '',
+          posterSrc: '',
+          // saleType: '',
+          time: '',
+          spot: '',
+          viewNum: '',
+          favoriteNum: '',
+          // 场次
+          fields: [],
+          // 票面
+          pars: []
+        },
+
+        // 当前选定的场次和票面
+        curField: '',
+        curParPrice: 0,
+        buyNum: 1
       }
     },
+    computed: {
+      price: function () {
+        return this.curParPrice * this.buyNum;
+      }
+    },
+    mounted: function () {
+      this.programDetailLoading = true
+      new Promise((resolve, reject) => {
+        getProgramDetail(this.$route.params.programId).then(response => {
+          if (response.state === 'OK') {
+            const detail = JSON.parse(response.object)
+            this.fulfillProgramDetail(detail)
+          }
+          resolve()
+        }).catch(error => {
+          reject(error)
+        })
+      }).then(() => {
+        this.programDetailLoading = false
+      }).catch(() => {
+        this.programDetailLoading = false
+      })
+    },
     methods: {
-      add:function(event){
-        if(this.number++==6){
-          this.number = 6;
+      fulfillProgramDetail: function (detail) {
+        console.log(detail)
+
+        this.programDetail.id = detail.id
+        this.programDetail.title = detail.programName
+        this.programDetail.posterSrc = detail.poster
+        this.programDetail.time= detail.time
+        this.programDetail.spot = detail.venueName + '（' + detail.address + '）'
+        this.programDetail.viewNum = detail.scanVolume
+        this.programDetail.favoriteNum = detail.favoriteVolume
+        this.programDetail.fields = detail.fields
+        this.programDetail.pars = detail.parIDs
+        console.log(this.programDetail)
+
+        this.initDefaultFieldAndParAndBuyNum(this.programDetail.fields, this.programDetail.pars)
+      },
+
+      // 从当前节目的场次和票面中选择第一个作为默认显示
+      initDefaultFieldAndParAndBuyNum(fields, pars) {
+        this.curField = fields[0]
+        this.curParPrice = pars[0].basePrice
+        this.buyNum = 1
+      },
+
+      add: function (event) {
+        if (this.buyNum++ === 6) {
+          this.buyNum = 6;
           this.$message('购买的票数不能大于5张');
         }
       },
-      reduce:function(event){
-        if(this.number--==1){
-          this.number = 1;
+      reduce: function (event) {
+        if (this.buyNum-- === 1) {
+          this.buyNum = 1;
         }
       },
-      buyTicket:function (event) {
+      buyTicket: function (event) {
 
       }
     }

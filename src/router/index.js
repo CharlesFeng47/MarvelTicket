@@ -37,7 +37,7 @@ export const constantRouterMap = [
       { path: '', hidden: true, component: () => import('@/views/schedule/index'), meta: { isHome: false } }
     ]
   },
-  { path: '/detail', component: () => import('@/views/detail/index'), hidden: true },
+  { path: '/detail/:programId', component: () => import('@/views/detail/index'), hidden: true },
   { path: '/center', component: () => import('@/views/center/index'), hidden: true },
   { path: '/member_active/:activeUrl', component: () => import('@/views/memberActive/index'), hidden: true
   },

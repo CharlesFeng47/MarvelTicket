@@ -1,8 +1,7 @@
 <template>
-  <div class="brief_container">
+  <div class="brief_container" @click="checkDetail">
     <div class="poster">
-      <img :src="programBrief.postSrc"
-           alt="【广州站】孟京辉戏剧作品《一个陌生女人的来信》">
+      <img :src="programBrief.posterSrc">
       <div class="count">
         <el-row>
           <i class="el-icon-view"></i>{{ programBrief.viewNum }}人浏览
@@ -48,7 +47,12 @@
       return {
       }
     },
-    methods: {}
+    methods: {
+      // 查看详情
+      checkDetail: function () {
+        this.$router.push('/detail/' + this.programBrief.id)
+      }
+    }
   }
 </script>
 
