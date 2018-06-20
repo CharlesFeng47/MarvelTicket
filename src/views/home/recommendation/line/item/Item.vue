@@ -80,7 +80,7 @@
   .plan-description .description{
     /*margin: 0 auto;*/
     vertical-align: middle;
-    word-break:keep-all;/* 不换行 */
+    /*word-break:keep-all;!* 不换行 *!*/
     /*white-space:nowrap;!* 不换行 *!*/
     overflow:hidden;
     max-lines: 2;

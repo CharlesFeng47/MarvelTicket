@@ -12,7 +12,7 @@
             </a>
             <div class="location"  style="float: left">
               <div class="location-choose">
-                <Popover></Popover>
+                <Popover v-on:changeCity=""></Popover>
               </div>
             </div>
           </el-col>
@@ -83,7 +83,7 @@
           user: '',
           region: ''
         },
-        message: ''
+        message: '',
       }
     },
     methods: {

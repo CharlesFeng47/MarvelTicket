@@ -16,8 +16,8 @@
         <el-col :span="3" :offset="1" ><div class="">热门城市:</div></el-col>
         <el-col :span="19" :offset="1" >
           <el-row>
-            <el-col :span="3"><div class="city">上海</div></el-col>
-            <el-col :span="3"><div class="city">南京</div></el-col>
+            <el-col :span="3"><div class="city" @click="current = '上海'">上海</div></el-col>
+            <el-col :span="3"><div class="city" @click="current = '南京'">南京</div></el-col>
           </el-row>
         </el-col>
       </el-row>
@@ -27,6 +27,8 @@
 </template>
 
 <script>
+  import { mapGetters } from 'vuex'
+
 export default {
   name: 'popover',
   components: {
@@ -36,8 +38,28 @@ export default {
       current: '上海'
     }
   },
+  computed: {
+    ...mapGetters([
+      'cur_city',
+    ])
+  },
+  watch:{
+    current: {
+      handler: function (newVal, oldVal) {
+        this.changeCity(newVal)
+      }
+    }
+  },
   methods: {
-
+    changeCity(city){
+      // alert(city)
+      this.$store.dispatch('StoreCurCity', {
+        cur_city: city
+      }).then(() => {
+        // alert(this.cur_city)
+      }).catch(() => {
+      })
+    }
   }
 }
 </script>

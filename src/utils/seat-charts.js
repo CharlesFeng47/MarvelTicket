@@ -13,7 +13,7 @@ export default function charts(Vue, options) {
 
       //'use strict';
 
-      $.fn.seatCharts = function (setup) {
+      $.fn.seatCharts = function (setup) {currentCity
 
         //if there's seatCharts object associated with the current element, return it
         if (this.data('seatCharts')) {

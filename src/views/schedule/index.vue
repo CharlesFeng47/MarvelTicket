@@ -18,7 +18,7 @@
         </el-radio-group>
       </el-form-item>
     </el-form>
-
+    <el-row>
     <template v-for="(briefItem,index) in showingBriefs">
       <el-col v-if="index%2===0" style="width: 48%">
         <BriefItem :program-brief="briefItem"/>
@@ -27,8 +27,7 @@
         <BriefItem :program-brief="briefItem"/>
       </el-col>
     </template>
-
-    <div></div>
+    </el-row>
     <div>
       <Pagination :max_page="maxPage" :current_page="currentPage" v-on:changePage="changePage"/>
     </div>
@@ -43,9 +42,11 @@
   import { getProgramTypeEnum } from '../../utils/program_helper'
   import { toPick, toSort } from '../../utils/program_helper'
   import { mapGetters } from 'vuex'
+  import ElRow from "element-ui/packages/row/src/row";
 
   export default {
     components: {
+      ElRow,
       BriefItem,
       Pagination
     },
@@ -73,7 +74,8 @@
     },
     computed: {
       ...mapGetters([
-        'cur_city'
+        'cur_city',
+        'getCity'
       ]),
       type: function () {
         return this.$route.query.type
@@ -93,6 +95,11 @@
       currentPage: {
         handler: function (newVal, oldVal) {
           this.refreshBriefs()
+        }
+      },
+      getCity: {
+        handler: function (newVal, oldVal) {
+          this.initCurProgramsByType(this.type)
         }
       },
 
