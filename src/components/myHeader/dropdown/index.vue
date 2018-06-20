@@ -40,26 +40,22 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'cur_city',
+      'cur_city'
     ])
   },
   watch:{
     current: {
       handler: function (newVal, oldVal) {
-        this.changeCity(newVal)
+        this.$store.dispatch('StoreCurCity', {
+          cur_city: newVal
+        }).then(() => {
+        }).catch(() => {
+        })
       }
-    }
+    },
   },
   methods: {
-    changeCity(city){
-      // alert(city)
-      this.$store.dispatch('StoreCurCity', {
-        cur_city: city
-      }).then(() => {
-        // alert(this.cur_city)
-      }).catch(() => {
-      })
-    }
+
   }
 }
 </script>
