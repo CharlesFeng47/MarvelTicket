@@ -84,7 +84,7 @@
   import { getProgramDetail } from "../../../api/program";
 
   export default {
-    name: 'Ticket',
+    name: 'Detail',
     data() {
       return {
         programDetailLoading: false,

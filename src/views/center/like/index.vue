@@ -89,7 +89,7 @@
   .like-panel {
     /*text-align: center;*/
     /*border: #EFEFEF solid 1px;*/
-    padding: 30px 0 30px 0;
-    margin: 30px 0 0;
+    padding: 0px 0 30px 0;
+    margin: 0px 0 0;
   }
 </style>

@@ -1,6 +1,5 @@
 <template>
   <div>
-    <MyHeader></MyHeader>
     <el-row>
       <el-col :offset="3" :span="18">
         <el-row :gutter="60" style="margin-top: 40px">
@@ -8,29 +7,27 @@
             <LeftNav/>
           </el-col>
           <el-col span="20">
-            <OrderPanel/>
-            <Like/>
+            <!--<OrderPanel/>-->
+            <!--<Like/>-->
+            <transition name="fade">
+              <keep-alive>
+                <router-view></router-view>
+              </keep-alive>
+            </transition>
           </el-col>
         </el-row>
       </el-col>
     </el-row>
-    <MyFooter></MyFooter>
   </div>
 </template>
 
 <script>
-  import MyFooter from '../../components/MyFooter/index'
-  import MyHeader from '../../components/myHeader/index'
-  import BreadCrumb from '../../components/MyBreadCrumb/index'
   import Like from './like/index'
   import LeftNav from './nav/index'
   import OrderPanel from './order/index'
   export default {
     name: 'center',
     components: {
-      BreadCrumb,
-      MyHeader,
-      MyFooter,
       OrderPanel,
       LeftNav,
       Like

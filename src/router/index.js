@@ -8,7 +8,7 @@ Vue.use(Router)
 
 /* Layout */
 import HomeLayout from '../components/HomeLayout/index'
-import Layout from '../views/layout/Layout'
+import Layout from '../components/Layout/index'
 
 /**
 * hidden: true                   if `hidden:true` will not show in the sidebar(default is false)
@@ -26,19 +26,43 @@ import Layout from '../views/layout/Layout'
  **/
 export const constantRouterMap = [
   {
-    path: '/home', component: HomeLayout, hidden: true,
+    path: '/home', component: Layout, hidden: true,
     children: [
-      { path: '', hidden: true, component: () => import('@/views/home/index'), meta: { isHome: true } }
+      { path: '', component: HomeLayout, hidden: true,
+        children:[
+          { path: '', hidden: true, component: () => import('@/views/home/index'), meta: { isHome: true }}
+        ]
+      }
     ]
   },
 
-  { path: '/schedule', component: HomeLayout, hidden: true,
+  { path: '/schedule', component: Layout, hidden: true,
     children: [
-      { path: '', hidden: true, component: () => import('@/views/schedule/index'), meta: { isHome: false } }
+      { path: '', component: HomeLayout, hidden: true,
+        children:[
+          { path: '', hidden: true, component: () => import('@/views/schedule/index'), meta: { isHome: false } }
+        ]
+      }
     ]
   },
-  { path: '/detail/:programId', component: () => import('@/views/detail/index'), hidden: true },
-  { path: '/center', component: () => import('@/views/center/index'), hidden: true },
+  { path: '/detail/:programId', component:Layout, hidden: true,
+    children:[
+      { path: '', hidden: true, component: () => import('@/views/detail/index') }
+    ]
+  },
+  { path: '/center', component:Layout, hidden: true,
+    children:[
+      {
+        path: 'manage', hidden: true, component: () => import('@/views/center/index'),
+        children:[
+          { path: 'order', hidden: true,  component: () => import('@/views/center/order/index'),  meta: { isOrder: true }},
+          { path: 'like', hidden: true,  component: () => import('@/views/center/like/index'),  meta: { isOrder: false }}
+        ]
+      }
+    ]
+  },
+
+
   { path: '/member_active/:activeUrl', component: () => import('@/views/memberActive/index'), hidden: true
   },
   { path: '/login', component: () => import('@/views/login/index'), hidden: true },

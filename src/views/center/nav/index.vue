@@ -3,12 +3,22 @@
     <div class="title">个人中心</div>
     <div>
       <ul>
-        <li class="is-active">
-          订单管理
-        </li>
-        <li>
-          我的收藏
-        </li>
+        <template v-if="this.$route.meta.isOrder">
+          <li @click="manageOrder"  class="is-active">
+              订单管理
+          </li>
+          <li @click="manageLike" >
+            我的收藏
+          </li>
+        </template>
+        <template v-else>
+          <li @click="manageOrder" >
+            订单管理
+          </li>
+          <li @click="manageLike" class="is-active">
+            我的收藏
+          </li>
+        </template>
       </ul>
     </div>
   </div>
@@ -26,7 +36,13 @@
       }
     },
     methods: {
+      manageOrder(){
+        this.$router.push('/center/manage/order')
 
+      },
+      manageLike(){
+        this.$router.push('/center/manage/like')
+      }
     }
   }
 </script>
