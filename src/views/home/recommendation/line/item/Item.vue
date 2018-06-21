@@ -119,7 +119,7 @@
     display: -webkit-box;
     -webkit-box-orient: vertical;
     overflow:hidden;
-    /*height: 52px;*/
+    height: 29px;
     width: 100%;
     color:whitesmoke;
     /*padding-left: 20px;*/

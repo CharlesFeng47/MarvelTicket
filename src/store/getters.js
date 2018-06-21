@@ -48,6 +48,7 @@ const getters = {
   order_total_price: state => state.order.order_total_price,
 
   // 当前城市
-  cur_city: state => state.home.cur_city
+  cur_city: state => state.home.cur_city,
+  show_popover : state => state.home.show_popover
 }
 export default getters

@@ -20,7 +20,7 @@
 
           <!--</el-col>-->
           <el-col :span="8"  class="search-group">
-            <InputGroup :isShow="isShow" v-on:showPanel="$emit('showPanel')" v-on:hidePanel="$emit('hidePanel')"></InputGroup>
+            <InputGroup></InputGroup>
           </el-col>
           <el-col :span="3">
             <div style="margin-top: 28px">
@@ -74,9 +74,7 @@
     components: {
       Popover, InputGroup, LoginPanel
     },
-    props:[
-      "isShow"
-    ],
+
     data() {
       return {
         formInline: {

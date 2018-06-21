@@ -5,9 +5,12 @@
         <div style="position: relative">
           <el-input @input="search" @click.stop="" placeholder="搜索演出信息"></el-input>
         </div>
-        <div id="search-panel" @click.stop="" v-show="isShow">
+        <div id="search-panel" @click.stop="" v-show="show_popover">
           <ul v-show = "!isLoading">
-            <li v-for="result in searchResults">
+            <div v-if="searchResults.length == 0" style="margin: 30px auto 30px;text-align: center">
+              您的输入没有搜索结果
+            </div>
+            <li v-else v-for="result in searchResults">
               <a :href = "result.programID">
                 <el-row>
                   <el-col :span="17">
@@ -33,6 +36,7 @@
 </template>
 
 <script>
+  import { mapGetters } from 'vuex'
   import { previewSearch } from "../../../api/program";
   import ElRow from "element-ui/packages/row/src/row";
   export default {
@@ -44,25 +48,38 @@
         searchResults : []
       }
     },
-    props:[
-      "isShow"
-    ],
+
+    computed: {
+      ...mapGetters([
+        'show_popover',
+        'getIsShow'
+      ])
+    },
     methods: {
       onSubmit() {
         console.log('submit!')
       },
+      // getIsShow: {
+      //   handler: function (newVal, oldVal) {
+      //     alert(this.show_popover)
+      //   }
+      // },
       search(str){
 
         this.searchResults=[]
         if(str!="") {
           // console.log(str)
-          this.$emit('showPanel')
+          // this.$emit('showPanel')
+          this.$store.dispatch('ShowPopover', {
+          }).then(() => {
+          }).catch(() => {
+          })
           this.isLoading = true;
           new Promise((resolve, reject) => {
             previewSearch(str).then(response => {
               if (response.state === 'OK') {
                 var recommends = JSON.parse(response.object)
-                console.log(recommends)
+                // console.log(recommends)
                 for(var i =0 ;i < recommends.length;i++){
                   var result = {}
 
@@ -72,7 +89,7 @@
                   // console.log(result)
                   this.searchResults.push(result)
                 }
-                console.log(this.searchResults)
+                // console.log(this.searchResults)
               }
               resolve()
             }).catch(error => {
@@ -84,7 +101,10 @@
             this.isLoading = false
           })
         }else{
-          this.$emit('hidePanel')
+          this.$store.dispatch('HidePopover', {
+          }).then(() => {
+          }).catch(() => {
+          })
         }
       },
     }

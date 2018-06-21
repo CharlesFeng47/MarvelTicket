@@ -1,7 +1,7 @@
 <template>
   <div @click="hideSearch">
     <!--isShow 是用来判断是否让搜索弹框消失 city用于判断当前城市-->
-    <MyHeader :isShow="isShow" v-on:showPanel="isShow=true" v-on:hidePanel="isShow=false"/>
+    <MyHeader/>
     <el-row>
       <el-col :span="18" :offset="3">
         <Navigate/>
@@ -27,6 +27,7 @@
   import Carousel from '../../views/home/carousel/index'
   import MyFooter from '../../components/MyFooter/index'
   import ElRow from "element-ui/packages/row/src/row";
+  import { mapGetters } from 'vuex'
 
   export default {
     components: {
@@ -38,12 +39,19 @@
     },
     data(){
       return{
-        isShow:false,
       }
+    },
+    computed: {
+      ...mapGetters([
+        'show_popover',
+      ])
     },
     methods:{
       hideSearch(){
-        this.isShow = false
+        this.$store.dispatch('HidePopover', {
+        }).then(() => {
+        }).catch(() => {
+        })
       }
     }
   }
