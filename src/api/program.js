@@ -23,7 +23,7 @@ export function getProgramsByType(city, type) {
 }
 
 /**
- * 获取该类型的所有节目
+ * 模糊搜索
  */
 export function previewSearch(condition){
   return request({

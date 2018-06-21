@@ -50,7 +50,7 @@
     methods: {
       // 查看详情
       checkDetail: function () {
-        console.log('aaa')
+        console.log(this.programBrief)
         this.$router.push('/detail/' + this.programBrief.id)
       }
     }

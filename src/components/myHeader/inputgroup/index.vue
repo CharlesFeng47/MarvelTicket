@@ -8,7 +8,7 @@
         <div id="search-panel" @click.stop="" v-show="isShow">
           <ul v-show = "!isLoading">
             <li v-for="result in searchResults">
-              <a href="/">
+              <a :href = "result.programID">
                 <el-row>
                   <el-col :span="17">
                   <span class="name">{{ result.programName }}</span>
@@ -62,10 +62,11 @@
             previewSearch(str).then(response => {
               if (response.state === 'OK') {
                 var recommends = JSON.parse(response.object)
-                // console.log(recommends)
+                console.log(recommends)
                 for(var i =0 ;i < recommends.length;i++){
                   var result = {}
-                  result.programID = recommends[i].programID.startTime + " "+ recommends[i].programID.venueID
+
+                  result.programID = '/detail/'+ recommends[i].id
                   result.startTime = recommends[i].programID.startTime.split(" ")[0]
                   result.programName = recommends[i].programName
                   // console.log(result)

@@ -12,7 +12,7 @@
           </el-row>
         </el-col>
       </el-row>
-      <el-row class="row">
+      <el-row class="row" style="margin-top: 10px">
         <el-col :span="3" :offset="1" ><div class="">热门城市:</div></el-col>
         <el-col :span="19" :offset="1" >
           <el-row>
