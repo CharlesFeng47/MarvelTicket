@@ -1,10 +1,10 @@
 <template>
   <div class="order-nav">
     <ul>
-      <li class="active"><a href="">全部订单<div class="border-bottom"></div></a></li>
-      <li><a href="">未支付<div class="border-bottom"></div></a></li>
-      <li><a href="">待配票<div class="border-bottom"></div></a></li>
-      <li><a href="">已取消<div class="border-bottom"></div></a></li>
+      <li :class="{ active: typeActives.typeActive0 }"><a @click="link('/center/manage/order', '0')">全部订单<div class="border-bottom"></div></a></li>
+      <li :class="{ active: typeActives.typeActive1 }"><a @click="link('/center/manage/order', '1')">未支付<div class="border-bottom"></div></a></li>
+      <li :class="{ active: typeActives.typeActive2 }"><a @click="link('/center/manage/order', '2')">已支付<div class="border-bottom"></div></a></li>
+      <li :class="{ active: typeActives.typeActive3 }"><a @click="link('/center/manage/order', '3')">已取消<div class="border-bottom"></div></a></li>
       <li style="display: inline-block;padding-left:100%;"></li>
     </ul>
   </div>
@@ -17,10 +17,65 @@
     name: 'Order-nav',
     data() {
       return {
-
+        typeActives: {
+          typeActive0: true,
+          typeActive1: false,
+          typeActive2: true,
+          typeActive3: false,
+        }
       }
     },
-    methods: {}
+    computed: {
+      type: function () {
+        return this.$route.query.type
+      }
+    },
+    mounted: function () {
+      this.toActiveType(this.type)
+    },
+    watch: {
+      // 根据路由参数选定当前激活的type
+      type: {
+        handler: function (newVal, oldVal) {
+          this.toActiveType(newVal)
+        }
+      }
+    },
+    methods: {
+      link: function (route, type) {
+        this.$router.push(
+          {
+            path: route,
+            query: {
+              type: type
+            }
+          })
+      },
+
+      // 根据type激活二级导航
+      toActiveType(type) {
+        let _this = this
+        if (type === undefined) {
+          Object.keys(this.typeActives).forEach(function(key){
+            _this.typeActives[key] = false
+          })
+          this.typeActives.typeActive0 = true
+        } else {
+          Object.keys(this.typeActives).forEach(function(key){
+            if (key.charAt(key.length - 1) === type) {
+              _this.typeActives[key] = true
+            } else {
+              _this.typeActives[key] = false
+            }
+          })
+        }
+        // console.log('-------------')
+        // Object.keys(this.typeActives).forEach(function(key){
+        //   console.log(_this.typeActives[key])
+        // });
+        // console.log('-------------')
+      }
+    }
   }
 </script>
 

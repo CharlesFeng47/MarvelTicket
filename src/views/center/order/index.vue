@@ -18,8 +18,24 @@
       OrderNav,
       MyOrder
     },
+    computed: {
+      type: function () {
+        return this.$route.query.type
+      }
+    },
+    watch: {
+      // 根据路由参数选定当前激活的type
+      type: {
+        handler: function (newVal, oldVal) {
+          // todo 通过type获取指定订单
+          // type 0: 全部订单 1：未支付订单 2：已支付订单 3：已取消订单
+          // console.log(this.type)
+        }
+      }
+    },
     data() {
       return {
+        //todo 初始默认为全部订单
         orders:[
           {
             orderid : "1234567890",

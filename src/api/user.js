@@ -4,6 +4,27 @@ import { computeSeatNameNumMap } from '../utils/seat_chart_helper'
 const qs = require('qs')
 
 /**
+ * 收藏
+ */
+export function star(programID) {
+  return request({
+    url: '/user/star',
+    method: 'post',
+    data: qs.stringify({ programID: programID })
+  })
+}
+
+/**
+ * 获得收藏的节目
+ */
+export function getStarPrograms() {
+  return request({
+    url: '/user/getStarPrograms',
+    method: 'post'
+  })
+}
+
+/**
  * 获取单个用户
  */
 export function getUser(token) {

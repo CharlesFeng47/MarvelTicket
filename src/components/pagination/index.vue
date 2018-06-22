@@ -103,7 +103,7 @@
         }
       },
       change: function (page) {
-        window.scrollTo(0, 0);
+        $('html,body').animate({ scrollTop: 0 }, 300)
         this.$emit('changePage', page)
       }
     }

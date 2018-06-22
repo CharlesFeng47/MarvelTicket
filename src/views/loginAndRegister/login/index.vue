@@ -47,7 +47,7 @@
           this.loading = false
           console.log('登录成功')
           // todo 登录成功之后跳转
-          // this.$router.push({ path: '/' })
+          this.$router.go(-1);
         }).catch(() => {
           console.log('登录失败')
           // todo 登录失败时候的提示信息

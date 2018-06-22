@@ -79,7 +79,7 @@
     border-radius: 3px;
     .order-top{
       height: 30px;
-      background-color: #F56C6C;
+      background-color: #F78989;
       padding-left: 10px;
       line-height:30px;
     }

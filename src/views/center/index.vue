@@ -7,8 +7,6 @@
             <LeftNav/>
           </el-col>
           <el-col span="20">
-            <!--<OrderPanel/>-->
-            <!--<Like/>-->
             <transition name="fade">
               <keep-alive>
                 <router-view></router-view>

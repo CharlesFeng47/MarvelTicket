@@ -1,6 +1,7 @@
 <template>
   <span class="dialog">
-  <el-button type="text" @click="centerDialogVisible = true">登录/注册</el-button>
+  <!--<el-button type="text" @click="centerDialogVisible = true">登录/注册</el-button>-->
+  <el-button type="text" @click="login">登录/注册</el-button>
 
   <el-dialog
     title="欢迎来到MarvelTicket"
@@ -72,6 +73,9 @@
             return false
           }
         })
+      },
+      login(){
+        this.$router.push("loginAndRegister/login");
       }
     }
   }
