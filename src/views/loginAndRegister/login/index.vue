@@ -74,7 +74,7 @@
               this.loading = false
               alert("登录成功");
               // this.$router.go(-1)
-              this.$router.push({ path: '/home' })
+              this.$router.push('/home')
             }).catch(() => {
               this.loading = false
             })

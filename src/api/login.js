@@ -75,7 +75,7 @@ export function spotSignUp(spot_basic, spot_seats_map, cur_seat_type_count, seat
  */
 export function getInfo(token) {
   return request({
-    url: '/login/info',
+    url: '/user/token',
     method: 'post',
     data: qs.stringify({ token: token })
   })

@@ -23,45 +23,12 @@
             <InputGroup></InputGroup>
           </el-col>
           <el-col :span="3">
-            <div style="margin-top: 28px">
-          <span class="svg-container">
-            <a href="/center"><svg-icon icon-class="user"/></a>
-            <LoginPanel></LoginPanel>
-        </span>
-            </div>
+                <LoginPanel></LoginPanel>
           </el-col>
         </el-row>
       </el-col>
     </el-row>
   </div>
-  <!--<div class="my-header">-->
-    <!--<el-row>-->
-      <!--<el-col :span="3" :offset="2">-->
-        <!--<a href="/home">-->
-          <!--<div class="logo">-->
-            <!--Marvel-->
-            <!--&lt;!&ndash;<img src="../../assets/logo.png" width="100%"/>&ndash;&gt;-->
-          <!--</div>-->
-        <!--</a>-->
-      <!--</el-col>-->
-      <!--<el-col :span="2" class="location">-->
-        <!--<div class="location-choose">-->
-          <!--<Popover></Popover>-->
-        <!--</div>-->
-      <!--</el-col>-->
-      <!--<el-col :span="7" :offset="2" class="search-group">-->
-        <!--<InputGroup></InputGroup>-->
-      <!--</el-col>-->
-      <!--<el-col :span="3" :offset="3">-->
-        <!--<div style="margin-top: 35px">-->
-          <!--<span class="svg-container">-->
-            <!--<a href="/center"><svg-icon icon-class="user"/></a>-->
-            <!--<LoginPanel></LoginPanel>-->
-        <!--</span>-->
-        <!--</div>-->
-      <!--</el-col>-->
-    <!--</el-row>-->
-  <!--</div>-->
 </template>
 
 <script>
@@ -77,11 +44,7 @@
 
     data() {
       return {
-        formInline: {
-          user: '',
-          region: ''
-        },
-        message: '',
+
       }
     },
     methods: {
@@ -110,13 +73,6 @@
     margin-top: 25px;
   }
 
-  .svg-container {
-    color: #777777;
-    vertical-align: middle;
-    display: inline-block;
-    font-size: 22px;
-    font-weight: bold;
-  }
 
   .my-header {
     border-bottom: #E5EAEF solid 1px;

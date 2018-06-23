@@ -10,6 +10,12 @@ const user = {
     roles: [],
     spot_examined: false
   },
+  getters:{
+    // 参数列表state指的是state数据
+    getToken: state => {
+      return state.token;
+    }
+  },
   mutations: {
     SET_TOKEN: (state, token) => {
       state.token = token
@@ -140,22 +146,23 @@ const user = {
 
     // 获取用户信息
     GetInfo({ commit, state }) {
-      // return new Promise((resolve, reject) => {
-      //   getInfo(state.token).then(response => {
-      //     if (response.state === 'OK') {
-      //       const data = JSON.parse(response.object)
-      //       console.log(data)
-      //       commit('SET_ROLES', data.role)
-      //       commit('SET_NAME', data.user.id)
-      //       // 场馆多一个是否已被审核通过的属性
-      //       if (data.role[0] === 'SPOT') commit('SET_SPOT_EXAMINED', data.examined)
-      //       // commit('SET_AVATAR', data.avatar)
-      //     }
-      //     resolve(response)
-      //   }).catch(error => {
-      //     reject(error)
-      //   })
-      // })
+      //    TODO fjj
+      return new Promise((resolve, reject) => {
+        getInfo(state.token).then(response => {
+          if (response.state === 'OK') {
+            const data = JSON.parse(response.object)
+            console.log(data)
+            commit('SET_ROLES', data.role)
+            commit('SET_NAME', data.user.id)
+            // 场馆多一个是否已被审核通过的属性
+            // if (data.role[0] === 'SPOT') commit('SET_SPOT_EXAMINED', data.examined)
+            // commit('SET_AVATAR', data.avatar)
+          }
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
     },
 
     // 登出
