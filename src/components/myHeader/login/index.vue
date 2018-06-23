@@ -1,10 +1,12 @@
 <template>
   <div>
     <div v-if="!hasLogin" style="margin-top: 28px">
-      <span class="svg-container"  @click="login">
+      <a href="/loginAndRegister/login">
+      <span class="svg-container">
         <svg-icon icon-class="user"/>
         <el-button type="text">登录/注册</el-button>
       </span>
+      </a>
     </div>
     <div v-else>
       <a href="/center/manage/order">
@@ -31,13 +33,18 @@
     computed: {
       ...mapGetters([
         'token',
-        'getToken'
+        'message',
+        'getToken',
+        'getMessage'
       ])
     },
     mounted:function () {
+      console.log(getToken())
       if(getToken()){
         this.hasLogin = true
         this.initMemberMessage()
+      }else{
+        this.hasLogin =false
       }
     },
     watch:{
@@ -47,31 +54,29 @@
             this.hasLogin=false
           }else{
             this.hasLogin=true
-            // this.initMemberMessage()
+            this.initMemberMessage()
           }
         }
       },
+      getMessage: {
+        handler: function (newVal, oldVal) {
+          this.portrait = this.message.portrait
+        }
+      }
     },
     methods: {
-      submitForm(formName) {
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            alert('submit!')
-          } else {
-            console.log('error submit!!')
-            return false
-          }
-        })
-      },
-      login(){
-        this.$router.push("loginAndRegister/login");
-      },
       initMemberMessage(){
         new Promise((resolve, reject) => {
           getInfo(this.token).then(response => {
             if (response.state === 'OK') {
               const data = JSON.parse(response.object)
-              this.portrait = data.portrait
+              //将用户信息保存
+              this.$store.dispatch('SetMessage', {
+                message: data
+              }).then(() => {
+                this.portrait = this.message.portrait
+              }).catch(() => {
+              })
             }
             resolve(response)
           }).catch(error => {
@@ -101,6 +106,7 @@
     img{
       width: 100%;
       height: 100%;
+      border-radius: 50%;
     }
   }
 </style>

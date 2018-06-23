@@ -55,8 +55,9 @@ export const constantRouterMap = [
       {
         path: 'manage', hidden: true, component: () => import('@/views/center/index'),
         children:[
-          { path: 'order', hidden: true,  component: () => import('@/views/center/order/index'),  meta: { isOrder: true }},
-          { path: 'like', hidden: true,  component: () => import('@/views/center/like/index'),  meta: { isOrder: false }}
+          { path: 'order', hidden: true,  component: () => import('@/views/center/order/index'),  meta: { manage: 1 }},
+          { path: 'like', hidden: true,  component: () => import('@/views/center/like/index'),  meta: { manage: 2 }},
+          { path: 'message', hidden: true,  component: () => import('@/views/center/message/index'),  meta: { manage: 3 }}
         ]
       }
     ]

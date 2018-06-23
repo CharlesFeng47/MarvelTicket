@@ -146,14 +146,14 @@
     .button-block {
       width: 20%;
       margin: 0px;
-    }
-    button {
-      width: 100%;
-      margin-top: 4px;
-      margin-bottom: 3px;
-      border-radius: 16px;
-      height: 32px;
-      padding-top: 9px;
+      button {
+        width: 100%;
+        margin-top: 4px;
+        margin-bottom: 3px;
+        border-radius: 16px;
+        height: 32px;
+        padding-top: 9px;
+      }
     }
     #search-panel {
       position: absolute;

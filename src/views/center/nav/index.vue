@@ -3,12 +3,17 @@
     <div class="title">个人中心</div>
     <div>
       <ul>
-          <li @click="manageOrder"  :class="{ active:$route.meta.isOrder}">
-              订单管理
-          </li>
-          <li @click="manageLike" :class="{ active:!$route.meta.isOrder}" >
-            我的收藏
-          </li>
+        <li @click="manageOrder"  :class="{ active:$route.meta.manage==1}">
+          订单管理
+        </li>
+        <li @click="manageLike" :class="{ active:$route.meta.manage==2}" >
+          我的收藏
+        </li>
+        <li @click="manageMine" :class="{ active:$route.meta.manage==3}" >
+          我的信息
+        </li>
+
+
       </ul>
     </div>
   </div>
@@ -31,6 +36,9 @@
       },
       manageLike(){
         this.$router.push('/center/manage/like')
+      },
+      manageMine(){
+        this.$router.push('/center/manage/message')
       }
     }
   }

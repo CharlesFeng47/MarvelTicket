@@ -16,7 +16,6 @@
 </template>
 
 <script>
-  import qs from 'qs'
   import { isValidUsername, isValidateEmail } from '@/utils/validate'
 
   export default {

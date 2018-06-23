@@ -3,10 +3,10 @@
     <el-row>
       <el-col :offset="3" :span="18">
         <el-row :gutter="60" style="margin-top: 40px">
-          <el-col span="4">
+          <el-col :span="4">
             <LeftNav/>
           </el-col>
-          <el-col span="20">
+          <el-col :span="20">
             <transition name="fade">
               <keep-alive>
                 <router-view></router-view>

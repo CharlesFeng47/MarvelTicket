@@ -8,17 +8,24 @@ const user = {
     name: '',
     // avatar: '',
     roles: [],
-    spot_examined: false
+    spot_examined: false,
+    message : {}
   },
   getters:{
     // 参数列表state指的是state数据
     getToken: state => {
+      return state.token;
+    },
+    getMessage: state => {
       return state.token;
     }
   },
   mutations: {
     SET_TOKEN: (state, token) => {
       state.token = token
+    },
+    SET_MESSAGE: (state, message) => {
+      state.message = message
     },
     SET_NAME: (state, name) => {
       state.name = name
@@ -35,6 +42,10 @@ const user = {
   },
 
   actions: {
+    //设置用户的信息
+    SetMessage({ commit }, message){
+      commit('SET_MESSAGE', message.message)
+    },
     // 登录
     Login({ commit }, userInfo) {
       // const username = userInfo.username.trim()
