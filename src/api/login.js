@@ -6,7 +6,7 @@ const qs = require('qs')
 /**
  * 登录
  */
-export function login(username, password, userType) {
+/*export function login(username, password, userType) {
   return request({
     url: '/login',
     method: 'post',
@@ -16,14 +16,29 @@ export function login(username, password, userType) {
       userType
     })
   })
+}*/
+/**
+ * 登录
+ */
+export function login(email, password, userType) {
+  return request({
+    url: '/user/user_login',
+    method: 'post',
+    data: qs.stringify({
+      email,
+      password
+    })
+  })
 }
+
 
 /**
  * 会员注册
  */
 export function memberSignUp(username, password, email) {
   return request({
-    url: '/login/member_sign_up',
+    // url: '/login/member_sign_up',
+    url: '/user/user_sign_up',
     method: 'post',
     data: qs.stringify({
       username,

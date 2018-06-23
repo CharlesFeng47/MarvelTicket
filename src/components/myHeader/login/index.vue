@@ -26,6 +26,8 @@
 </template>
 
 <script>
+  import { getToken } from '../../../utils/auth' // 验权
+  import { mapGetters } from 'vuex'
   export default {
     name: 'login-panel',
     data: function() {
@@ -60,6 +62,17 @@
             { validator: validatePass, trigger: 'blur' }
           ]
         }
+      }
+    },
+    computed: {
+      ...mapGetters([
+        'token'
+      ])
+    },
+    mounted:function () {
+      console.log(this.token)
+      if(getToken()){
+        alert("login success")
       }
     },
     components: {},

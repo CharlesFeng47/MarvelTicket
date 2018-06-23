@@ -10,7 +10,6 @@ const user = {
     roles: [],
     spot_examined: false
   },
-
   mutations: {
     SET_TOKEN: (state, token) => {
       state.token = token
@@ -32,17 +31,18 @@ const user = {
   actions: {
     // 登录
     Login({ commit }, userInfo) {
-      const username = userInfo.username.trim()
+      // const username = userInfo.username.trim()
       return new Promise((resolve, reject) => {
-        login(username, userInfo.password, userInfo.userType).then(response => {
+        login(userInfo.email, userInfo.password, userInfo.userType).then(response => {
           if (response.state === 'OK') {
             const token = JSON.parse(response.object)
             setToken(token)
             commit('SET_TOKEN', token)
             // 因为是根据token再使用GetInfo()获取的用户编号，但是因为一开始刚登录还未根据token去获取，所以先设置一下。。
-            commit('SET_NAME', username)
+            commit('SET_NAME', userInfo.username)
             console.log('login finish')
-          } else {
+          }
+          else {
             var errorMsg = '未知错误，请联系管理员！'
             if (response.state === 'USER_NOT_EXIST') {
               switch (userInfo.userType) {
@@ -78,11 +78,12 @@ const user = {
 
     // 会员注册
     MemberSignUp({ commit }, userInfo) {
-      const username = userInfo.username.trim()
+      // const username = userInfo.username.trim()
       return new Promise((resolve, reject) => {
-        memberSignUp(username, userInfo.password, userInfo.email).then(response => {
+        memberSignUp(userInfo.username, userInfo.password, userInfo.email).then(response => {
           if (response.state === 'OK') {
             const token = JSON.parse(response.object)
+            //TODO fjj 注册完不是应该先验证之后才setToken吗
             setToken(token)
             commit('SET_TOKEN', token)
             // 因为是根据token再使用GetInfo()获取的用户编号，但是因为一开始刚登录还未根据token去获取，所以先设置一下。。
@@ -139,22 +140,22 @@ const user = {
 
     // 获取用户信息
     GetInfo({ commit, state }) {
-      return new Promise((resolve, reject) => {
-        getInfo(state.token).then(response => {
-          if (response.state === 'OK') {
-            const data = JSON.parse(response.object)
-            console.log(data)
-            commit('SET_ROLES', data.role)
-            commit('SET_NAME', data.user.id)
-            // 场馆多一个是否已被审核通过的属性
-            if (data.role[0] === 'SPOT') commit('SET_SPOT_EXAMINED', data.examined)
-            // commit('SET_AVATAR', data.avatar)
-          }
-          resolve(response)
-        }).catch(error => {
-          reject(error)
-        })
-      })
+      // return new Promise((resolve, reject) => {
+      //   getInfo(state.token).then(response => {
+      //     if (response.state === 'OK') {
+      //       const data = JSON.parse(response.object)
+      //       console.log(data)
+      //       commit('SET_ROLES', data.role)
+      //       commit('SET_NAME', data.user.id)
+      //       // 场馆多一个是否已被审核通过的属性
+      //       if (data.role[0] === 'SPOT') commit('SET_SPOT_EXAMINED', data.examined)
+      //       // commit('SET_AVATAR', data.avatar)
+      //     }
+      //     resolve(response)
+      //   }).catch(error => {
+      //     reject(error)
+      //   })
+      // })
     },
 
     // 登出
