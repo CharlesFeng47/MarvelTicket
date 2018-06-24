@@ -12,33 +12,31 @@
     </el-row>
     <el-row type="flex" :gutter="25">
       <el-col :span="5">
-        <Item :schedule-brief="line.recommendations[0]"></Item>
+        <RecommendationItem :schedule-brief="line.recommendations[0]"></RecommendationItem>
       </el-col>
       <el-col :span="5">
-        <Item :schedule-brief="line.recommendations[1]"></Item>
+        <RecommendationItem :schedule-brief="line.recommendations[1]"></RecommendationItem>
       </el-col>
       <el-col :span="5">
-        <Item :schedule-brief="line.recommendations[2]"></Item>
+        <RecommendationItem :schedule-brief="line.recommendations[2]"></RecommendationItem>
       </el-col>
       <el-col :span="5">
-        <Item :schedule-brief="line.recommendations[3]"></Item>
+        <RecommendationItem :schedule-brief="line.recommendations[3]"></RecommendationItem>
       </el-col>
       <el-col :span="5">
-        <Item :schedule-brief="line.recommendations[4]"></Item>
+        <RecommendationItem :schedule-brief="line.recommendations[4]"></RecommendationItem>
       </el-col>
     </el-row>
   </div>
 </template>
 
 <script>
-  import RecommendationItem from './item/RecommendationItem'
-  import Item from './item/Item'
+  import RecommendationItem from './item/index'
 
   export default {
     name: 'RecommendationLine',
     components: {
-      RecommendationItem,
-      Item
+      RecommendationItem
     },
     props: [
       'line'

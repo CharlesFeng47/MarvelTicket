@@ -12,8 +12,14 @@
         {{ programDetail.title }}
       </div>
       <div class="show-info">
-        <i class="el-icon-time"/><span>{{ programDetail.time }}</span>
-        <i class="el-icon-location-outline"/><span>{{ programDetail.spot }}</span>
+        <i class="el-icon-time"/><span>{{ programDetail.time }} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        <i class="el-icon-location-outline"/>
+
+        <!--TODO gy 加了effect="light"之后，底色也被渲染为橘色，你看看吧。。-->
+        <!--<el-tooltip :content="programDetail.address" placement="right" effect="light">-->
+        <el-tooltip :content="programDetail.address" placement="right">
+          <span>{{ programDetail.spot }}</span>
+        </el-tooltip>
       </div>
 
       <div class="ticket-info">
@@ -36,7 +42,8 @@
           <el-col :span="20" class="price-list">
             <div>
               <template v-for="par in programDetail.pars">
-                <el-radio v-model="curParPrice" :label="par.basePrice" border size="medium">{{ par.basePrice }} | {{ par.comments }}</el-radio>
+                <el-radio v-if="par.comments===''" v-model="curParPrice" :label="par.basePrice" border size="medium">{{ par.basePrice }}</el-radio>
+                <el-radio v-if="par.comments!==''" v-model="curParPrice" :label="par.basePrice" border size="medium">{{ par.basePrice }} | {{ par.comments }}</el-radio>
               </template>
             </div>
           </el-col>
@@ -114,7 +121,7 @@
         return this.curParPrice * this.buyNum;
       }
     },
-    mounted: function () {
+    activated: function () {
       this.programDetailLoading = true
       new Promise((resolve, reject) => {
         getProgramDetail(this.$route.params.programId).then(response => {
@@ -134,18 +141,16 @@
     },
     methods: {
       fulfillProgramDetail: function (detail) {
-        console.log(detail)
-
         this.programDetail.id = detail.id
         this.programDetail.title = detail.programName
         this.programDetail.posterSrc = detail.poster
         this.programDetail.time= detail.time
-        this.programDetail.spot = detail.venueName + '（' + detail.address + '）'
+        this.programDetail.spot = detail.venueName
+        this.programDetail.address = detail.address
         this.programDetail.viewNum = detail.scanVolume
         this.programDetail.favoriteNum = detail.favoriteVolume
         this.programDetail.fields = detail.fields
         this.programDetail.pars = detail.parIDs
-        console.log(this.programDetail)
 
         this.initDefaultFieldAndParAndBuyNum(this.programDetail.fields, this.programDetail.pars)
       },
