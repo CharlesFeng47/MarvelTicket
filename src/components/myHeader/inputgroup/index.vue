@@ -63,7 +63,9 @@
           this.$router.push({
             path: '/search',
             query: {
-              key: this.key
+              key: this.key,
+              isHome: false,
+              isSearch: true
             }
           })
         } else {

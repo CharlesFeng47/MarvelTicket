@@ -57,7 +57,9 @@
           {
             path: route,
             query: {
-              type: type
+              type: type,
+              isHome: false,
+              isSearch: false
             }
           })
       },

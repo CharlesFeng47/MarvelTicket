@@ -6,8 +6,10 @@ import Router from 'vue-router'
 
 Vue.use(Router)
 
-/* Layout */
+/* 首页的 Layout */
 import HomeLayout from '../components/HomeLayout/index'
+
+/* 回到顶部的 Layout */
 import Layout from '../components/Layout/index'
 
 /**
@@ -22,6 +24,8 @@ import Layout from '../components/Layout/index'
     title: 'title'               the name show in submenu and breadcrumb (recommend set)
     icon: 'svg-name'             the icon show in the sidebar,
     noCache: true                if true ,the page will no be cached(default is false)
+    isHome: true                 展示首页轮播图
+    isSearch: true               搜索界面不展示二级导航
   }
  **/
 export const constantRouterMap = [
@@ -30,7 +34,7 @@ export const constantRouterMap = [
     children: [
       { path: '', component: HomeLayout, hidden: true,
         children:[
-          { path: '', hidden: true, component: () => import('@/views/home/index'), meta: { isHome: true,isSearch:false }}
+          { path: '', hidden: true, component: () => import('@/views/home/index'), meta: { isHome: true, isSearch: false }}
         ]
       }
     ]
@@ -40,7 +44,7 @@ export const constantRouterMap = [
     children: [
       { path: '', component: HomeLayout, hidden: true,
         children:[
-          { path: '', hidden: true, component: () => import('@/views/schedule/index'), meta: { isHome: false,isSearch:false  } }
+          { path: '', hidden: true, component: () => import('@/views/schedule/index'), meta: { isHome: false, isSearch: false  }}
         ]
       }
     ]
@@ -49,7 +53,7 @@ export const constantRouterMap = [
     children: [
       { path: '', component: HomeLayout, hidden: true,
         children:[
-          { path: '', hidden: true, component: () => import('@/views/schedule/index'), meta: { isHome: false,isSearch:true } }
+          { path: '', hidden: true, component: () => import('@/views/schedule/index'), meta: { isHome: false, isSearch: true }}
         ]
       }
     ]

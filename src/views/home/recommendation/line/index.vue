@@ -48,7 +48,9 @@
         this.$router.push({
           path: "/schedule",
           query: {
-            type: type
+            type: type,
+            isHome: false,
+            isSearch: false
           }
         })
       }

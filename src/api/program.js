@@ -23,6 +23,16 @@ export function getProgramsByType(city, type) {
 }
 
 /**
+ * 获取该关键字相关的所有节目
+ */
+export function getProgramsBySearchKey(key) {
+  return request({
+    url: '/program/search?conditions=' + key,
+    method: 'get'
+  })
+}
+
+/**
  * 模糊搜索
  */
 export function previewSearch(condition){

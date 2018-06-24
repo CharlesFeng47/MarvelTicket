@@ -24,12 +24,13 @@
 
       // 查看此类型的更多节目
       checkProgramsOfSameType() {
-        console.log('aaa')
         var type = getProgramTypeIdByEnum(this.programDetail.typeEnum);
         this.$router.push({
           path: "/schedule",
           query: {
-            type: type
+            type: type,
+            isHome: false,
+            isSearch: false
           }
         })
       }
