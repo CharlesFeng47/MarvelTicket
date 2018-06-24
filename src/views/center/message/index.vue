@@ -223,6 +223,8 @@
         //todo 修改密码
       },
       handlePreview(file) {
+        console.log(file)
+        console.log( URL.createObjectURL(file.raw))
         const isJPG = file.raw.type == 'image/jpeg';
         const isLt2M = file.raw.size / 1024 / 1024 < 2;
         const isPNG = file.raw.type == 'image/png'
