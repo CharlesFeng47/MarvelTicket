@@ -1,11 +1,9 @@
 <template>
   <div @click="hideSearch">
     <MyHeader/>
-    <transition name="fade">
       <keep-alive>
         <router-view></router-view>
       </keep-alive>
-    </transition>
     <div class="quick-button">
       <el-tooltip class="item" effect="light" content="回到顶部" placement="left">
         <el-button @click="backToTop"><i class="el-icon-arrow-up"></i></el-button>

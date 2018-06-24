@@ -4,7 +4,7 @@
       <img :src="programDetail.posterSrc">
       <div class="count">
         <i class="el-icon-view"></i>{{ programDetail.viewNum }}人浏览
-        <i class="el-icon-star-on"></i><span id="favourNum">{{ programDetail.favoriteNum }}</span>人想看
+        <span id="myLike" v-bind:class="programDetail.star ? 'hasStar': 'no' " @click="changeStar()"><i class="el-icon-star-on"></i><span id="favourNum">{{ programDetail.favoriteNum }}</span>人想看</span>
       </div>
     </div>
     <div class="detail">
@@ -53,8 +53,7 @@
               <span v-show="buyNum===6" style="padding-top: 1px">+</span>
               <span v-show="buyNum!==6" style="color: #F78978;padding-top: 1px" @click="add">+</span>
             </div>
-            <!--TODO gy 警告色红色-->
-            <div v-show="buyNum===6" style="color: #b71a4c;font-size: 12px;margin-top: -28px;margin-left: 120px">
+            <div v-show="buyNum===6" style="color: red;font-size: 12px;margin-top: -28px;margin-left: 120px">
               一次最多只能购买6张
             </div>
           </el-col>
@@ -100,7 +99,8 @@
           // 场次
           fields: [],
           // 票面
-          pars: []
+          pars: [],
+          star: false
         },
 
         // 当前选定的场次和票面
@@ -133,6 +133,10 @@
       })
     },
     methods: {
+      changeStar: function () {
+        this.programDetail.star=!this.programDetail.star
+
+      },
       fulfillProgramDetail: function (detail) {
         console.log(detail)
 
@@ -204,6 +208,12 @@
         margin-top: 6px;
         position: relative;
         text-align: center;
+      }
+      .hasStar{
+        color: #FF5161;
+      }
+      #myLike:hover{
+        cursor: pointer;
       }
     }
     .detail{
