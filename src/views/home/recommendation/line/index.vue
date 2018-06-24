@@ -32,6 +32,7 @@
 
 <script>
   import RecommendationItem from './item/index'
+  import { getProgramTypeIdByEnum } from "../../../../utils/program_helper";
 
   export default {
     name: 'RecommendationLine',
@@ -43,40 +44,13 @@
     ],
     methods:{
       findMore:function(){
-        var type = 0;
-        switch(this.line.title) {
-          case "演唱会":
-            type = 1;
-            break;
-          case "音乐会":
-            type = 2;
-            break;
-          case "舞蹈芭蕾":
-            type = 3;
-            break;
-          case "话剧歌剧":
-            type = 4;
-            break;
-          case "曲艺杂谈":
-            type = 5;
-            break;
-          case "体育赛事":
-            type = 6;
-            break;
-          case "儿童亲子":
-            type = 7;
-            break;
-          case "展览休闲":
-            type = 8;
-            break;
-        }
-          this.$router.push({
-            path:"/schedule",
-            query:{
-              type:type
-            }
-          })
-
+        var type = getProgramTypeIdByEnum(this.line.title);
+        this.$router.push({
+          path: "/schedule",
+          query: {
+            type: type
+          }
+        })
       }
     }
   }

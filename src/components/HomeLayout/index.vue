@@ -25,12 +25,9 @@
   import Navigate from './Navigate/index'
   import Carousel from '../../views/home/carousel/index'
   import MyFooter from '../../components/MyFooter/index'
-  import { mapGetters } from 'vuex'
-  import ElRow from "element-ui/packages/row/src/row";
 
   export default {
     components: {
-      ElRow,
       MyHeader,
       Navigate,
       Carousel,

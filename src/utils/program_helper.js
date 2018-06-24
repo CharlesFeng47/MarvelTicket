@@ -23,6 +23,30 @@ export function getProgramTypeEnum(type) {
 }
 
 /**
+ * 根据路由的枚举中文值获取其 type 号
+ */
+export function getProgramTypeIdByEnum(typeEnum) {
+  switch (typeEnum) {
+    case '演唱会':
+      return '1'
+    case '音乐会':
+      return '2'
+    case '舞蹈芭蕾':
+      return '3'
+    case '话剧歌剧':
+      return '4'
+    case '曲艺杂谈':
+      return '5'
+    case '体育赛事':
+      return '6'
+    case '儿童亲子':
+      return '7'
+    case '展览休闲':
+      return '8'
+  }
+}
+
+/**
  * 根据筛选条件筛选
  */
 export function toPick(pickCriteria, programBriefsOrigin) {

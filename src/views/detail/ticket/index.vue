@@ -1,5 +1,5 @@
 <template>
-  <div class="detail-container" v-loading="programDetailLoading">
+  <div class="detail-container">
     <div class="poster">
       <img :src="programDetail.posterSrc">
       <div class="count">
@@ -88,28 +88,13 @@
 </template>
 
 <script>
-  import { getProgramDetail } from "../../../api/program";
-
   export default {
     name: 'Detail',
+    props: [
+      'programDetail'
+    ],
     data() {
       return {
-        programDetailLoading: false,
-        programDetail: {
-          id: '',
-          title: '',
-          posterSrc: '',
-          // saleType: '',
-          time: '',
-          spot: '',
-          viewNum: '',
-          favoriteNum: '',
-          // 场次
-          fields: [],
-          // 票面
-          pars: []
-        },
-
         // 当前选定的场次和票面
         curField: '',
         curParPrice: 0,
@@ -118,44 +103,14 @@
     },
     computed: {
       price: function () {
+        // console.log('field: ' + this.curField)
+        // console.log('price: ' + this.curParPrice)
+        // console.log('num: ' + this.buyNum)
         return this.curParPrice * this.buyNum;
       }
     },
-    activated: function () {
-      this.programDetailLoading = true
-      new Promise((resolve, reject) => {
-        getProgramDetail(this.$route.params.programId).then(response => {
-          if (response.state === 'OK') {
-            const detail = JSON.parse(response.object)
-            this.fulfillProgramDetail(detail)
-          }
-          resolve()
-        }).catch(error => {
-          reject(error)
-        })
-      }).then(() => {
-        this.programDetailLoading = false
-      }).catch(() => {
-        this.programDetailLoading = false
-      })
-    },
     methods: {
-      fulfillProgramDetail: function (detail) {
-        this.programDetail.id = detail.id
-        this.programDetail.title = detail.programName
-        this.programDetail.posterSrc = detail.poster
-        this.programDetail.time= detail.time
-        this.programDetail.spot = detail.venueName
-        this.programDetail.address = detail.address
-        this.programDetail.viewNum = detail.scanVolume
-        this.programDetail.favoriteNum = detail.favoriteVolume
-        this.programDetail.fields = detail.fields
-        this.programDetail.pars = detail.parIDs
-
-        this.initDefaultFieldAndParAndBuyNum(this.programDetail.fields, this.programDetail.pars)
-      },
-
-      // 从当前节目的场次和票面中选择第一个作为默认显示
+      // 从当前节目的场次和票面中选择第一个作为默认显示，当父组件加载完数据后调用此方法
       initDefaultFieldAndParAndBuyNum(fields, pars) {
         this.curField = fields[0]
         this.curParPrice = pars[0].basePrice
