@@ -72,8 +72,7 @@
     },
     computed: {
       ...mapGetters([
-        'cur_city',
-        'getCity'
+        'cur_city'
       ]),
       type: function () {
         return this.$route.query.type
@@ -95,7 +94,7 @@
           this.refreshBriefs()
         }
       },
-      getCity: {
+      cur_city: {
         handler: function (newVal, oldVal) {
           this.initCurProgramsByType(this.type)
         }
