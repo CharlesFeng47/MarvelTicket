@@ -7,7 +7,7 @@
 
       <el-col :span="12">
         <!--TODO 查看更多的图标可以替换为真正的图标-->
-        <p class="find_more" style="text-align: right;margin-top: 30px;"><span @click="findMore()">查看更多></span></p>
+        <p class="find_more" style="text-align: right;margin-top: 30px;"><span @click="findMore()">查看更多&gt;</span></p>
       </el-col>
     </el-row>
     <el-row type="flex" :gutter="25">
@@ -32,7 +32,7 @@
 
 <script>
   import RecommendationItem from './item/index'
-  import { getProgramTypeIdByEnum } from "../../../../utils/program_helper";
+  import { getProgramTypeIdByEnum } from '../../../../utils/program_helper'
 
   export default {
     name: 'RecommendationLine',

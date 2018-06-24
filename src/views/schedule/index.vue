@@ -42,11 +42,9 @@
   import { getProgramTypeEnum } from '../../utils/program_helper'
   import { toPick, toSort } from '../../utils/program_helper'
   import { mapGetters } from 'vuex'
-  import ElRow from "element-ui/packages/row/src/row";
 
   export default {
     components: {
-      ElRow,
       BriefItem,
       Pagination
     },

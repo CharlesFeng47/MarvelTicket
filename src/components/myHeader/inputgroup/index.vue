@@ -37,8 +37,9 @@
 
 <script>
   import { mapGetters } from 'vuex'
-  import { previewSearch } from "../../../api/program";
+  import { previewSearch } from '../../../api/program'
   import ElRow from "element-ui/packages/row/src/row";
+
   export default {
     name: 'input-group',
     components: {ElRow},

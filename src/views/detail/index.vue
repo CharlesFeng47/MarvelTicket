@@ -3,10 +3,10 @@
     <el-row>
       <el-col :offset="3" :span="18">
         <el-row>
-          <BreadCrumb/>
+          <BreadCrumb :program-detail="programDetail"/>
         </el-row>
         <el-row>
-          <Detail :program-detail="programDetail" ref="detail"/>
+          <TicketDetail :program-detail="programDetail" ref="detail"/>
         </el-row>
       </el-col>
     </el-row>
@@ -16,14 +16,14 @@
 
 <script>
   import BreadCrumb from '../../components/MyBreadCrumb/index'
-  import Detail from './ticket/index'
-  import { getProgramDetail } from "../../api/program";
+  import TicketDetail from './ticket/index'
+  import { getProgramDetail } from '../../api/program'
 
   export default {
     name: 'detail',
     components: {
       BreadCrumb,
-      Detail,
+      TicketDetail,
     },
     data() {
       return {
@@ -64,7 +64,9 @@
     },
     methods: {
       fulfillProgramDetail: function (detail) {
+        console.log(detail)
         this.programDetail.id = detail.id
+        this.programDetail.typeEnum = detail.programType
         this.programDetail.title = detail.programName
         this.programDetail.posterSrc = detail.poster
         this.programDetail.time= detail.time
@@ -75,6 +77,7 @@
         this.programDetail.fields = detail.fields
         this.programDetail.pars = detail.parIDs
 
+        // 初始化默认的票面选择
         this.$refs.detail.initDefaultFieldAndParAndBuyNum(this.programDetail.fields, this.programDetail.pars)
       }
     }
