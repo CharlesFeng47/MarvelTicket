@@ -22,10 +22,10 @@
             <div class="el-upload__text">拖拽，或<em>点击上传</em></div>
           </el-upload>
           <el-row>
-            <el-col :span="10" :offset="0" class="button-block">
+            <el-col :span="10" :offset="0" class="button-block-sm">
               <el-button type="info" @click="cancelModifyPortrait">取消修改</el-button>
             </el-col>
-            <el-col :span="10" :offset="2" class="button-block">
+            <el-col :span="10" :offset="2" class="button-block-sm">
               <el-button :disabled="!preUpload" type="danger" @click="sureModifyPortrait">保存修改</el-button>
             </el-col>
           </el-row>
@@ -195,6 +195,8 @@
       sureModifyPortrait(){
         this.modifyPortrait = false
         this.preUpload = true
+        this.message.portrait = this.imageUrl
+        //todo 修改头像
       },
       modifyMyName(){
         this.modifyName = true
@@ -221,6 +223,8 @@
         //todo 修改密码
       },
       handlePreview(file) {
+        console.log(file)
+        console.log( URL.createObjectURL(file.raw))
         const isJPG = file.raw.type == 'image/jpeg';
         const isLt2M = file.raw.size / 1024 / 1024 < 2;
         const isPNG = file.raw.type == 'image/png'
@@ -231,7 +235,6 @@
         }else {
           this.preUpload =true
           this.imageUrl = URL.createObjectURL(file.raw);
-          console.log(this.imageUrl);
         }
       }
     }
@@ -250,7 +253,7 @@
       img {
         width: 100%;
         height: 100%;
-        border-radius: 50%;
+        border-radius: 10px;
       }
       :hover{
         cursor: pointer;
@@ -274,13 +277,14 @@
           padding: 0;
         }
       }
+
       .el-form-item__content{
         margin-left: 0px !important;
       }
     }
     .upload-portrait {
-      .button-block {
-        width:80px;
+      .button-block-sm {
+        width: 45%;
         /*margin: 0px;*/
         button {
           width: 100%;

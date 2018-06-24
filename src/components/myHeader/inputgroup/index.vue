@@ -45,7 +45,8 @@
     data() {
       return{
         isLoading : true,
-        searchResults : []
+        searchResults : [],
+        key : ''
       }
     },
 
@@ -57,7 +58,16 @@
     },
     methods: {
       onSubmit() {
-        console.log('submit!')
+        if(this.key !== '') {
+          this.$router.push({
+            path: '/search',
+            query: {
+              key: this.key
+            }
+          })
+        }else{
+          this.$message.error("请输入演出信息")
+        }
       },
       // getIsShow: {
       //   handler: function (newVal, oldVal) {
@@ -65,7 +75,7 @@
       //   }
       // },
       search(str){
-
+        this.key = str
         this.searchResults=[]
         if(str!="") {
           // console.log(str)
