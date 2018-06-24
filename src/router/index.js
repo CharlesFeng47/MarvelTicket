@@ -30,7 +30,7 @@ export const constantRouterMap = [
     children: [
       { path: '', component: HomeLayout, hidden: true,
         children:[
-          { path: '', hidden: true, component: () => import('@/views/home/index'), meta: { isHome: true }}
+          { path: '', hidden: true, component: () => import('@/views/home/index'), meta: { isHome: true,isSearch:false }}
         ]
       }
     ]
@@ -40,7 +40,16 @@ export const constantRouterMap = [
     children: [
       { path: '', component: HomeLayout, hidden: true,
         children:[
-          { path: '', hidden: true, component: () => import('@/views/schedule/index'), meta: { isHome: false } }
+          { path: '', hidden: true, component: () => import('@/views/schedule/index'), meta: { isHome: false,isSearch:false  } }
+        ]
+      }
+    ]
+  },
+  { path: '/search', component: Layout, hidden: true,
+    children: [
+      { path: '', component: HomeLayout, hidden: true,
+        children:[
+          { path: '', hidden: true, component: () => import('@/views/schedule/index'), meta: { isHome: false,isSearch:true } }
         ]
       }
     ]

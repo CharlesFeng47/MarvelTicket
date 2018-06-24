@@ -9,11 +9,19 @@
       </a>
     </div>
     <div v-else>
-      <a href="/center/manage/order">
-        <div class="portrait">
-          <img :src="portrait"/>
-        </div>
-      </a>
+      <el-dropdown @command="handleCommand">
+        <a href="/center/manage/order">
+          <div class="portrait">
+            <img :src="portrait"/>
+          </div>
+        </a>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item command="/center/manage/order">订单管理</el-dropdown-item>
+          <el-dropdown-item command="/center/manage/like">我的收藏</el-dropdown-item>
+          <el-dropdown-item command="/center/manage/message">我的信息</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
+
     </div>
   </div>
 </template>
@@ -65,6 +73,9 @@
       }
     },
     methods: {
+      handleCommand(command) {
+        this.$router.push(command);
+      },
       initMemberMessage(){
         new Promise((resolve, reject) => {
           getInfo(this.token).then(response => {

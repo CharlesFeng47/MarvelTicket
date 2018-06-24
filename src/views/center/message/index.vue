@@ -196,6 +196,7 @@
         this.modifyPortrait = false
         this.preUpload = true
         this.message.portrait = this.imageUrl
+        //todo 修改头像
       },
       modifyMyName(){
         this.modifyName = true
@@ -232,7 +233,6 @@
         }else {
           this.preUpload =true
           this.imageUrl = URL.createObjectURL(file.raw);
-          console.log(this.imageUrl);
         }
       }
     }
@@ -265,7 +265,7 @@
         height: 30px ;
       }
       .button-block {
-        width:30%;
+        width:80px;
         /*margin: 0px;*/
         button {
           width: 100%;

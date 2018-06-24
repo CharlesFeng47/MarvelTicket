@@ -9,7 +9,7 @@ import { getToken } from '@/utils/auth' // 验权
 const whiteList = ['/home', '/login','/detail','/center/manage/order','/center/manage/like', '/schedule',
   '/spot_sign_up', '/spot_sign_up/step1', '/spot_sign_up/step2', '/spot_sign_up/step3',
   '/loginAndRegister', '/loginAndRegister/register', '/loginAndRegister/login',
-  '/orderConfirm']
+  '/orderConfirm','/search']
 // router.beforeEach((to, from, next) => {
   // NProgress.start()
   // if (getToken()) {
