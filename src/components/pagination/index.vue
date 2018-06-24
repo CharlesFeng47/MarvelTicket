@@ -42,7 +42,7 @@
     ],
     data() {
       return {
-        pages: [],
+        pages: [1],
         isNull: false,
         next: 0,
         last: 0

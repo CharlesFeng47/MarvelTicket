@@ -3,18 +3,18 @@
     <el-form :inline="true">
       <el-form-item class="input-block">
         <div style="position: relative">
-          <el-input @input="search" @click.stop="" placeholder="搜索演出信息"></el-input>
+          <el-input @input="search" placeholder="搜索演出信息"></el-input>
         </div>
-        <div id="search-panel" @click.stop="" v-show="show_popover">
-          <ul v-show = "!isLoading">
-            <div v-if="searchResults.length == 0" style="margin: 30px auto 30px;text-align: center">
+        <div id="search-panel" v-show="show_popover">
+          <ul v-show="!searchIsLoading">
+            <div v-if="searchResults.length === 0" style="margin: 30px auto 30px;text-align: center">
               您的输入没有搜索结果
             </div>
             <li v-else v-for="result in searchResults">
-              <a :href = "result.programID">
+              <a :href="result.programLink">
                 <el-row>
                   <el-col :span="17">
-                  <span class="name">{{ result.programName }}</span>
+                    <span class="name">{{ result.programName }}</span>
                   </el-col>
                   <el-col :offset="1" :span="6" style="text-align: right">
                     <span class="time">{{ result.startTime }}</span>
@@ -23,7 +23,7 @@
               </a>
             </li>
           </ul>
-          <div class="onLoading" v-show = "isLoading">
+          <div class="onLoading" v-show="searchIsLoading">
             <i class="el-icon-loading"></i>
           </div>
         </div>
@@ -37,63 +37,61 @@
 
 <script>
   import { mapGetters } from 'vuex'
-  import { previewSearch } from "../../../api/program";
-  import ElRow from "element-ui/packages/row/src/row";
+  import { previewSearch } from '../../../api/program'
+
   export default {
     name: 'input-group',
-    components: {ElRow},
     data() {
-      return{
-        isLoading : true,
-        searchResults : [],
-        key : ''
+      return {
+        searchIsLoading: true,
+
+        // 搜索的关键词
+        key: '',
+        // 搜索结果
+        searchResults: []
       }
     },
 
     computed: {
       ...mapGetters([
-        'show_popover',
-        'getIsShow'
+        'show_popover'
       ])
     },
     methods: {
       onSubmit() {
-        if(this.key !== '') {
+        if (this.key !== '') {
           this.$router.push({
             path: '/search',
             query: {
-              key: this.key
+              key: this.key,
+              isHome: false,
+              isSearch: true
             }
           })
-        }else{
+        } else {
           this.$message.error("请输入演出信息")
         }
       },
-      // getIsShow: {
+      // show_popover: {
       //   handler: function (newVal, oldVal) {
       //     alert(this.show_popover)
       //   }
       // },
-      search(str){
+      search(str) {
         this.key = str
-        this.searchResults=[]
-        if(str!="") {
+        this.searchResults = []
+        if (str !== "") {
           // console.log(str)
           // this.$emit('showPanel')
-          this.$store.dispatch('ShowPopover', {
-          }).then(() => {
-          }).catch(() => {
-          })
-          this.isLoading = true;
+          this.searchIsLoading = true;
           new Promise((resolve, reject) => {
             previewSearch(str).then(response => {
               if (response.state === 'OK') {
                 var recommends = JSON.parse(response.object)
                 // console.log(recommends)
-                for(var i =0 ;i < recommends.length;i++){
+                for (var i = 0; i < recommends.length; i++) {
                   var result = {}
-
-                  result.programID = '/detail/'+ recommends[i].id
+                  result.programLink = '/detail/' + recommends[i].id
                   result.startTime = recommends[i].programID.startTime.split(" ")[0]
                   result.programName = recommends[i].programName
                   // console.log(result)
@@ -106,21 +104,18 @@
               reject(error)
             })
           }).then(() => {
-            this.isLoading = false
+            this.searchIsLoading = false
+            this.$store.dispatch('ShowPopover').then()
           }).catch(() => {
-            this.isLoading = false
+            this.searchIsLoading = false
           })
-        }else{
-          this.$store.dispatch('HidePopover', {
-          }).then(() => {
-          }).catch(() => {
-          })
+        } else {
+          this.$store.dispatch('HidePopover').then()
         }
       },
     }
   }
 </script>
-
 
 
 <style rel="stylesheet/scss" lang="scss">
@@ -188,27 +183,27 @@
         li {
           list-style-type: none !important;
           line-height: 26px;
-          a{
+          a {
             padding: 2px;
             font-size: 12px;
-            .name{
+            .name {
               height: 26px;
               /*width: 60%;*/
               overflow: hidden;
               max-lines: 1;
-              overflow:hidden;
+              overflow: hidden;
               -webkit-line-clamp: 1;
               text-overflow: ellipsis;
               display: -webkit-box;
               -webkit-box-orient: vertical;
             }
           }
-          :hover{
+          :hover {
             background-color: #F3F5F8;
           }
         }
       }
-      li>a {
+      li > a {
         padding: 14px;
         display: block;
         color: #212329;

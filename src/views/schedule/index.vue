@@ -38,15 +38,13 @@
 <script>
   import BriefItem from './brief/index'
   import Pagination from '../../components/pagination/index'
-  import { getProgramsByType } from '../../api/program'
+  import { getProgramsByType, getProgramsBySearchKey } from '../../api/program'
   import { getProgramTypeEnum } from '../../utils/program_helper'
   import { toPick, toSort } from '../../utils/program_helper'
   import { mapGetters } from 'vuex'
-  import ElRow from "element-ui/packages/row/src/row";
 
   export default {
     components: {
-      ElRow,
       BriefItem,
       Pagination
     },
@@ -74,32 +72,58 @@
     },
     computed: {
       ...mapGetters([
-        'cur_city',
-        'getCity'
+        'cur_city'
       ]),
       type: function () {
         return this.$route.query.type
+      },
+      key: function () {
+        return this.$route.query.key
       }
     },
     mounted: function () {
-      this.initCurProgramsByType(this.$route.query.type)
+      if (this.$route.meta.isSearch === false) {
+        // 普通查看非搜索
+        this.initCurProgramsByType(this.$route.query.type)
+      } else {
+        // 搜索查看
+        this.initCurProgramsBySearchKey(this.$route.query.key)
+      }
+
     },
     watch: {
-      // 根据路由参数选定当前加载的类型
       // TODO 讨论路由更换时原有内容要不要清空
+      // 根据路由参数选定当前加载的类型
       type: {
         handler: function (newVal, oldVal) {
-          this.initCurProgramsByType(newVal)
+          if (this.$route.meta.isSearch === false) {
+            this.initCurProgramsByType(newVal)
+          }
         }
       },
+
+      // 根据搜索关键字选定内容
+      key: {
+        handler: function (newVal, oldVal) {
+          if (this.$route.meta.isSearch === true) {
+            this.initCurProgramsBySearchKey(newVal)
+          }
+        }
+      },
+
+      // 页码改变后，重新加载内容
       currentPage: {
         handler: function (newVal, oldVal) {
           this.refreshBriefs()
         }
       },
-      getCity: {
+
+      // 城市的修改只影响根据类型展示，不影响根据关键字搜索的结果
+      cur_city: {
         handler: function (newVal, oldVal) {
-          this.initCurProgramsByType(this.type)
+          if (this.$route.meta.isSearch === false) {
+            this.initCurProgramsByType(this.type)
+          }
         }
       },
 
@@ -135,7 +159,7 @@
     },
 
     methods: {
-      // 从后端获取数据
+      // 根据节目类型从后端获取此类型的节目数据
       initCurProgramsByType: function (type) {
         this.curTypeSchedulesLoading = true
         new Promise((resolve, reject) => {
@@ -156,6 +180,29 @@
           this.curTypeSchedulesLoading = false
         })
       },
+
+      // 根据搜索关键字从后端获取相关的节目数据
+      initCurProgramsBySearchKey: function (key) {
+        this.curTypeSchedulesLoading = true
+        new Promise((resolve, reject) => {
+          getProgramsBySearchKey(key).then(response => {
+            if (response.state === 'OK') {
+              const curPrograms = JSON.parse(response.object)
+              console.log(curPrograms)
+              this.fulfillProgramBriefs(curPrograms)
+              this.refreshBriefs()
+            }
+            resolve()
+          }).catch(error => {
+            reject(error)
+          })
+        }).then(() => {
+          this.curTypeSchedulesLoading = false
+        }).catch(() => {
+          this.curTypeSchedulesLoading = false
+        })
+      },
+
       // 将获取的数据装载到页面中
       fulfillProgramBriefs: function (curPrograms) {
         this.programBriefsOrigin = []
@@ -174,7 +221,7 @@
           this.programBriefsOrigin.push(brief)
         }
 
-        console.log('fulfillProgramBriefs finished')
+        console.log('fulfill ProgramBriefs finished')
         this.initDefaultInfo()
       },
 

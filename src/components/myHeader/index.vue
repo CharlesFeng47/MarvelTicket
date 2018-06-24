@@ -39,7 +39,9 @@
   export default {
     name: 'my-header',
     components: {
-      Popover, InputGroup, LoginPanel
+      Popover,
+      InputGroup,
+      LoginPanel
     },
 
     data() {

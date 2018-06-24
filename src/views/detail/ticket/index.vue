@@ -1,5 +1,5 @@
 <template>
-  <div class="detail-container" v-loading="programDetailLoading">
+  <div class="detail-container">
     <div class="poster">
       <img :src="programDetail.posterSrc">
       <div class="count">
@@ -12,8 +12,14 @@
         {{ programDetail.title }}
       </div>
       <div class="show-info">
-        <i class="el-icon-time"/><span>{{ programDetail.time }}</span>
-        <i class="el-icon-location-outline"/><span>{{ programDetail.spot }}</span>
+        <i class="el-icon-time"/><span>{{ programDetail.time }} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        <i class="el-icon-location-outline"/>
+
+        <!--TODO gy 加了effect="light"之后，底色也被渲染为橘色，你看看吧。。-->
+        <!--<el-tooltip :content="programDetail.address" placement="right" effect="light">-->
+        <el-tooltip :content="programDetail.address" placement="right">
+          <span>{{ programDetail.spot }}</span>
+        </el-tooltip>
       </div>
 
       <div class="ticket-info">
@@ -36,7 +42,8 @@
           <el-col :span="20" class="price-list">
             <div>
               <template v-for="par in programDetail.pars">
-                <el-radio v-model="curParPrice" :label="par.basePrice" border size="medium">{{ par.basePrice }} | {{ par.comments }}</el-radio>
+                <el-radio v-if="par.comments===''" v-model="curParPrice" :label="par.basePrice" border size="medium">{{ par.basePrice }}</el-radio>
+                <el-radio v-if="par.comments!==''" v-model="curParPrice" :label="par.basePrice" border size="medium">{{ par.basePrice }} | {{ par.comments }}</el-radio>
               </template>
             </div>
           </el-col>
@@ -80,29 +87,13 @@
 </template>
 
 <script>
-  import { getProgramDetail } from "../../../api/program";
-
   export default {
     name: 'Detail',
+    props: [
+      'programDetail'
+    ],
     data() {
       return {
-        programDetailLoading: false,
-        programDetail: {
-          id: '',
-          title: '',
-          posterSrc: '',
-          // saleType: '',
-          time: '',
-          spot: '',
-          viewNum: '',
-          favoriteNum: '',
-          // 场次
-          fields: [],
-          // 票面
-          pars: [],
-          star: false
-        },
-
         // 当前选定的场次和票面
         curField: '',
         curParPrice: 0,
@@ -111,50 +102,14 @@
     },
     computed: {
       price: function () {
+        // console.log('field: ' + this.curField)
+        // console.log('price: ' + this.curParPrice)
+        // console.log('num: ' + this.buyNum)
         return this.curParPrice * this.buyNum;
       }
     },
-    mounted: function () {
-      this.programDetailLoading = true
-      new Promise((resolve, reject) => {
-        getProgramDetail(this.$route.params.programId).then(response => {
-          if (response.state === 'OK') {
-            const detail = JSON.parse(response.object)
-            this.fulfillProgramDetail(detail)
-          }
-          resolve()
-        }).catch(error => {
-          reject(error)
-        })
-      }).then(() => {
-        this.programDetailLoading = false
-      }).catch(() => {
-        this.programDetailLoading = false
-      })
-    },
     methods: {
-      changeStar: function () {
-        this.programDetail.star=!this.programDetail.star
-
-      },
-      fulfillProgramDetail: function (detail) {
-        console.log(detail)
-
-        this.programDetail.id = detail.id
-        this.programDetail.title = detail.programName
-        this.programDetail.posterSrc = detail.poster
-        this.programDetail.time= detail.time
-        this.programDetail.spot = detail.venueName + '（' + detail.address + '）'
-        this.programDetail.viewNum = detail.scanVolume
-        this.programDetail.favoriteNum = detail.favoriteVolume
-        this.programDetail.fields = detail.fields
-        this.programDetail.pars = detail.parIDs
-        console.log(this.programDetail)
-
-        this.initDefaultFieldAndParAndBuyNum(this.programDetail.fields, this.programDetail.pars)
-      },
-
-      // 从当前节目的场次和票面中选择第一个作为默认显示
+      // 从当前节目的场次和票面中选择第一个作为默认显示，当父组件加载完数据后调用此方法
       initDefaultFieldAndParAndBuyNum(fields, pars) {
         this.curField = fields[0]
         this.curParPrice = pars[0].basePrice

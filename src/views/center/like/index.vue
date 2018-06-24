@@ -9,7 +9,7 @@
 </template>
 
 <script>
-  import Item from '../../home/recommendation/line/item/Item'
+  import Item from '../../home/recommendation/line/item/index'
   export default {
     name: 'like',
     components: {

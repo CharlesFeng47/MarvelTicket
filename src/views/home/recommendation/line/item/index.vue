@@ -27,7 +27,7 @@
 
 <script>
   export default {
-    name: 'Item',
+    name: 'RecommendationItem',
     props: [
       'scheduleBrief'
     ],
@@ -36,7 +36,6 @@
     },
     methods: {
       checkDetail() {
-
         this.$router.push('/detail/' + this.scheduleBrief.programID)
       }
     }
