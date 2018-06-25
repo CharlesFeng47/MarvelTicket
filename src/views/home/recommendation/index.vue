@@ -29,6 +29,13 @@
         'cur_city'
       ])
     },
+    watch:{
+      cur_city: {
+        handler: function (newVal, oldVal) {
+          this.initHome()
+        }
+      }
+    },
     methods: {
       initHome() {
         this.ordersLoading = true;

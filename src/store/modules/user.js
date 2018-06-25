@@ -25,9 +25,6 @@ const user = {
     SET_MESSAGE: (state, message) => {
       state.message = message
     },
-    SET_PORTRAIT: (state, portrait) => {
-      state.portrait = portrait
-    },
     SET_NAME: (state, name) => {
       state.name = name
     },
@@ -45,7 +42,7 @@ const user = {
   actions: {
     //设置用户的信息
     SetMessage({ commit }, obj){
-      console.log(obj.message)
+      // console.log(obj.message)
       commit('SET_MESSAGE', obj.message)
     },
     // 登录
