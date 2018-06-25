@@ -9,8 +9,8 @@ const user = {
     // avatar: '',
     roles: [],
     spot_examined: false,
-    message : {},
-    portrait:''
+    message: {},
+    portrait: ''
   },
   getters:{
     // 参数列表state指的是state数据

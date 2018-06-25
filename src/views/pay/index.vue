@@ -1,5 +1,10 @@
 <template>
   <div>
+    <el-row>
+      <el-col :span="18" :offset="3">
+        <el-row></el-row>
+      </el-col>
+    </el-row>
     <!--<el-row>-->
       <!--<el-col :offset="3" :span="18">-->
         <!--<el-row :gutter="60" style="margin-top: 40px">-->
@@ -21,14 +26,17 @@
 
 <script>
 
+  import ElRow from "element-ui/packages/row/src/row";
+
   export default {
     name: 'pay',
     components: {
+      ElRow
 
     },
     data() {
       return {
-      
+
       }
     },
     methods: {}

@@ -87,7 +87,7 @@
 <style rel="stylesheet/scss" lang="scss">
   .el-loading-parent--relative{
     .el-loading-mask{
-      top: 40px;
+      padding-top: 40px;
       .el-loading-spinner{
       }
     }

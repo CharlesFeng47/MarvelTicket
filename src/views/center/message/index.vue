@@ -112,30 +112,30 @@
 <script>
   import { mapGetters } from 'vuex'
   import { isValidUsername } from '@/utils/validate'
-  import { modifyName,modifyPassword,modifyPortrait } from '../../../api/user'
+  import { modifyName, modifyPassword, modifyPortrait } from '../../../api/user'
   export default {
     name: 'message',
     components: {},
-    data: function () {
+    data: function() {
       const validatePass = (rule, value, callback) => {
         if (value === '') {
-          callback(new Error('请输入密码'));
+          callback(new Error('请输入密码'))
         } else if (value.length < 6) {
-          callback(new Error('密码错误'));
+          callback(new Error('密码错误'))
         } else {
           if (this.passwordForm.checkPass !== '') {
-            this.$refs.passwordForm.validateField('checkPass');
+            this.$refs.passwordForm.validateField('checkPass')
           }
-          callback();
+          callback()
         }
       }
       const validatePass2 = (rule, value, callback) => {
         if (value === '') {
-          callback(new Error('请再次输入密码'));
+          callback(new Error('请再次输入密码'))
         } else if (value !== this.passwordForm.pass) {
-          callback(new Error('两次输入密码不一致'));
+          callback(new Error('两次输入密码不一致'))
         } else {
-          callback();
+          callback()
         }
       }
       const validateUsername = (rule, value, callback) => {
@@ -161,18 +161,18 @@
         },
         rules: {
           old_password: [
-            {validator: validatePass, trigger: 'blur'}
+            { validator: validatePass, trigger: 'blur' }
           ],
           pass: [
-            {validator: validatePass, trigger: 'blur'}
+            { validator: validatePass, trigger: 'blur' }
           ],
           checkPass: [
-            {validator: validatePass2, trigger: 'blur'}
+            { validator: validatePass2, trigger: 'blur' }
           ]
         },
         rules2: {
           username: [
-            {validator: validateUsername, trigger: 'blur'}
+            { validator: validateUsername, trigger: 'blur' }
           ]
         }
       }
@@ -207,7 +207,6 @@
               }).then(() => {
               }).catch(() => {
               })
-
             }
             resolve()
           }).catch(error => {
@@ -247,9 +246,9 @@
             }).catch(() => {
             })
           } else {
-            return false;
+            return false
           }
-        });
+        })
       },
       modifyMyPassword() {
         this.modifyPassword = true
@@ -276,52 +275,51 @@
             }).catch(() => {
             })
           } else {
-            return false;
+            return false
           }
-        });
-
+        })
       },
       handlePreview(file) {
         // console.log(file)
         // console.log(URL.createObjectURL(file.raw))
-        const isJPG = file.raw.type == 'image/jpeg';
-        const isLt2M = file.raw.size / 1024 / 1024 < 2;
+        const isJPG = file.raw.type == 'image/jpeg'
+        const isLt2M = file.raw.size / 1024 / 1024 < 2
         const isPNG = file.raw.type == 'image/png'
         if (!isLt2M) {
-          this.$message.error('上传头像图片大小不能超过 2MB!');
+          this.$message.error('上传头像图片大小不能超过 2MB!')
         } else if (!isJPG && !isPNG) {
-          this.$message.error('上传头像图片只能是 JPG 或 PNG 格式!');
+          this.$message.error('上传头像图片只能是 JPG 或 PNG 格式!')
         } else {
           this.preUpload = true
           // this.imageUrl = URL.createObjectURL(file.raw);
           var _this = this
-          this.getBase64(URL.createObjectURL(file.raw)).then(function(base64){
+          this.getBase64(URL.createObjectURL(file.raw)).then(function(base64) {
             _this.imageUrl = base64
-          },function(err){
-            console.log(err);
-          });
+          }, function(err) {
+            console.log(err)
+          })
         }
       },
-      getBase64(img) {//传入图片路径，返回base64
-        function getBase64Image(img, width, height) {//width、height调用时传入具体像素值，控制大小 ,不传则默认图像大小
-          var canvas = document.createElement("canvas");
-          canvas.width = width ? width : img.width;
-          canvas.height = height ? height : img.height;
+      getBase64(img) { // 传入图片路径，返回base64
+        function getBase64Image(img, width, height) { // width、height调用时传入具体像素值，控制大小 ,不传则默认图像大小
+          var canvas = document.createElement('canvas')
+          canvas.width = width || img.width
+          canvas.height = height || img.height
 
-          var ctx = canvas.getContext("2d");
-          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-          var dataURL = canvas.toDataURL();
-          return dataURL;
+          var ctx = canvas.getContext('2d')
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
+          var dataURL = canvas.toDataURL()
+          return dataURL
         }
 
-        var image = new Image();
-        image.src = img;
-        var deferred = $.Deferred();
+        var image = new Image()
+        image.src = img
+        var deferred = $.Deferred()
         if (img) {
-          image.onload = function () {
-            deferred.resolve(getBase64Image(image));//将base64传给done上传处理
+          image.onload = function() {
+            deferred.resolve(getBase64Image(image))// 将base64传给done上传处理
           }
-          return deferred.promise();//问题要让onload完成后再return sessionStorage['imgTest']
+          return deferred.promise()// 问题要让onload完成后再return sessionStorage['imgTest']
         }
       }
     }

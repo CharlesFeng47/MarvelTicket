@@ -91,6 +91,7 @@
     /*white-space:nowrap;!* 不换行 *!*/
     overflow: hidden;
     max-lines: 2;
+    height: 40px;
     -webkit-line-clamp: 2;
     text-overflow: ellipsis;
     display: -webkit-box;

@@ -71,7 +71,7 @@
             this.loading = true
             this.$store.dispatch('Login', this.loginForm).then(() => {
               this.loading = false
-              alert("登录成功");
+              // alert("登录成功");
               // this.$router.go(-1)
               this.$router.push('/home')
             }).catch(() => {
@@ -82,31 +82,7 @@
             return false
           }
         })
-      },
-      // handleLogin() {
-        // this.loading = true
-        // todo 写到api里去，调用action，而不是直接调用
-        // this.$axios({
-        //   url: 'http://localhost:3000/TicketsManagementSystem/user/user_login',
-        //   method: 'post',
-        //   data: qs.stringify({
-        //     email: this.user.email,
-        //     password: this.user.password
-        //   }),
-        //   headers: {
-        //     'Content-Type': 'application/x-www-form-urlencoded'
-        //   }
-        // }).then(() => {
-        //   this.loading = false
-        //   console.log('登录成功')
-        //   // todo 登录成功之后跳转
-        //   this.$router.go(-1);
-        // }).catch(() => {
-        //   console.log('登录失败')
-        //   // todo 登录失败时候的提示信息
-        //   this.loading = false
-        // })
-      // }
+      }
     },
     mounted: function() {
       this.$emit('login')
