@@ -68,11 +68,11 @@
               <div class="pay-top">支付方式</div>
               <el-row class="radio">
                 <el-radio v-model="pay_mode" label="1" border><img src="../../../dist/static/img/1.png" height="30"
-                                                                   width="120/></el-radio>
+                                                                   width="96"/></el-radio>
               </el-row>
               <el-row class="radio">
                 <el-radio v-model="pay_mode" label="2" border><img src="../../../dist/static/img/2.png" height="30"
-                                                                   width="120"/></el-radio>
+                                                                   width="96"/></el-radio>
               </el-row>
             </div>
           </el-col>
@@ -153,6 +153,25 @@
     height: 350px;
     .radio{
       margin:60px 50px;
+      .el-radio.is-bordered {
+        padding: 5px 20px 0 10px;
+        border-radius: 4px;
+        border: 1px solid #dcdfe6;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        height: 40px;
+      }
+      .el-radio {
+        color: #606266;
+        font-weight: 500;
+        line-height: 1;
+        cursor: pointer;
+        white-space: nowrap;
+        outline: 0;
+      }
+      .el-radio.is-bordered.is-checked {
+        border-color: #409EFF;
+      }
     }
   }
   .pay-top{

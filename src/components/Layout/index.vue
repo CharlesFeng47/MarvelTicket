@@ -71,17 +71,11 @@
   }
 
   .el-tooltip__popper.is-light {
-    color: whitesmoke;
-    background-color: #F78989;
+    color: #F78978;
     border: 1px solid #F78989;
-    .popper__arrow {
-      /*background-color: inherit;*/
-      /*border-color: red;*/
-      /*color:red;*/
-      /*solid-color: red*/
-      /*border:  #F78989;*/
-      /*background: #F78989;*/
-      /*color: #F78989;*/
-    }
+
+  }
+  .el-tooltip__popper.is-light[x-placement^=right] .popper__arrow{
+    border-right-color:#F78978
   }
 </style>

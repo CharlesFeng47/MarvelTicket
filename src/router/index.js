@@ -82,10 +82,6 @@ export const constantRouterMap = [
       }
     ]
   },
-
-
-
-
   { path: '/member_active/:activeUrl', component: () => import('@/views/memberActive/index'), hidden: true
   },
   { path: '/login', component: () => import('@/views/login/index'), hidden: true },
@@ -96,7 +92,13 @@ export const constantRouterMap = [
       { path: 'register', component: () => import('@/views/loginAndRegister/register/index'), hidden: true }
     ]
   },
-  { path: '/orderConfirm', component: () => import('@/views/orderConfirm/index'), hidden: true },
+  { path: '/orderConfirm', component:Layout, hidden: true,
+    children:[
+      {
+        path: '', hidden: true, component: () => import('@/views/orderConfirm/index'),
+      }
+    ]
+  },
   {
     path: '/spot_sign_up', component: () => import('@/views/user/spot/modify/index'), hidden: true,
     children: [

@@ -151,11 +151,12 @@
     .poster {
       float: left;
       width: 24%;
+      height: 360px;
       margin-top: -3%;
       margin-left: -3%;
       img {
         width: 100%;
-
+        height: 100%;
         border-radius: 18px;
         background-color: #fff;
         box-shadow: 0 4px 16px 0 #ccc;

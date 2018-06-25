@@ -1,8 +1,8 @@
 <template>
   <div class="breadcrumb">
     <ul>
-      <li class="first"><span @click="gotoHome">首页&gt;</span></li>
-      <li class="second"><span @click="checkProgramsOfSameType">{{ programDetail.typeEnum }}&gt;</span></li>
+      <li><span @click="gotoHome" class="first">首页</span>&gt;</li>
+      <li><span @click="checkProgramsOfSameType" class="second">{{ programDetail.typeEnum }}</span>&gt;</li>
       <li class="active">{{ programDetail.title }}</li>
     </ul>
   </div>

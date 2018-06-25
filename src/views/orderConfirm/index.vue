@@ -1,6 +1,8 @@
 <template>
   <el-row>
     <el-col :span="18" :offset="3">
+      <div class="top">Marvel Ticket
+      </div>
       <el-container class="confirm-body">
         <el-aside width="200px">
           <!-- todo href -->
@@ -15,7 +17,7 @@
           </el-header>
           <el-main class="confirm-main">
             <el-row>
-              <el-col :span="9">
+              <el-col :span="12">
                 <el-row class="text-item" style="margin-top: 5%">
                   <el-col :span="5" class="label-text">票面：</el-col>
                   <el-col :span="19">{{ orderDetail.par }} 元</el-col>
@@ -29,7 +31,7 @@
                   <el-col :span="19">{{ orderDetail.time }}</el-col>
                 </el-row>
               </el-col>
-              <el-col :span="7" :offset="6">
+              <el-col :span="7" :offset="4">
                 <el-row class="text-item" style="margin-top: 5%">
                   <el-col :span="13" class="label-text">数量：</el-col>
                   <el-col :span="11">&nbsp;&nbsp;{{ orderDetail.number }}&nbsp;&nbsp;张</el-col>
@@ -89,7 +91,7 @@
     height: 50px;
     background-color: #FD6857;
     width: 100%;
-    margin-top: 100px;
+    margin-top: 40px;
   }
   img {
     border: none;
