@@ -4,7 +4,7 @@
       <img :src="programDetail.posterSrc">
       <div class="count">
         <i class="el-icon-view"></i>{{ programDetail.viewNum }}人浏览
-        <span id="myLike" v-bind:class="programDetail.star ? 'hasStar': 'no' " @click="changeStar()"><i class="el-icon-star-on"></i><span id="favourNum">{{ programDetail.favoriteNum }}</span>人想看</span>
+        <span id="myLike" v-bind:class="star ? 'hasStar': 'no' " @click="changeStar()"><i class="el-icon-star-on"></i><span id="favourNum">{{ programDetail.favoriteNum }}</span>人想看</span>
       </div>
     </div>
     <div class="detail">
@@ -16,8 +16,8 @@
         <i class="el-icon-location-outline"/>
 
         <!--TODO gy 加了effect="light"之后，底色也被渲染为橘色，你看看吧。。-->
-        <!--<el-tooltip :content="programDetail.address" placement="right" effect="light">-->
-        <el-tooltip :content="programDetail.address" placement="right">
+        <el-tooltip :content="programDetail.address" placement="right" effect="light">
+        <!--<el-tooltip :content="programDetail.address" placement="right">-->
           <span>{{ programDetail.spot }}</span>
         </el-tooltip>
       </div>
@@ -97,7 +97,8 @@
         // 当前选定的场次和票面
         curField: '',
         curParPrice: 0,
-        buyNum: 1
+        buyNum: 1,
+        star:false
       }
     },
     computed: {
@@ -109,6 +110,9 @@
       }
     },
     methods: {
+      changeStar(){
+        this.star = !this.star
+      },
       // 从当前节目的场次和票面中选择第一个作为默认显示，当父组件加载完数据后调用此方法
       initDefaultFieldAndParAndBuyNum(fields, pars) {
         this.curField = fields[0]

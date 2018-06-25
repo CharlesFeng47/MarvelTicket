@@ -13,7 +13,38 @@ export function star(programID) {
     data: qs.stringify({ programID: programID })
   })
 }
+/**
+ * 修改密码
+ */
+export function modifyPassword(oldPass,newPass) {
+  return request({
+    url: '/user/star',
+    method: 'post',
+    data: qs.stringify({ old_password: oldPass, new_password })
+  })
+}
 
+/**
+ * 修改昵称
+ */
+export function modifyName(name,token) {
+  return request({
+    url: '/user/modifyName',
+    method: 'post',
+    data: qs.stringify({name:name,token:token})
+  })
+}
+
+/**
+ * 修改头像
+ */
+export function modifyPortrait(portrait,token) {
+  return request({
+    url: '/user/modifyPortrait',
+    method: 'post',
+    data: qs.stringify({portrait: portrait, token: token})
+  })
+}
 /**
  * 获得收藏的节目
  */

@@ -9,16 +9,14 @@ const user = {
     // avatar: '',
     roles: [],
     spot_examined: false,
-    message : {}
+    message : {},
+    portrait:''
   },
   getters:{
     // 参数列表state指的是state数据
     getToken: state => {
       return state.token;
     },
-    getMessage: state => {
-      return state.token;
-    }
   },
   mutations: {
     SET_TOKEN: (state, token) => {
@@ -26,6 +24,9 @@ const user = {
     },
     SET_MESSAGE: (state, message) => {
       state.message = message
+    },
+    SET_PORTRAIT: (state, portrait) => {
+      state.portrait = portrait
     },
     SET_NAME: (state, name) => {
       state.name = name
@@ -43,8 +44,9 @@ const user = {
 
   actions: {
     //设置用户的信息
-    SetMessage({ commit }, message){
-      commit('SET_MESSAGE', message.message)
+    SetMessage({ commit }, obj){
+      console.log(obj.message)
+      commit('SET_MESSAGE', obj.message)
     },
     // 登录
     Login({ commit }, userInfo) {
@@ -162,7 +164,7 @@ const user = {
         getInfo(state.token).then(response => {
           if (response.state === 'OK') {
             const data = JSON.parse(response.object)
-            console.log(data)
+            // console.log(data)
             commit('SET_ROLES', data.role)
             commit('SET_NAME', data.user.id)
             // 场馆多一个是否已被审核通过的属性

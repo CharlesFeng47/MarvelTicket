@@ -1,9 +1,8 @@
 <template>
   <div class="breadcrumb">
     <ul>
-      <!--TODO gy 这里把链接a标签去掉了，做一个hover的动态吧，就像二级导航里面一到上面后出现一个横线啊变色啊之类的-->
-      <li><span @click="gotoHome">首页&gt;</span></li>
-      <li><span @click="checkProgramsOfSameType">{{ programDetail.typeEnum }}&gt;</span></li>
+      <li class="first"><span @click="gotoHome">首页&gt;</span></li>
+      <li class="second"><span @click="checkProgramsOfSameType">{{ programDetail.typeEnum }}&gt;</span></li>
       <li class="active">{{ programDetail.title }}</li>
     </ul>
   </div>
@@ -58,6 +57,17 @@
     a {
       text-decoration: none;
       cursor: pointer;
+    }
+    .first:hover{
+      cursor: pointer;
+      color:red;
+    }
+    .second:hover{
+      cursor: pointer;
+      color:red;
+    }
+    .active{
+      cursor: default;
     }
   }
 </style>

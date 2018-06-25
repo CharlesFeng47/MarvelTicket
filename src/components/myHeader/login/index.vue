@@ -35,15 +35,13 @@
     data: function() {
       return {
         hasLogin:false,
-        portrait :''
+        portrait: ''
       }
     },
     computed: {
       ...mapGetters([
         'token',
         'message',
-        'getToken',
-        'getMessage'
       ])
     },
     mounted:function () {
@@ -56,19 +54,12 @@
       }
     },
     watch:{
-      getToken: {
+      message: {
         handler: function (newVal, oldVal) {
-          if(this.token == ''){
-            this.hasLogin=false
-          }else{
-            this.hasLogin=true
-            this.initMemberMessage()
-          }
-        }
-      },
-      getMessage: {
-        handler: function (newVal, oldVal) {
-          this.portrait = this.message.portrait
+          //todo FJJ 看一下，修改头像之后 在center/message/sureModifyPortrait，明明SetMessage了， 但是这里没有监听到
+          console.log("message has changed")
+          console.log(newVal)
+          // this.portrait =
         }
       }
     },
@@ -82,6 +73,7 @@
             if (response.state === 'OK') {
               const data = JSON.parse(response.object)
               //将用户信息保存
+              // console.log(data)
               this.$store.dispatch('SetMessage', {
                 message: data
               }).then(() => {

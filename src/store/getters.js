@@ -4,6 +4,7 @@ const getters = {
   token: state => state.user.token,
   //保存用户信息
   message: state => state.user.message,
+
   // avatar: state => state.user.avatar,
   name: state => state.user.name,
   roles: state => state.user.roles,

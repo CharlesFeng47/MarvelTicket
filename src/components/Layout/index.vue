@@ -1,9 +1,9 @@
 <template>
-  <div @click="hideSearch">
+  <div class="base" @click="hideSearch">
     <MyHeader/>
-      <keep-alive>
-        <router-view></router-view>
-      </keep-alive>
+    <keep-alive>
+      <router-view></router-view>
+    </keep-alive>
     <div class="quick-button">
       <el-tooltip class="item" effect="light" content="回到顶部" placement="left">
         <el-button @click="backToTop"><i class="el-icon-arrow-up"></i></el-button>
@@ -17,7 +17,7 @@
   import MyHeader from '../../components/myHeader/index'
   import HomeLayout from '../HomeLayout/index'
   import MyFooter from '../../components/MyFooter/index'
-  import { mapGetters } from 'vuex'
+  import {mapGetters} from 'vuex'
 
   export default {
     components: {
@@ -25,22 +25,20 @@
       HomeLayout,
       MyFooter
     },
-    data(){
-      return{
-      }
+    data() {
+      return {}
     },
     computed: {
       ...mapGetters([
         'show_popover',
       ])
     },
-    methods:{
-      backToTop(){
-        $('html,body').animate({ scrollTop: 0 }, 400)
+    methods: {
+      backToTop() {
+        $('html,body').animate({scrollTop: 0}, 400)
       },
-      hideSearch(){
-        this.$store.dispatch('HidePopover', {
-        }).then(() => {
+      hideSearch() {
+        this.$store.dispatch('HidePopover', {}).then(() => {
         }).catch(() => {
         })
       }

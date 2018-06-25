@@ -84,7 +84,7 @@
         <el-col :span="15">
         <el-form :model="passwordForm" status-icon :rules="rules" ref="passwordForm" label-width="0px" style="margin-top: -10px">
           <el-form-item prop="old_password">
-            <el-input placeholder="请输入旧密码"  v-model="passwordForm.old_password"/>
+            <el-input placeholder="请输入旧密码"  type="password"  v-model="passwordForm.old_password"/>
           </el-form-item>
           <el-form-item prop="pass">
             <el-input  placeholder="请输入新密码" type="password" v-model="passwordForm.pass" auto-complete="on"/>
@@ -112,15 +112,15 @@
 <script>
   import { mapGetters } from 'vuex'
   import { isValidUsername } from '@/utils/validate'
-
+  import { modifyName,modifyPassword,modifyPortrait } from '../../../api/user'
   export default {
     name: 'message',
     components: {},
-    data:function(){
+    data: function () {
       const validatePass = (rule, value, callback) => {
         if (value === '') {
           callback(new Error('请输入密码'));
-        }else if(value.length <=6 ){
+        } else if (value.length < 6) {
           callback(new Error('密码错误'));
         } else {
           if (this.passwordForm.checkPass !== '') {
@@ -146,13 +146,13 @@
         }
       }
       return {
-        modifyName : false,
-        modifyPassword : false,
-        modifyPortrait :false,
-        preUpload : false,
+        modifyName: false,
+        modifyPassword: false,
+        modifyPortrait: false,
+        preUpload: false,
         imageUrl: '',
         passwordForm: {
-          old_password : '',
+          old_password: '',
           pass: '',
           checkPass: ''
         },
@@ -160,19 +160,19 @@
           username: ''
         },
         rules: {
-          old_password:[
-            { validator: validatePass, trigger: 'blur' }
+          old_password: [
+            {validator: validatePass, trigger: 'blur'}
           ],
           pass: [
-            { validator: validatePass, trigger: 'blur' }
+            {validator: validatePass, trigger: 'blur'}
           ],
           checkPass: [
-            { validator: validatePass2, trigger: 'blur' }
+            {validator: validatePass2, trigger: 'blur'}
           ]
         },
         rules2: {
           username: [
-            { validator: validateUsername, trigger: 'blur' }
+            {validator: validateUsername, trigger: 'blur'}
           ]
         }
       }
@@ -180,61 +180,148 @@
     computed: {
       ...mapGetters([
         'message',
+        'token'
       ])
     },
+    watch: {},
     methods: {
-      modifyMyPortrait(){
+      modifyMyPortrait() {
         this.modifyPortrait = true
         this.preUpload = false
       },
-      cancelModifyPortrait(){
+      cancelModifyPortrait() {
         this.modifyPortrait = false
         this.preUpload = true
         this.imageUrl = ''
       },
-      sureModifyPortrait(){
-        this.modifyPortrait = false
-        this.preUpload = true
-        this.message.portrait = this.imageUrl
-        //todo 修改头像
+      sureModifyPortrait() {
+        new Promise((resolve, reject) => {
+          modifyPortrait(this.imageUrl, this.token).then(response => {
+            if (response.state === 'OK') {
+              this.modifyPortrait = false
+              this.preUpload = true
+              this.message.portrait = this.imageUrl
+              // this.portrait = this.imageUrl
+              this.$store.dispatch('SetMessage', {
+                message: this.message
+              }).then(() => {
+              }).catch(() => {
+              })
+
+            }
+            resolve()
+          }).catch(error => {
+            reject(error)
+          })
+        }).then(() => {
+        }).catch(() => {
+        })
       },
-      modifyMyName(){
+      modifyMyName() {
         this.modifyName = true
         this.nameForm.username = this.message.name
       },
-      cancelModifyName(){
+      cancelModifyName() {
         this.modifyName = false
       },
-      sureModifyName(){
-        this.modifyName = false
-        //todo 修改昵称
+      sureModifyName() {
+        this.$refs['nameForm'].validate((valid) => {
+          if (valid) {
+            new Promise((resolve, reject) => {
+              modifyName(this.nameForm.username, this.token).then(response => {
+                if (response.state === 'OK') {
+                  this.message.name = this.nameForm.username
+                  this.modifyName = false
+                  // this.$store.dispatch('SetMessage', {
+                  //   message: this.message
+                  // }).then(() => {
+                  //   // alert(this.message.name)
+                  // }).catch(() => {
+                  // })
+                }
+                resolve()
+              }).catch(error => {
+                reject(error)
+              })
+            }).then(() => {
+            }).catch(() => {
+            })
+          } else {
+            return false;
+          }
+        });
       },
-      modifyMyPassword(){
+      modifyMyPassword() {
         this.modifyPassword = true
         this.passwordForm.old_password = ''
         this.passwordForm.pass = ''
         this.passwordForm.checkPass = ''
       },
-      cancelModifyPassword(){
+      cancelModifyPassword() {
         this.modifyPassword = false
       },
-      sureModifyPassword(){
-        this.modifyPassword = false
-        //todo 修改密码
+      sureModifyPassword() {
+        this.$refs['passwordForm'].validate((valid) => {
+          if (valid) {
+            new Promise((resolve, reject) => {
+              modifyPassword(this.passwordForm.pass, this.passwordForm.checkPass).then(response => {
+                if (response.state === 'OK') {
+                  this.modifyPassword = false
+                }
+                resolve()
+              }).catch(error => {
+                reject(error)
+              })
+            }).then(() => {
+            }).catch(() => {
+            })
+          } else {
+            return false;
+          }
+        });
+
       },
       handlePreview(file) {
-        console.log(file)
-        console.log( URL.createObjectURL(file.raw))
+        // console.log(file)
+        // console.log(URL.createObjectURL(file.raw))
         const isJPG = file.raw.type == 'image/jpeg';
         const isLt2M = file.raw.size / 1024 / 1024 < 2;
         const isPNG = file.raw.type == 'image/png'
         if (!isLt2M) {
           this.$message.error('上传头像图片大小不能超过 2MB!');
-        }else if (!isJPG&&!isPNG) {
+        } else if (!isJPG && !isPNG) {
           this.$message.error('上传头像图片只能是 JPG 或 PNG 格式!');
-        }else {
-          this.preUpload =true
-          this.imageUrl = URL.createObjectURL(file.raw);
+        } else {
+          this.preUpload = true
+          // this.imageUrl = URL.createObjectURL(file.raw);
+          var _this = this
+          this.getBase64(URL.createObjectURL(file.raw)).then(function(base64){
+            _this.imageUrl = base64
+          },function(err){
+            console.log(err);
+          });
+        }
+      },
+      getBase64(img) {//传入图片路径，返回base64
+        function getBase64Image(img, width, height) {//width、height调用时传入具体像素值，控制大小 ,不传则默认图像大小
+          var canvas = document.createElement("canvas");
+          canvas.width = width ? width : img.width;
+          canvas.height = height ? height : img.height;
+
+          var ctx = canvas.getContext("2d");
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          var dataURL = canvas.toDataURL();
+          return dataURL;
+        }
+
+        var image = new Image();
+        image.src = img;
+        var deferred = $.Deferred();
+        if (img) {
+          image.onload = function () {
+            deferred.resolve(getBase64Image(image));//将base64传给done上传处理
+          }
+          return deferred.promise();//问题要让onload完成后再return sessionStorage['imgTest']
         }
       }
     }
@@ -260,7 +347,7 @@
       }
     }
     .line{
-      margin-top: 44px;
+      margin-top: 50px;
       .el-button--danger{
         border-radius: 30px;
         width: 50px;

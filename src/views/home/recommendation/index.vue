@@ -1,5 +1,4 @@
 <template>
-  <!--TODO gy 加载时加载图案与轮播图部分重合-->
   <div v-loading="ordersLoading">
     <template v-for="recommendationLine in allRecommendations">
       <RecommendationLine :line="recommendationLine"></RecommendationLine>
@@ -78,7 +77,12 @@
     }
   }
 </script>
-
-<style scoped>
-
+<style rel="stylesheet/scss" lang="scss">
+  .el-loading-parent--relative{
+    .el-loading-mask{
+      top: 40px;
+      .el-loading-spinner{
+      }
+    }
+  }
 </style>
