@@ -75,6 +75,15 @@ export const constantRouterMap = [
       }
     ]
   },
+  { path: '/pay', component:Layout, hidden: true,
+    children:[
+      {
+        path: '', hidden: true, component: () => import('@/views/pay/index'),
+      }
+    ]
+  },
+
+
 
 
   { path: '/member_active/:activeUrl', component: () => import('@/views/memberActive/index'), hidden: true

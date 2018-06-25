@@ -11,8 +11,11 @@
     <div v-else>
       <el-dropdown @command="handleCommand">
         <a href="/center/manage/order">
-          <div class="portrait">
+          <div class="portrait" style="float: left">
             <img :src="portrait"/>
+          </div>
+          <div class="name" style="float: left">
+            {{ message.name }}
           </div>
         </a>
         <el-dropdown-menu slot="dropdown">
@@ -102,7 +105,7 @@
     font-weight: bold;
   }
   .portrait{
-    margin: 12px auto 0px;
+    margin: 12px -10px 0px;
     height: 60px;
     width: 60px;
     /*margin-top: 20px;*/
@@ -111,6 +114,13 @@
       height: 100%;
       border-radius: 4px
     }
+  }
+  .name{
+    margin-top: 34px;
+    margin-left: 10px;
+    /*line-height: 80px;*/
+    /*height: 80px;*/
+    font-size: 18px;
   }
 </style>
 
