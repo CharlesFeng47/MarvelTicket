@@ -28,18 +28,20 @@
     mounted: function() {
       this.time = 6
       var _this = this
-      setInterval(handle_time, 1000)
+      var interval = setInterval(handle_time, 1000)
       handle_time()
       function handle_time() {
         // alert(left_second)
-        if (_this.time > 0) {
-          _this.time--
-        } else {
-          _this.$router.push('/center/manage/order')
+        if (_this.time === 0) {
+          _this.jumpToOrder()
         }
+        _this.time--
       }
     },
     methods: {
+      jumpToOrder() {
+        this.$router.push('/center/manage/order?type=0')
+      }
     }
   }
 </script>

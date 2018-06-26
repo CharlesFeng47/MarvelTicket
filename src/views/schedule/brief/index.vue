@@ -103,7 +103,6 @@
         margin-bottom: 10px;
       }
       .el-tag{
-        margin-top: 15px;
         border-radius: 15px;
       }
       .message{
@@ -112,7 +111,7 @@
         padding: 5px 0;
         line-height: 16px;
         font-weight: 500;
-        height: 60px;
+        height: 48px;
         overflow:hidden;
         max-lines: 2;
         -webkit-line-clamp: 2;
