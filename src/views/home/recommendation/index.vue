@@ -29,16 +29,16 @@
         'cur_city'
       ])
     },
-    watch:{
+    watch: {
       cur_city: {
-        handler: function (newVal, oldVal) {
+        handler: function(newVal, oldVal) {
           this.initHome()
         }
       }
     },
     methods: {
       initHome() {
-        this.ordersLoading = true;
+        this.ordersLoading = true
         new Promise((resolve, reject) => {
           recommend(this.cur_city).then(response => {
             if (response.state === 'OK') {
@@ -58,23 +58,23 @@
       changeRecommendations(data) {
         // console.log(data);
 
-        var allRecommendations = [];
+        var allRecommendations = []
         for (var key in data) {
           var type = {}
-          type.title = key;
-          type.recommendations = [];
+          type.title = key
+          type.recommendations = []
           // console.log(data[key])
           for (var i in data[key]) {
-            var recommendation = {};
-            recommendation.programID = data[key][i]['id'];
-            recommendation.posterSrc = data[key][i]['poster'];
-            recommendation.name = data[key][i]['programName'];
-            recommendation.basePrice = data[key][i]['lowPrice'];
-            recommendation.city = data[key][i]['city'];
-            recommendation.spot = data[key][i]['venueName'];
-            recommendation.time = data[key][i]['time'];
+            var recommendation = {}
+            recommendation.programID = data[key][i]['id']
+            recommendation.posterSrc = 'http://localhost:3000/TicketsManagementSystem/image/' + data[key][i]['programTypeName'] + '/' + recommendation.programID + '.jpg'
+            recommendation.name = data[key][i]['programName']
+            recommendation.basePrice = data[key][i]['lowPrice']
+            recommendation.city = data[key][i]['city']
+            recommendation.spot = data[key][i]['venueName']
+            recommendation.time = data[key][i]['time']
             // console.log(type)
-            type.recommendations.push(recommendation);
+            type.recommendations.push(recommendation)
           }
           allRecommendations.push(type)
         }

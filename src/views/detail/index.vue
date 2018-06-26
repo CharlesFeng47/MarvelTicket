@@ -68,8 +68,8 @@
         this.programDetail.id = detail.id
         this.programDetail.typeEnum = detail.programType
         this.programDetail.title = detail.programName
-        this.programDetail.posterSrc = detail.poster
-        this.programDetail.time= detail.time
+        this.programDetail.posterSrc = 'http://localhost:3000/TicketsManagementSystem/image/' + detail['programTypeName'] + '/' + detail.id + '.jpg'
+        this.programDetail.time = detail.time
         this.programDetail.spot = detail.venueName
         this.programDetail.address = detail.address
         this.programDetail.viewNum = detail.scanVolume

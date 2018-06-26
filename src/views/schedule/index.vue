@@ -211,7 +211,7 @@
           brief.id = curPrograms[index].id
           brief.title = curPrograms[index].programName
           brief.description = curPrograms[index].description
-          brief.posterSrc = curPrograms[index].poster
+          brief.posterSrc = 'http://localhost:3000/TicketsManagementSystem/image/' + curPrograms[index]['programTypeName'] + '/' + brief.id + '.jpg'
           brief.saleType = curPrograms[index].saleType
           brief.time = curPrograms[index].time
           brief.spot = curPrograms[index].venueName
