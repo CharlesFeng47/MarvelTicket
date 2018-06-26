@@ -111,6 +111,14 @@
         color: #aaa;
         padding: 5px 0;
         line-height: 16px;
+        font-weight: 500;
+        height: 60px;
+        overflow:hidden;
+        max-lines: 2;
+        -webkit-line-clamp: 2;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
       }
       .show-title {
         font-size: 16px;

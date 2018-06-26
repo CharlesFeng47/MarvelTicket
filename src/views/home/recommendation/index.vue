@@ -1,5 +1,5 @@
 <template>
-  <div v-loading="ordersLoading">
+  <div v-loading="recommendationLoading">
     <template v-for="recommendationLine in allRecommendations">
       <RecommendationLine :line="recommendationLine"></RecommendationLine>
     </template>
@@ -20,7 +20,7 @@
     },
     data() {
       return {
-        ordersLoading: false,
+        recommendationLoading: false,
         allRecommendations: []
       }
     },
@@ -38,7 +38,7 @@
     },
     methods: {
       initHome() {
-        this.ordersLoading = true
+        this.recommendationLoading = true;
         new Promise((resolve, reject) => {
           recommend(this.cur_city).then(response => {
             if (response.state === 'OK') {
@@ -50,9 +50,9 @@
             reject(error)
           })
         }).then(() => {
-          this.ordersLoading = false
+          this.recommendationLoading = false
         }).catch(() => {
-          this.ordersLoading = false
+          this.recommendationLoading = false
         })
       },
       changeRecommendations(data) {

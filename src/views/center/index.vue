@@ -20,15 +20,12 @@
 </template>
 
 <script>
-  import Like from './like/index'
   import LeftNav from './nav/index'
-  import OrderPanel from './order/index'
+
   export default {
     name: 'center',
     components: {
-      OrderPanel,
-      LeftNav,
-      Like
+      LeftNav
     },
     data() {
       return {
