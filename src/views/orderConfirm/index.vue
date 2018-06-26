@@ -1,15 +1,19 @@
 <template>
   <el-row>
     <el-col :span="18" :offset="3">
+      <el-row>
+        <div align="center" style="margin-top: 20px">
+          <img src="../../assets/step2.png" style="width: 598px !important;"/>
+        </div>
+      </el-row>
       <div class="top">Marvel Ticket
       </div>
       <el-container class="confirm-body">
-        <el-aside width="200px">
+        <el-aside width="200px" class="aside">
           <!-- todo href -->
           <!-- todo src -->
           <a href="#" target="_blank"><img
-            src="../../../src/assets/order_demo.png" alt="【上海站】音乐剧《复活吧！胡萝卜》" width="200"
-            height="282"></a>
+            src="../../../src/assets/order_demo.png" alt="【上海站】音乐剧《复活吧！胡萝卜》"></a>
         </el-aside>
         <el-container>
           <el-header style="margin-left: 30px; height: 23px;">
@@ -31,7 +35,7 @@
                   <el-col :span="19">{{ orderDetail.time }}</el-col>
                 </el-row>
               </el-col>
-              <el-col :span="7" :offset="4">
+              <el-col :span="6" :offset="3" style="margin-top: 37px">
                 <el-row class="text-item" style="margin-top: 5%">
                   <el-col :span="13" class="label-text">数量：</el-col>
                   <el-col :span="11">&nbsp;&nbsp;{{ orderDetail.number }}&nbsp;&nbsp;张</el-col>
@@ -43,10 +47,10 @@
               </el-col>
             </el-row>
           </el-main>
-          <el-footer>
+          <el-footer style="height: 44px">
             <el-row>
-              <el-col :span="22" :offset="1" style="padding-left: 10px; margin-top: 6px">
-                <el-button class="pay-btn">
+              <el-col :span="22" :offset="1">
+                <el-button type="danger" @click="pay()" class="pay-btn">
                   小计：￥{{ orderDetail.totalPrice }} 去结算
                 </el-button>
               </el-col>
@@ -72,6 +76,11 @@
           totalPrice: 86.00
         }
       }
+    },
+    methods: {
+      pay: function() {
+        this.$router.push('/pay')
+      }
     }
   }
 </script>
@@ -85,17 +94,27 @@
     overflow: hidden;
     border: 3px solid #eee;
     border-top: 0px;
-    padding: 32px 20px 20px 20px;
+    padding: 25px;
   }
   .top{
-    height: 50px;
+    margin-top: 34px;
+    padding-left: 22px;
+    /*border-bottom: 1px solid #e5e5e5;*/
+    /*border-left: 3px solid #FF5219;*/
+    border-radius: 2px;
+    height: 48px;
     background-color: #FD6857;
+    line-height: 48px;
+    font-size: 22px;
+    color: #FFFFFF;
     width: 100%;
-    margin-top: 40px;
   }
   img {
     border: none;
     outline-style: none;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
   }
 
   .confirm-main {
@@ -121,13 +140,16 @@
   }
 
   .pay-btn {
-    background-color: #fd6857;
-    border: none;
+    /*background-color: #fd6857;*/
+    /*border: none;*/
     width: 100%;
+    height: 44px;
     border-radius: 4px;
     font-size: 18px;
     text-align: center;
-    color: #ffffff;
+    /*color: #ffffff;*/
   }
-
+  .aside{
+    overflow: hidden;
+  }
 </style>

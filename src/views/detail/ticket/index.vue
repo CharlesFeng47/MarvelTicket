@@ -110,7 +110,7 @@
       }
     },
     methods: {
-      changeStar(){
+      changeStar() {
         this.star = !this.star
       },
       // 从当前节目的场次和票面中选择第一个作为默认显示，当父组件加载完数据后调用此方法

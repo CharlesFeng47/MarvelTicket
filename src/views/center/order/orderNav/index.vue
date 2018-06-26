@@ -5,7 +5,7 @@
       <li :class="{ active: typeActives.typeActive1 }"><a @click="link('/center/manage/order', '1')">未支付<div class="border-bottom"></div></a></li>
       <li :class="{ active: typeActives.typeActive2 }"><a @click="link('/center/manage/order', '2')">已支付<div class="border-bottom"></div></a></li>
       <li :class="{ active: typeActives.typeActive3 }"><a @click="link('/center/manage/order', '3')">已取消<div class="border-bottom"></div></a></li>
-      <li :class="{ active: typeActives.typeActive3 }"><a @click="link('/center/manage/order', '4')">已退款<div class="border-bottom"></div></a></li>
+      <li :class="{ active: typeActives.typeActive4 }"><a @click="link('/center/manage/order', '4')">已退款<div class="border-bottom"></div></a></li>
       <li style="display: inline-block;padding-left:100%;"></li>
     </ul>
   </div>

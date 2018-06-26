@@ -33,7 +33,7 @@ export const constantRouterMap = [
     path: '/home', component: Layout, hidden: true,
     children: [
       { path: '', component: HomeLayout, hidden: true,
-        children:[
+        children: [
           { path: '', hidden: true, component: () => import('@/views/home/index'), meta: { isHome: true, isSearch: false }}
         ]
       }
@@ -43,8 +43,8 @@ export const constantRouterMap = [
   { path: '/schedule', component: Layout, hidden: true,
     children: [
       { path: '', component: HomeLayout, hidden: true,
-        children:[
-          { path: '', hidden: true, component: () => import('@/views/schedule/index'), meta: { isHome: false, isSearch: false  }}
+        children: [
+          { path: '', hidden: true, component: () => import('@/views/schedule/index'), meta: { isHome: false, isSearch: false }}
         ]
       }
     ]
@@ -52,33 +52,33 @@ export const constantRouterMap = [
   { path: '/search', component: Layout, hidden: true,
     children: [
       { path: '', component: HomeLayout, hidden: true,
-        children:[
+        children: [
           { path: '', hidden: true, component: () => import('@/views/schedule/index'), meta: { isHome: false, isSearch: true }}
         ]
       }
     ]
   },
-  { path: '/detail/:programId', component:Layout, hidden: true,
-    children:[
+  { path: '/detail/:programId', component: Layout, hidden: true,
+    children: [
       { path: '', hidden: true, component: () => import('@/views/detail/index') }
     ]
   },
-  { path: '/center', component:Layout, hidden: true,
-    children:[
+  { path: '/center', component: Layout, hidden: true,
+    children: [
       {
         path: 'manage', hidden: true, component: () => import('@/views/center/index'),
-        children:[
-          { path: 'order', hidden: true,  component: () => import('@/views/center/order/index'),  meta: { manage: 1 }},
-          { path: 'like', hidden: true,  component: () => import('@/views/center/like/index'),  meta: { manage: 2 }},
-          { path: 'message', hidden: true,  component: () => import('@/views/center/message/index'),  meta: { manage: 3 }}
+        children: [
+          { path: 'order', hidden: true, component: () => import('@/views/center/order/index'), meta: { manage: 1 }},
+          { path: 'like', hidden: true, component: () => import('@/views/center/like/index'), meta: { manage: 2 }},
+          { path: 'message', hidden: true, component: () => import('@/views/center/message/index'), meta: { manage: 3 }}
         ]
       }
     ]
   },
-  { path: '/pay', component:Layout, hidden: true,
-    children:[
+  { path: '/pay', component: Layout, hidden: true,
+    children: [
       {
-        path: '', hidden: true, component: () => import('@/views/pay/index'),
+        path: '', hidden: true, component: () => import('@/views/pay/index')
       }
     ]
   },
@@ -92,10 +92,17 @@ export const constantRouterMap = [
       { path: 'register', component: () => import('@/views/loginAndRegister/register/index'), hidden: true }
     ]
   },
-  { path: '/orderConfirm', component:Layout, hidden: true,
-    children:[
+  { path: '/orderConfirm', component: Layout, hidden: true,
+    children: [
       {
-        path: '', hidden: true, component: () => import('@/views/orderConfirm/index'),
+        path: '', hidden: true, component: () => import('@/views/orderConfirm/index')
+      }
+    ]
+  },
+  { path: '/paySuccess', component: Layout, hidden: true,
+    children: [
+      {
+        path: '', hidden: true, component: () => import('@/views/paySuccess/index')
       }
     ]
   },
