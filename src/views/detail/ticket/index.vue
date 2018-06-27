@@ -4,7 +4,7 @@
       <img :src="programDetail.posterSrc">
       <div class="count">
         <i class="el-icon-view"></i>{{ programDetail.viewNum }}人浏览
-        <span id="myLike" v-bind:class="star ? 'hasStar': 'no' " @click="changeStar()"><i class="el-icon-star-on"></i><span id="favourNum">{{ programDetail.favoriteNum }}</span>人想看</span>
+        <span id="myLike" :class="{ hasStar: this.programDetail.star }" @click="changeStar()"><i class="el-icon-star-on"></i><span id="favourNum">{{ programDetail.favoriteNum }}</span>人想看</span>
       </div>
     </div>
     <div class="detail">
@@ -97,21 +97,26 @@
         // 当前选定的场次和票面
         curField: '',
         curParPrice: 0,
-        buyNum: 1,
-        star:false
+        buyNum: 1
+        // star: this.programDetail.star
       }
     },
     computed: {
-      price: function () {
-        // console.log('field: ' + this.curField)
-        // console.log('price: ' + this.curParPrice)
-        // console.log('num: ' + this.buyNum)
-        return this.curParPrice * this.buyNum;
+      price: function() {
+        // console.log(this.programDetail)
+        return this.curParPrice * this.buyNum
       }
     },
+    // watch: {
+    //   'this.programDetail.star': {
+    //     handler: function(newVal, oldVal) {
+    //       this.star = newVal
+    //     }
+    //   }
+    // },
     methods: {
       changeStar() {
-        this.star = !this.star
+        this.$emit('changeStar')
       },
       // 从当前节目的场次和票面中选择第一个作为默认显示，当父组件加载完数据后调用此方法
       initDefaultFieldAndParAndBuyNum(fields, pars) {
@@ -120,18 +125,18 @@
         this.buyNum = 1
       },
 
-      add: function (event) {
+      add: function(event) {
         if (this.buyNum++ === 6) {
-          this.buyNum = 6;
-          this.$message('购买的票数不能大于5张');
+          this.buyNum = 6
+          this.$message('购买的票数不能大于5张')
         }
       },
-      reduce: function (event) {
+      reduce: function(event) {
         if (this.buyNum-- === 1) {
-          this.buyNum = 1;
+          this.buyNum = 1
         }
       },
-      buyTicket: function (event) {
+      buyTicket: function(event) {
 
       }
     }

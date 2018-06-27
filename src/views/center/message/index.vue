@@ -48,8 +48,9 @@
         <el-col :span="10">
           <span class="message">{{ message.name }}</span>
         </el-col>
-        <el-col :span="6" class="button-block">
-          <el-button type="danger" @click="modifyMyName" style="margin-top: -10px;">修改昵称</el-button>
+        <el-col :span="3" offset="1" class="button-block">
+          <!--<el-button type="danger" @click="modifyMyName" style="margin-top: -10px;">修改昵称</el-button>-->
+          <i class="el-icon-edit-outline" @click="modifyMyName"/>
         </el-col>
       </template>
       <template v-else>
@@ -76,8 +77,9 @@
         <el-col :span="10">
           <div class="message" style="margin-top: 5px">**********</div>
         </el-col>
-        <el-col :span="6" class="button-block">
-          <el-button type="danger" @click="modifyMyPassword" style="margin-top: -10px;">修改密码</el-button>
+        <el-col :span="3" :offset="1" class="button-block">
+          <i class="el-icon-edit-outline" @click="modifyMyPassword"/>
+          <!--<el-button type="danger" @click="modifyMyPassword" style="margin-top: -10px;">修改密码</el-button>-->
         </el-col>
       </template>
       <template  v-else>
@@ -366,6 +368,14 @@
       .el-form-item__content{
         margin-left: 0px !important;
       }
+    }
+    .el-icon-edit-outline{
+      font-size: 20px;
+    }
+    .el-icon-edit-outline:hover{
+      /*font-size: 20px;*/
+      cursor: pointer;
+      cursor: #F78978;
     }
     .upload-portrait {
       .button-block-sm {

@@ -6,7 +6,7 @@
           <BreadCrumb :program-detail="programDetail"/>
         </el-row>
         <el-row>
-          <TicketDetail :program-detail="programDetail" ref="detail"/>
+          <TicketDetail :program-detail="programDetail" ref="detail" @changeStar="changeStar" />
         </el-row>
       </el-col>
     </el-row>
@@ -18,12 +18,12 @@
   import BreadCrumb from '../../components/MyBreadCrumb/index'
   import TicketDetail from './ticket/index'
   import { getProgramDetail } from '../../api/program'
-
+  import { star } from '../../api/user'
   export default {
     name: 'detail',
     components: {
       BreadCrumb,
-      TicketDetail,
+      TicketDetail
     },
     data() {
       return {
@@ -40,11 +40,12 @@
           // 场次
           fields: [],
           // 票面
-          pars: []
+          pars: [],
+          star: false
         }
       }
     },
-    activated: function () {
+    activated: function() {
       this.programDetailLoading = true
       new Promise((resolve, reject) => {
         getProgramDetail(this.$route.params.programId).then(response => {
@@ -63,7 +64,7 @@
       })
     },
     methods: {
-      fulfillProgramDetail: function (detail) {
+      fulfillProgramDetail: function(detail) {
         console.log(detail)
         this.programDetail.id = detail.id
         this.programDetail.typeEnum = detail.programType
@@ -76,9 +77,28 @@
         this.programDetail.favoriteNum = detail.favoriteVolume
         this.programDetail.fields = detail.fields
         this.programDetail.pars = detail.parIDs
+        // this.programDetail.star = true
+        this.programDetail.star = detail.like
 
         // 初始化默认的票面选择
         this.$refs.detail.initDefaultFieldAndParAndBuyNum(this.programDetail.fields, this.programDetail.pars)
+      },
+      changeStar: function() {
+        // this.programDetail.star = !this.programDetail.star
+        console.log(this.programDetail.id)
+        new Promise((resolve, reject) => {
+          star(this.programDetail.id).then(response => {
+            if (response.state === 'OK') {
+              this.programDetail.star = true
+              this.programDetail.favoriteNum++
+            }
+            resolve()
+          }).catch(error => {
+            reject(error)
+          })
+        }).then(() => {
+        }).catch(() => {
+        })
       }
     }
   }

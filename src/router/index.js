@@ -13,12 +13,12 @@ import HomeLayout from '../components/HomeLayout/index'
 import Layout from '../components/Layout/index'
 
 /**
-* hidden: true                   if `hidden:true` will not show in the sidebar(default is false)
-* alwaysShow: true               if set true, will always show the root menu, whatever its child routes length
-*                                if not set alwaysShow, only more than one route under the children
-*                                it will becomes nested mode, otherwise not show the root menu
-* redirect: noredirect           if `redirect:noredirect` will no redirct in the breadcrumb
-* name:'router-name'             the name is used by <keep-alive> (must set!!!)
+ * hidden: true                   if `hidden:true` will not show in the sidebar(default is false)
+ * alwaysShow: true               if set true, will always show the root menu, whatever its child routes length
+ *                                if not set alwaysShow, only more than one route under the children
+ *                                it will becomes nested mode, otherwise not show the root menu
+ * redirect: noredirect           if `redirect:noredirect` will no redirct in the breadcrumb
+ * name:'router-name'             the name is used by <keep-alive> (must set!!!)
  * meta : {
     roles: ['admin','editor']     will control the page roles (you can set multiple roles)
     title: 'title'               the name show in submenu and breadcrumb (recommend set)
@@ -32,7 +32,8 @@ export const constantRouterMap = [
   {
     path: '/home', component: Layout, hidden: true,
     children: [
-      { path: '', component: HomeLayout, hidden: true,
+      {
+        path: '', component: HomeLayout, hidden: true,
         children: [
           { path: '', hidden: true, component: () => import('@/views/home/index'), meta: { isHome: true, isSearch: false }}
         ]
@@ -40,30 +41,46 @@ export const constantRouterMap = [
     ]
   },
 
-  { path: '/schedule', component: Layout, hidden: true,
+  {
+    path: '/schedule', component: Layout, hidden: true,
     children: [
-      { path: '', component: HomeLayout, hidden: true,
+      {
+        path: '', component: HomeLayout, hidden: true,
         children: [
-          { path: '', hidden: true, component: () => import('@/views/schedule/index'), meta: { isHome: false, isSearch: false }}
+          {
+            path: '',
+            hidden: true,
+            component: () => import('@/views/schedule/index'),
+            meta: { isHome: false, isSearch: false }
+          }
         ]
       }
     ]
   },
-  { path: '/search', component: Layout, hidden: true,
+  {
+    path: '/search', component: Layout, hidden: true,
     children: [
-      { path: '', component: HomeLayout, hidden: true,
+      {
+        path: '', component: HomeLayout, hidden: true,
         children: [
-          { path: '', hidden: true, component: () => import('@/views/schedule/index'), meta: { isHome: false, isSearch: true }}
+          {
+            path: '',
+            hidden: true,
+            component: () => import('@/views/schedule/index'),
+            meta: { isHome: false, isSearch: true }
+          }
         ]
       }
     ]
   },
-  { path: '/detail/:programId', component: Layout, hidden: true,
+  {
+    path: '/detail/:programId', component: Layout, hidden: true,
     children: [
       { path: '', hidden: true, component: () => import('@/views/detail/index') }
     ]
   },
-  { path: '/center', component: Layout, hidden: true,
+  {
+    path: '/center', component: Layout, hidden: true,
     children: [
       {
         path: 'manage', hidden: true, component: () => import('@/views/center/index'),
@@ -75,31 +92,46 @@ export const constantRouterMap = [
       }
     ]
   },
-  { path: '/pay', component: Layout, hidden: true,
+  {
+    path: '/pay', component: Layout, hidden: true,
     children: [
       {
         path: '', hidden: true, component: () => import('@/views/pay/index')
       }
     ]
   },
-  { path: '/member_active/:activeUrl', component: () => import('@/views/memberActive/index'), hidden: true
+  {
+    path: '/member_active/:activeUrl', component: () => import('@/views/memberActive/index'), hidden: true
   },
   { path: '/login', component: () => import('@/views/login/index'), hidden: true },
   { path: '/404', component: () => import('@/views/404'), hidden: true },
-  { path: '/loginAndRegister', component: () => import('@/views/loginAndRegister/index'), hidden: true,
+  {
+    path: '/loginAndRegister', component: Layout, hidden: true,
     children: [
-      { path: 'login', component: () => import('@/views/loginAndRegister/login/index'), hidden: true },
-      { path: 'register', component: () => import('@/views/loginAndRegister/register/index'), hidden: true }
+      {
+        path: 'login', component: () => import('@/views/loginAndRegister/index'), hidden: true,
+        children: [{
+          path: '', component: () => import('@/views/loginAndRegister/login/index'), hidden: true
+        }]
+      },
+      {
+        path: 'register', component: () => import('@/views/loginAndRegister/index'), hidden: true,
+        children: [{
+          path: '', component: () => import('@/views/loginAndRegister/register/index'), hidden: true
+        }]
+      }
     ]
   },
-  { path: '/orderConfirm', component: Layout, hidden: true,
+  {
+    path: '/orderConfirm', component: Layout, hidden: true,
     children: [
       {
         path: '', hidden: true, component: () => import('@/views/orderConfirm/index')
       }
     ]
   },
-  { path: '/paySuccess', component: Layout, hidden: true,
+  {
+    path: '/paySuccess', component: Layout, hidden: true,
     children: [
       {
         path: '', hidden: true, component: () => import('@/views/paySuccess/index')
@@ -138,15 +170,41 @@ export const asyncRouterMap = [
     hidden: true,
     children: [
       { path: '', component: () => import('@/views/user/index') },
-      { path: 'modify_spot', component: () => import('@/views/user/spot/modify/index'), meta: { roles: ['SPOT'] },
+      {
+        path: 'modify_spot', component: () => import('@/views/user/spot/modify/index'), meta: { roles: ['SPOT'] },
         children: [
-          { path: '', hidden: true, component: () => import('@/views/user/spot/modify/step1'), meta: { isNew: false, roles: ['SPOT'] }},
-          { path: 'step1', hidden: true, component: () => import('@/views/user/spot/modify/step1'), meta: { isNew: false, roles: ['SPOT'] }},
-          { path: 'step2', hidden: true, component: () => import('@/views/user/spot/modify/step2'), meta: { isNew: false, roles: ['SPOT'] }},
-          { path: 'step3', hidden: true, component: () => import('@/views/user/spot/modify/step3'), meta: { isNew: false, roles: ['SPOT'] }}
+          {
+            path: '',
+            hidden: true,
+            component: () => import('@/views/user/spot/modify/step1'),
+            meta: { isNew: false, roles: ['SPOT'] }
+          },
+          {
+            path: 'step1',
+            hidden: true,
+            component: () => import('@/views/user/spot/modify/step1'),
+            meta: { isNew: false, roles: ['SPOT'] }
+          },
+          {
+            path: 'step2',
+            hidden: true,
+            component: () => import('@/views/user/spot/modify/step2'),
+            meta: { isNew: false, roles: ['SPOT'] }
+          },
+          {
+            path: 'step3',
+            hidden: true,
+            component: () => import('@/views/user/spot/modify/step3'),
+            meta: { isNew: false, roles: ['SPOT'] }
+          }
         ]
       },
-      { path: 'modify_member', hidden: true, component: () => import('@/views/user/member/modify'), meta: { roles: ['MEMBER'] }}
+      {
+        path: 'modify_member',
+        hidden: true,
+        component: () => import('@/views/user/member/modify'),
+        meta: { roles: ['MEMBER'] }
+      }
     ]
   },
 
@@ -171,10 +229,30 @@ export const asyncRouterMap = [
         component: () => import('@/views/order/newOrder/index'),
         meta: { title: '新增', icon: 'plus', roles: ['MEMBER'] },
         children: [
-          { path: '', hidden: true, component: () => import('@/views/order/newOrder/step1'), meta: { isNew: true, buyOnSpot: false, roles: ['MEMBER'] }},
-          { path: 'step1', hidden: true, component: () => import('@/views/order/newOrder/step1'), meta: { isNew: true, buyOnSpot: false, roles: ['MEMBER'] }},
-          { path: 'step2', hidden: true, component: () => import('@/views/order/newOrder/step2'), meta: { isNew: true, buyOnSpot: false, roles: ['MEMBER'] }},
-          { path: 'step3', hidden: true, component: () => import('@/views/order/newOrder/step3'), meta: { isNew: true, buyOnSpot: false, roles: ['MEMBER'] }}
+          {
+            path: '',
+            hidden: true,
+            component: () => import('@/views/order/newOrder/step1'),
+            meta: { isNew: true, buyOnSpot: false, roles: ['MEMBER'] }
+          },
+          {
+            path: 'step1',
+            hidden: true,
+            component: () => import('@/views/order/newOrder/step1'),
+            meta: { isNew: true, buyOnSpot: false, roles: ['MEMBER'] }
+          },
+          {
+            path: 'step2',
+            hidden: true,
+            component: () => import('@/views/order/newOrder/step2'),
+            meta: { isNew: true, buyOnSpot: false, roles: ['MEMBER'] }
+          },
+          {
+            path: 'step3',
+            hidden: true,
+            component: () => import('@/views/order/newOrder/step3'),
+            meta: { isNew: true, buyOnSpot: false, roles: ['MEMBER'] }
+          }
         ]
       },
       {
@@ -184,10 +262,30 @@ export const asyncRouterMap = [
         component: () => import('@/views/order/newOrder/index'),
         meta: { title: '新增', icon: 'plus', roles: ['SPOT'] },
         children: [
-          { path: '', hidden: true, component: () => import('@/views/order/newOrder/step1'), meta: { isNew: true, buyOnSpot: true, roles: ['SPOT'] }},
-          { path: 'step1', hidden: true, component: () => import('@/views/order/newOrder/step1'), meta: { isNew: true, buyOnSpot: true, roles: ['SPOT'] }},
-          { path: 'step2', hidden: true, component: () => import('@/views/order/newOrder/step2'), meta: { isNew: true, buyOnSpot: true, roles: ['SPOT'] }},
-          { path: 'step3', hidden: true, component: () => import('@/views/order/newOrder/step3'), meta: { isNew: true, buyOnSpot: true, roles: ['SPOT'] }}
+          {
+            path: '',
+            hidden: true,
+            component: () => import('@/views/order/newOrder/step1'),
+            meta: { isNew: true, buyOnSpot: true, roles: ['SPOT'] }
+          },
+          {
+            path: 'step1',
+            hidden: true,
+            component: () => import('@/views/order/newOrder/step1'),
+            meta: { isNew: true, buyOnSpot: true, roles: ['SPOT'] }
+          },
+          {
+            path: 'step2',
+            hidden: true,
+            component: () => import('@/views/order/newOrder/step2'),
+            meta: { isNew: true, buyOnSpot: true, roles: ['SPOT'] }
+          },
+          {
+            path: 'step3',
+            hidden: true,
+            component: () => import('@/views/order/newOrder/step3'),
+            meta: { isNew: true, buyOnSpot: true, roles: ['SPOT'] }
+          }
         ]
       },
       {
