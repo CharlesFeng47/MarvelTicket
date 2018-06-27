@@ -17,7 +17,7 @@
   import MyHeader from '../../components/myHeader/index'
   import HomeLayout from '../HomeLayout/index'
   import MyFooter from '../../components/MyFooter/index'
-  import {mapGetters} from 'vuex'
+  import { mapGetters } from 'vuex'
 
   export default {
     components: {
@@ -30,12 +30,12 @@
     },
     computed: {
       ...mapGetters([
-        'show_popover',
+        'show_popover'
       ])
     },
     methods: {
       backToTop() {
-        $('html,body').animate({scrollTop: 0}, 400)
+        $('html,body').animate({ scrollTop: 0 }, 400)
       },
       hideSearch() {
         this.$store.dispatch('HidePopover', {}).then(() => {

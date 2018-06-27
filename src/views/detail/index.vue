@@ -6,7 +6,7 @@
           <BreadCrumb :program-detail="programDetail"/>
         </el-row>
         <el-row>
-          <TicketDetail :program-detail="programDetail" ref="detail" @changeStar="changeStar" />
+          <TicketDetail :program-detail="programDetail" ref="detail" @changeStar="changeStar" @generateOrder="generateOrder"/>
         </el-row>
       </el-col>
     </el-row>
@@ -65,7 +65,7 @@
     },
     methods: {
       fulfillProgramDetail: function(detail) {
-        console.log(detail)
+        // console.log(detail)
         this.programDetail.id = detail.id
         this.programDetail.typeEnum = detail.programType
         this.programDetail.title = detail.programName
@@ -97,6 +97,31 @@
             reject(error)
           })
         }).then(() => {
+        }).catch(() => {
+        })
+      },
+      // 生成订单之前的信息，保存在orderDetaill中
+      generateOrder(order) {
+        order.id = this.programDetail.id
+        order.programName = this.programDetail.title
+        order.typeEnum = this.programDetail.typeEnum
+        order.posterSrc = this.programDetail.posterSrc
+        order.programTime = this.programDetail.time
+        order.spot = this.programDetail.spot
+        order.address = this.programDetail.address
+        // this.programDetail.fields = detail.fields
+        for (var i in this.programDetail.pars) {
+          // console.log(par)
+          if (this.programDetail.pars[i].seatType === order.seatType) {
+            order.par = this.programDetail.pars[i]
+          }
+        }
+        // 将order信息保存到store
+        // console.log(order)
+        this.$store.dispatch('StoreOrderDetail', {
+          order_detail: order
+        }).then(() => {
+          this.$router.push('/orderConfirm')
         }).catch(() => {
         })
       }

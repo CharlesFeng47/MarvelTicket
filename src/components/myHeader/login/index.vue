@@ -37,30 +37,30 @@
     name: 'login-panel',
     data: function() {
       return {
-        hasLogin:false,
+        hasLogin: false,
         portrait: ''
       }
     },
     computed: {
       ...mapGetters([
         'token',
-        'message',
+        'message'
       ])
     },
-    mounted:function () {
+    mounted: function() {
       console.log(getToken())
-      if(getToken()){
+      if (getToken()) {
         this.hasLogin = true
         this.initMemberMessage()
-      }else{
-        this.hasLogin =false
+      } else {
+        this.hasLogin = false
       }
     },
-    watch:{
+    watch: {
       message: {
-        handler: function (newVal, oldVal) {
-          //todo FJJ 看一下，修改头像之后 在center/message/sureModifyPortrait，明明SetMessage了， 但是这里没有监听到
-          console.log("message has changed")
+        handler: function(newVal, oldVal) {
+          // todo FJJ 看一下，修改头像之后 在center/message/sureModifyPortrait，明明SetMessage了， 但是这里没有监听到
+          console.log('message has changed')
           console.log(newVal)
           // this.portrait =
         }
@@ -68,14 +68,16 @@
     },
     methods: {
       handleCommand(command) {
-        this.$router.push(command);
+        this.$router.push(command)
       },
-      initMemberMessage(){
+      initMemberMessage() {
         new Promise((resolve, reject) => {
           getInfo(this.token).then(response => {
+            console.log(123456)
             if (response.state === 'OK') {
               const data = JSON.parse(response.object)
-              //将用户信息保存
+              console.log(data)
+              // 将用户信息保存
               // console.log(data)
               this.$store.dispatch('SetMessage', {
                 message: data
@@ -88,7 +90,7 @@
           }).catch(error => {
             reject(error)
           })
-        });
+        })
       }
     }
   }

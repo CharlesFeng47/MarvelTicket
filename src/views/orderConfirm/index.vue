@@ -12,37 +12,37 @@
         <el-aside width="200px" class="aside">
           <!-- todo href -->
           <!-- todo src -->
-          <a href="#" target="_blank"><img
-            src="../../../src/assets/order_demo.png" alt="【上海站】音乐剧《复活吧！胡萝卜》"></a>
+          <a @click="$router.go(-1)" target="_blank"><img
+            :src="order_detail.posterSrc" :alt="order_detail.programName"></a>
         </el-aside>
         <el-container>
           <el-header style="margin-left: 30px; height: 23px;">
-            <h2 style="color: #323232; margin: 0; line-height: 100%">{{ orderDetail.title }}</h2>
+            <h2 style="color: #323232; margin: 0; line-height: 100%">{{ order_detail.programName }}</h2>
           </el-header>
           <el-main class="confirm-main">
             <el-row>
               <el-col :span="12">
                 <el-row class="text-item" style="margin-top: 5%">
                   <el-col :span="5" class="label-text">票面：</el-col>
-                  <el-col :span="19">{{ orderDetail.par }} 元</el-col>
+                  <el-col :span="19">{{ order_detail.par.basePrice }} 元</el-col>
                 </el-row>
                 <el-row class="text-item address">
                   <el-col :span="5" class="label-text">地点：</el-col>
-                  <el-col :span="19">{{ orderDetail.address }}</el-col>
+                  <el-col :span="19">{{ order_detail.address }}</el-col>
                 </el-row>
                 <el-row class="text-item">
                   <el-col :span="5" class="label-text">时间：</el-col>
-                  <el-col :span="19">{{ orderDetail.time }}</el-col>
+                  <el-col :span="19">{{ order_detail.programTime }}</el-col>
                 </el-row>
               </el-col>
               <el-col :span="6" :offset="3" style="margin-top: 37px">
                 <el-row class="text-item" style="margin-top: 5%">
                   <el-col :span="13" class="label-text">数量：</el-col>
-                  <el-col :span="11">&nbsp;&nbsp;{{ orderDetail.number }}&nbsp;&nbsp;张</el-col>
+                  <el-col :span="11">&nbsp;&nbsp;{{ order_detail.buyNum }}&nbsp;&nbsp;张</el-col>
                 </el-row>
                 <el-row class="text-item" style="margin-top: 8%" type="flex" align="bottom">
                   <el-col :span="13" class="label-text">订单总额：</el-col>
-                  <el-col :span="11" class="total-money">￥{{ orderDetail.totalPrice }}</el-col>
+                  <el-col :span="11" class="total-money">￥{{ order_detail.price }}</el-col>
                 </el-row>
               </el-col>
             </el-row>
@@ -51,7 +51,7 @@
             <el-row>
               <el-col :span="22" :offset="1">
                 <el-button type="danger" @click="pay()" class="pay-btn">
-                  小计：￥{{ orderDetail.totalPrice }} 去结算
+                  小计：￥{{ order_detail.price }} 去结算
                 </el-button>
               </el-col>
             </el-row>
@@ -67,18 +67,21 @@
     name: 'OrderConfirm',
     data: function() {
       return {
-        orderDetail: {
-          title: '【上海站】音乐剧《复活吧！胡萝卜》',
-          par: 160,
-          address: '白玉兰剧场--上海市卢湾区重庆南路308号 卢湾文化馆内（近建国中路）',
-          time: '2018-09-06 星期四 19:30',
-          number: 1,
-          totalPrice: 86.00
-        }
+        // basePrice: 0
+      }
+    },
+    computed: {
+      // 通过存到localStorage 解决vuex 刷新之后失效的问题
+      order_detail: function() {
+        const localData = JSON.parse(window.localStorage.getItem('order_detail'))
+        // console.log( this.$store.state.order.order_detail)
+        // return this.$store.state.order.order_detail
+        return localData
       }
     },
     methods: {
       pay: function() {
+        console.log(this.order_detail)
         this.$router.push('/pay')
       }
     }

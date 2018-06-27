@@ -12,11 +12,11 @@ const user = {
     message: {},
     portrait: ''
   },
-  getters:{
+  getters: {
     // 参数列表state指的是state数据
     getToken: state => {
-      return state.token;
-    },
+      return state.token
+    }
   },
   mutations: {
     SET_TOKEN: (state, token) => {
@@ -40,10 +40,10 @@ const user = {
   },
 
   actions: {
-    //设置用户的信息
-    SetMessage({ commit }, obj){
+    // 设置用户的信息
+    SetMessage({ commit }, { message }) {
       // console.log(obj.message)
-      commit('SET_MESSAGE', obj.message)
+      commit('SET_MESSAGE', message)
     },
     // 登录
     Login({ commit }, userInfo) {
@@ -56,9 +56,8 @@ const user = {
             commit('SET_TOKEN', token)
             // 因为是根据token再使用GetInfo()获取的用户编号，但是因为一开始刚登录还未根据token去获取，所以先设置一下。。
             commit('SET_NAME', userInfo.username)
-            console.log('login finish')
-          }
-          else {
+            console.log('login finish ' + token)
+          } else {
             var errorMsg = '未知错误，请联系管理员！'
             if (response.state === 'USER_NOT_EXIST') {
               switch (userInfo.userType) {
@@ -99,11 +98,11 @@ const user = {
         memberSignUp(userInfo.username, userInfo.password, userInfo.email).then(response => {
           if (response.state === 'OK') {
             const token = JSON.parse(response.object)
-            //TODO fjj 注册完不是应该先验证之后才setToken吗
+            // TODO fjj 注册完不是应该先验证之后才setToken吗
             setToken(token)
             commit('SET_TOKEN', token)
             // 因为是根据token再使用GetInfo()获取的用户编号，但是因为一开始刚登录还未根据token去获取，所以先设置一下。。
-            commit('SET_NAME', username)
+            // commit('SET_NAME', username)
             console.log('sign_up finish')
           } else if (response.state === 'USER_HAS_BEEN_SIGN_UP') {
             Message({

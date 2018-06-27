@@ -1,5 +1,7 @@
 const order = {
   state: {
+    // 保存生成订单时所有的信息
+    order_detail: {},
     // 选择的订票类型
     order_type: '',
 
@@ -38,6 +40,10 @@ const order = {
   },
 
   mutations: {
+    SET_ORDER: (state, order_detail) => {
+      state.order_detail = order_detail
+      window.localStorage.setItem('order_detail', JSON.stringify(state.order_detail))
+    },
     SET_ORDER_TYPE: (state, order_type) => {
       state.order_type = order_type
     },
@@ -83,6 +89,10 @@ const order = {
   },
 
   actions: {
+    // 提交立即选座的座位信息
+    StoreOrderDetail({ commit }, { order_detail }) {
+      commit('SET_ORDER', order_detail)
+    },
     // 提交立即选座的座位信息
     StoreMemberChooseSeats({ commit }, { choose_seats, choose_seats_count, order_price }) {
       commit('SET_ORDER_TYPE', 'CHOOSE_SEATS')

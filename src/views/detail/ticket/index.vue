@@ -42,8 +42,8 @@
           <el-col :span="20" class="price-list">
             <div>
               <template v-for="par in programDetail.pars">
-                <el-radio v-if="par.comments===''" v-model="curParPrice" :label="par.basePrice" border size="medium">{{ par.basePrice }}</el-radio>
-                <el-radio v-if="par.comments!==''" v-model="curParPrice" :label="par.basePrice" border size="medium">{{ par.basePrice }} | {{ par.comments }}</el-radio>
+                <el-radio v-if="par.comments===''" v-model="seatType" :label="par.seatType" border size="medium">{{ par.basePrice }}</el-radio>
+                <el-radio v-if="par.comments!==''" v-model="seatType" :label="par.seatType" border size="medium">{{ par.basePrice }} | {{ par.comments }}</el-radio>
               </template>
             </div>
           </el-col>
@@ -77,9 +77,9 @@
           </el-col>
         </el-row>
         <div class="list-box">
-          <a href="/orderConfirm">
-            <button class="buy-ticket" @click="buyTicket">立即购票</button>
-          </a>
+          <!--<a href="/orderConfirm">-->
+          <button class="buy-ticket" @click="$emit('generateOrder',{seatType,buyNum,curField,price})">立即购票</button>
+          <!--</a>-->
         </div>
       </div>
     </div>
@@ -97,7 +97,8 @@
         // 当前选定的场次和票面
         curField: '',
         curParPrice: 0,
-        buyNum: 1
+        buyNum: 1,
+        seatType: ''
         // star: this.programDetail.star
       }
     },
@@ -122,6 +123,7 @@
       initDefaultFieldAndParAndBuyNum(fields, pars) {
         this.curField = fields[0]
         this.curParPrice = pars[0].basePrice
+        this.seatType = pars[0].seatType
         this.buyNum = 1
       },
 
@@ -135,9 +137,6 @@
         if (this.buyNum-- === 1) {
           this.buyNum = 1
         }
-      },
-      buyTicket: function(event) {
-
       }
     }
   }

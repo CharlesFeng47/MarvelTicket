@@ -2,7 +2,7 @@ const getters = {
   // app + user
   sidebar: state => state.app.sidebar,
   token: state => state.user.token,
-  //保存用户信息
+  // 保存用户信息
   message: state => state.user.message,
 
   // avatar: state => state.user.avatar,
@@ -29,6 +29,7 @@ const getters = {
   spot_seats_map_modified: state => state.spot.spot_seats_map_modified,
 
   // order
+  order_detail: state => state.order.order_detail,
   order_type: state => state.order.order_type,
   // 不选座
   order_num: state => state.order.order_num,
@@ -52,6 +53,6 @@ const getters = {
 
   // 当前城市
   cur_city: state => state.home.cur_city,
-  show_popover : state => state.home.show_popover
+  show_popover: state => state.home.show_popover
 }
 export default getters
