@@ -63,24 +63,35 @@
 </template>
 
 <script>
+  import { generateOrder } from '../../api/order'
   export default {
     name: 'OrderConfirm',
     data: function() {
       return {
-        // basePrice: 0
       }
     },
     computed: {
       // 通过存到localStorage 解决vuex 刷新之后失效的问题
       order_detail: function() {
         const localData = JSON.parse(window.localStorage.getItem('order_detail'))
-        // console.log( this.$store.state.order.order_detail)
-        // return this.$store.state.order.order_detail
+        console.log(localData)
         return localData
       }
     },
     methods: {
       pay: function() {
+        new Promise((resolve, reject) => {
+          generateOrder(this.order_detail.id, this.order_detail.seatType, this.order_detail.buyNum).then(response => {
+            if (response.state === 'OK') {
+              console.log('訂單生成成功')
+            }
+            resolve()
+          }).catch(error => {
+            reject(error)
+          })
+        }).then(() => {
+        }).catch(() => {
+        })
         console.log(this.order_detail)
         this.$router.push('/pay')
       }

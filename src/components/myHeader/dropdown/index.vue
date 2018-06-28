@@ -22,12 +22,26 @@
         </el-col>
         <el-col :span="19" :offset="1">
           <el-row>
-            <el-col :span="3">
-              <div class="city" @click="current = '上海'">上海</div>
+            <el-col v-for="city in cityList" :key="city" :span="3">
+              <div class="city" @click="current = city">{{ city }}</div>
             </el-col>
-            <el-col :span="3">
-              <div class="city" @click="current = '南京'">南京</div>
+            <!--<el-col :span="3">-->
+              <!--<div class="city" @click="current = '南京'">南京</div>-->
+            <!--</el-col>-->
+            <!--<el-col :span="3">-->
+              <!--<div class="city" @click="current = '无锡'">苏州</div>-->
+            <!--</el-col>-->
+          </el-row>
+          <el-row>
+            <el-col v-for="city in cityDisableList" :key="city" :span="3">
+              <div class="city disable">{{ city }}</div>
             </el-col>
+            <!--<el-col :span="3">-->
+              <!--<div class="city" @click="current = '南京'">南京</div>-->
+            <!--</el-col>-->
+            <!--<el-col :span="3">-->
+              <!--<div class="city" @click="current = '无锡'">苏州</div>-->
+            <!--</el-col>-->
           </el-row>
         </el-col>
       </el-row>
@@ -41,9 +55,11 @@
 
   export default {
     name: 'popover',
-    data() {
+    data: function() {
       return {
-        current: '上海'
+        current: '上海',
+        cityList: ['上海', '南京', '无锡', '苏州', '常州'],
+        cityDisableList: ['北京', '天津', '重庆', '杭州', '大连']
       }
     },
     computed: {
@@ -53,14 +69,14 @@
     },
     watch: {
       current: {
-        handler: function (newVal, oldVal) {
+        handler: function(newVal, oldVal) {
           this.$store.dispatch('StoreCurCity', {
             cur_city: newVal
           }).then(() => {
           }).catch(() => {
           })
         }
-      },
+      }
     },
     methods: {}
   }
@@ -76,7 +92,9 @@
     text-align: center;
     padding: 0 2px 0 2px;
   }
-
+  .disable{
+    color: gainsboro;
+  }
   .city:hover {
     cursor: pointer;
   }

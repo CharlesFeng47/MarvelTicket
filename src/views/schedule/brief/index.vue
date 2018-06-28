@@ -39,7 +39,7 @@
 
 <script>
   export default {
-    name: "BriefItem",
+    name: 'BriefItem',
     props: [
       'programBrief'
     ],
@@ -49,7 +49,7 @@
     },
     methods: {
       // 查看详情
-      checkDetail: function () {
+      checkDetail: function() {
         console.log(this.programBrief)
         this.$router.push('/detail/' + this.programBrief.id)
       }
@@ -111,13 +111,18 @@
         padding: 5px 0;
         line-height: 16px;
         font-weight: 500;
-        height: 48px;
+        /*height: 48px;*/
         overflow:hidden;
         max-lines: 2;
         -webkit-line-clamp: 2;
         text-overflow: ellipsis;
         display: -webkit-box;
         -webkit-box-orient: vertical;
+
+        vertical-align: middle;
+        height: 38px;
+        margin-bottom: 10px;
+
       }
       .show-title {
         font-size: 16px;

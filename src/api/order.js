@@ -3,6 +3,17 @@ import request from '@/utils/request'
 const qs = require('qs')
 
 /**
+ * 生成订单
+ */
+export function generateOrder(programID, seatType, ticketNum) {
+  return request({
+    url: '/order/generateOrder',
+    method: 'post',
+    data: qs.stringify({ programID: programID, seatType: seatType, ticket_num: ticketNum })
+  })
+}
+
+/**
  * 获取单条计划
  */
 export function getOrder(oid) {
