@@ -15,7 +15,7 @@
             <img :src="portrait"/>
           </div>
           <div class="name" style="float: left">
-              {{ name }}
+            {{ name }}
           </div>
         </a>
         <el-dropdown-menu slot="dropdown">
@@ -80,7 +80,7 @@
             if (response.state === 'OK') {
               const data = JSON.parse(response.object)
               // 将用户信息保存
-              // console.log(data)
+              console.log(data)
               this.$store.dispatch('SetMessage', {
                 message: data
               }).then(() => {

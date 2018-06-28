@@ -7,7 +7,8 @@
           <i class="el-icon-view"></i>{{ programBrief.viewNum }}人浏览
         </el-row>
         <el-row>
-          <i class="el-icon-star-on"></i><span id="favourNum">{{ programBrief.favoriteNum}}</span>人想看
+          <svg-icon  icon-class="heart"/>
+          <span id="favourNum">{{ programBrief.favoriteNum}}</span>人想看
         </el-row>
       </div>
     </div>

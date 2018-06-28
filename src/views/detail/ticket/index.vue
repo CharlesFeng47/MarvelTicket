@@ -3,8 +3,15 @@
     <div class="poster">
       <img :src="programDetail.posterSrc">
       <div class="count">
-        <i class="el-icon-view"></i>{{ programDetail.viewNum }}人浏览
-        <span id="myLike" :class="{ hasStar: this.programDetail.star }" @click="changeStar()"><i class="el-icon-star-on"></i><span id="favourNum">{{ programDetail.favoriteNum }}</span>人想看</span>
+        <i class="el-icon-view"></i> {{ programDetail.viewNum }}人浏览
+      </div>
+      <div class="count want"  @click="changeStar()">
+        <transition name="like">
+          <svg-icon v-if="this.programDetail.star" icon-class="heart" style="color: #FF5161;"/>
+        </transition>
+        <svg-icon v-if="!this.programDetail.star" icon-class="heart"/>
+        <span id="is_like" :class="{ hasStar: this.programDetail.star }">
+          <span id="favourNum"> {{ programDetail.favoriteNum }}</span>人想看</span>
       </div>
     </div>
     <div class="detail">
@@ -14,10 +21,7 @@
       <div class="show-info">
         <i class="el-icon-time"/><span>{{ programDetail.time }} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
         <i class="el-icon-location-outline"/>
-
-        <!--TODO gy 加了effect="light"之后，底色也被渲染为橘色，你看看吧。。-->
         <el-tooltip :content="programDetail.address" placement="right" effect="light">
-        <!--<el-tooltip :content="programDetail.address" placement="right">-->
           <span>{{ programDetail.spot }}</span>
         </el-tooltip>
       </div>
@@ -99,7 +103,6 @@
         curParPrice: 0,
         buyNum: 1,
         seatType: ''
-        // star: this.programDetail.star
       }
     },
     computed: {
@@ -173,12 +176,29 @@
         position: relative;
         text-align: center;
       }
+      .want:hover{
+        color: #FF5161;
+        cursor: pointer;
+
+      }
       .hasStar{
         color: #FF5161;
       }
-      #myLike:hover{
-        cursor: pointer;
+      .like-enter-active{
+        transition: all .5s;
+        font-size: 18px;
       }
+      .like-leave-active {
+        transition: all 0s;
+        font-size: 15px
+      }
+      .like-enter{
+        font-size: 15px;
+      }
+      .like-leave {
+        font-size: 15px;
+      }
+
     }
     .detail{
       width:76%;
