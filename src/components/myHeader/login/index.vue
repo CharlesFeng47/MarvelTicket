@@ -19,9 +19,10 @@
           </div>
         </a>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item command="/center/manage/order">订单管理</el-dropdown-item>
-          <el-dropdown-item command="/center/manage/like">我的收藏</el-dropdown-item>
-          <el-dropdown-item command="/center/manage/message">我的信息</el-dropdown-item>
+          <el-dropdown-item command="order">订单管理</el-dropdown-item>
+          <el-dropdown-item command="like">我的收藏</el-dropdown-item>
+          <el-dropdown-item command="message">我的信息</el-dropdown-item>
+          <el-dropdown-item command="logout">登出</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
 
@@ -32,7 +33,8 @@
 <script>
   import { mapGetters } from 'vuex'
   import { getToken } from '@/utils/auth' // 验权
-  import { getInfo } from '../../../api/login'
+  import { getInfo, logout } from '../../../api/login'
+
   export default {
     name: 'login-panel',
     data: function() {
@@ -49,6 +51,7 @@
       ])
     },
     mounted: function() {
+      // TODO 不是这个方法
       console.log(getToken())
       if (getToken()) {
         this.hasLogin = true
@@ -72,8 +75,34 @@
     },
     methods: {
       handleCommand(command) {
-        this.$router.push(command)
+        if (command === 'logout') {
+          this.memberLogOut()
+        } else {
+          this.$router.push('/center/manage/' + command)
+        }
       },
+
+      // 会员登出
+      memberLogOut() {
+        new Promise((resolve, reject) => {
+          logout(this.token).then(response => {
+            if (response.state === 'OK') {
+              resolve()
+            } else {
+              reject()
+            }
+          }).catch(error => {
+            reject(error)
+          })
+        }).then(() => {
+            this.$store.dispatch('LogOut').then(() => {
+              location.reload() // 为了重新实例化vue-router对象 避免bug
+            })
+          }
+        )
+      },
+
+      // 初始化会员信息
       initMemberMessage() {
         new Promise((resolve, reject) => {
           getInfo(this.token).then(response => {
@@ -98,7 +127,7 @@
           }).catch(error => {
             reject(error)
           })
-        })
+        }).then()
       }
     }
   }

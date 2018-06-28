@@ -86,7 +86,7 @@ export function getInfo(token) {
  */
 export function logout(token) {
   return request({
-    url: '/login/logout',
+    url: '/user/logout',
     method: 'post',
     data: qs.stringify({ token: token })
   })
