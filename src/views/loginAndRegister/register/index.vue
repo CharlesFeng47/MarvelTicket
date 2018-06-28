@@ -26,7 +26,7 @@
     data: function () {
       const validateUsername = (rule, value, callback) => {
         if (!isValidUsername(value)) {
-          callback(new Error('请输入正确的会员名'))
+          callback(new Error('请输入只包含数字、字母的用户名'))
         } else {
           callback()
         }
@@ -49,7 +49,7 @@
         if (value === '') {
           callback(new Error('请再次输入密码'));
         } else if (value !== this.registerForm.password) {
-          callback(new Error('两次输入密码不一致!'));
+          callback(new Error('两次输入密码不一致'));
         } else {
           callback();
         }

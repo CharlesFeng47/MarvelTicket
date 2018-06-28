@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- 订单界面的上部导航 -->
     <OrderNav/>
     <div class="order-panel">
       <template v-for="order in orders">
@@ -12,6 +13,8 @@
 <script>
   import OrderNav from './orderNav/index'
   import MyOrder from './Order'
+
+  // 我的订单管理
   export default {
     name: 'order-panel',
     components: {

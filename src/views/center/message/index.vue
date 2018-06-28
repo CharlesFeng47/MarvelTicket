@@ -4,7 +4,7 @@
       <template v-if="!modifyPortrait">
         <el-col :span="24">
           <div class="portrait" @click="modifyMyPortrait">
-            <img :src="message.portrait"/>
+            <img :src="this.portrait"/>
           </div>
         </el-col>
       </template>
@@ -37,27 +37,29 @@
         <span class="label">邮箱：</span>
       </el-col>
       <el-col :span="18">
-        <span class="message">{{ message.email }}</span>
+        <span class="message">{{ this.email }}</span>
       </el-col>
     </el-row>
     <el-row class="line">
       <el-col :span="6">
         <span class="label">昵称：</span>
       </el-col>
-      <template  v-if="!modifyName">
+      <template v-if="!modifyName">
         <el-col :span="10">
-          <span class="message">{{ message.name }}</span>
+          <span class="message">{{ this.name }}</span>
         </el-col>
-        <el-col :span="3" offset="1" class="button-block">
+        <el-col :span="3" :offset="1" class="button-block">
           <!--<el-button type="danger" @click="modifyMyName" style="margin-top: -10px;">修改昵称</el-button>-->
           <i class="el-icon-edit-outline" @click="modifyMyName"/>
         </el-col>
       </template>
       <template v-else>
-        <el-col :span="15" >
-          <el-form :model="nameForm" status-icon :rules="rules2" ref="nameForm" label-width="0px" style="margin-top: -10px" >
+        <el-col :span="15">
+          <el-form :model="nameForm" status-icon :rules="rules2" ref="nameForm" label-width="0px"
+                   style="margin-top: -10px">
             <el-form-item prop="username">
-              <el-input v-model="nameForm.username" placeholder="请输入昵称"  auto-complete="on" :autofocus="true" style="margin-top: -14px"/>
+              <el-input v-model="nameForm.username" placeholder="请输入昵称" auto-complete="on" :autofocus="true"
+                        style="margin-top: -14px"/>
             </el-form-item>
           </el-form>
         </el-col>
@@ -73,7 +75,7 @@
       <el-col :span="6">
         <span class="label">密码：</span>
       </el-col>
-      <template  v-if="!modifyPassword">
+      <template v-if="!modifyPassword">
         <el-col :span="10">
           <div class="message" style="margin-top: 5px">**********</div>
         </el-col>
@@ -82,29 +84,30 @@
           <!--<el-button type="danger" @click="modifyMyPassword" style="margin-top: -10px;">修改密码</el-button>-->
         </el-col>
       </template>
-      <template  v-else>
+      <template v-else>
         <el-col :span="15">
-        <el-form :model="passwordForm" status-icon :rules="rules" ref="passwordForm" label-width="0px" style="margin-top: -10px">
-          <el-form-item prop="old_password">
-            <el-input placeholder="请输入旧密码"  type="password"  v-model="passwordForm.old_password"/>
-          </el-form-item>
-          <el-form-item prop="pass">
-            <el-input  placeholder="请输入新密码" type="password" v-model="passwordForm.pass" auto-complete="on"/>
-          </el-form-item>
-          <el-form-item prop="checkPass">
-            <el-input  placeholder="请再次输入新密码" type="password" v-model="passwordForm.checkPass" auto-complete="on"/>
-          </el-form-item>
-          <el-form-item>
-            <el-row>
-              <el-col :span="10" :offset="0" class="button-block">
-                <el-button type="info" @click="cancelModifyPassword">取消修改</el-button>
-              </el-col>
-              <el-col :span="10" :offset="2" class="button-block">
-                <el-button type="danger" @click="sureModifyPassword">保存修改</el-button>
-              </el-col>
-            </el-row>
-          </el-form-item>
-        </el-form>
+          <el-form :model="passwordForm" status-icon :rules="rules" ref="passwordForm" label-width="0px"
+                   style="margin-top: -10px">
+            <el-form-item prop="oldPassword">
+              <el-input placeholder="请输入旧密码" type="password" v-model="passwordForm.oldPassword"/>
+            </el-form-item>
+            <el-form-item prop="pass">
+              <el-input placeholder="请输入新密码" type="password" v-model="passwordForm.pass" auto-complete="on"/>
+            </el-form-item>
+            <el-form-item prop="checkPass">
+              <el-input placeholder="请再次输入新密码" type="password" v-model="passwordForm.checkPass" auto-complete="on"/>
+            </el-form-item>
+            <el-form-item>
+              <el-row>
+                <el-col :span="10" :offset="0" class="button-block">
+                  <el-button type="info" @click="cancelModifyPassword">取消修改</el-button>
+                </el-col>
+                <el-col :span="10" :offset="2" class="button-block">
+                  <el-button type="danger" @click="sureModifyPassword">保存修改</el-button>
+                </el-col>
+              </el-row>
+            </el-form-item>
+          </el-form>
         </el-col>
       </template>
     </el-row>
@@ -115,15 +118,16 @@
   import { mapGetters } from 'vuex'
   import { isValidUsername } from '@/utils/validate'
   import { modifyName, modifyPassword, modifyPortrait } from '../../../api/user'
+
+  // 我的信息
   export default {
     name: 'message',
-    components: {},
-    data: function() {
+    data() {
       const validatePass = (rule, value, callback) => {
         if (value === '') {
           callback(new Error('请输入密码'))
         } else if (value.length < 6) {
-          callback(new Error('密码错误'))
+          callback(new Error('密码不能少于 6 位'))
         } else {
           if (this.passwordForm.checkPass !== '') {
             this.$refs.passwordForm.validateField('checkPass')
@@ -142,7 +146,7 @@
       }
       const validateUsername = (rule, value, callback) => {
         if (!isValidUsername(value)) {
-          callback(new Error('请输入正确的会员名'))
+          callback(new Error('请输入只包含数字、字母的用户名'))
         } else {
           callback()
         }
@@ -151,18 +155,23 @@
         modifyName: false,
         modifyPassword: false,
         modifyPortrait: false,
+
+        // TODO preUpload 是啥
         preUpload: false,
         imageUrl: '',
+
         passwordForm: {
-          old_password: '',
+          oldPassword: '',
           pass: '',
           checkPass: ''
         },
+
         nameForm: {
           username: ''
         },
+
         rules: {
-          old_password: [
+          oldPassword: [
             { validator: validatePass, trigger: 'blur' }
           ],
           pass: [
@@ -172,6 +181,7 @@
             { validator: validatePass2, trigger: 'blur' }
           ]
         },
+
         rules2: {
           username: [
             { validator: validateUsername, trigger: 'blur' }
@@ -181,12 +191,17 @@
     },
     computed: {
       ...mapGetters([
-        'message',
-        'token'
+        'token',
+        'email',
+        'name',
+        'portrait'
       ])
     },
     watch: {},
     methods: {
+      /*
+      修改头像相关
+       */
       modifyMyPortrait() {
         this.modifyPortrait = true
         this.preUpload = false
@@ -203,10 +218,9 @@
               this.modifyPortrait = false
               this.preUpload = true
               this.message.portrait = this.imageUrl
-              // this.portrait = this.imageUrl
-              this.$store.dispatch('SetMessage', {
-                message: this.message
-              }).then(() => {
+
+              // 更新前端 vuex
+              this.$store.dispatch('UpdatePortrait', this.imageUrl).then(() => {
               }).catch(() => {
               })
             }
@@ -218,9 +232,13 @@
         }).catch(() => {
         })
       },
+
+      /*
+      修改昵称相关
+       */
       modifyMyName() {
         this.modifyName = true
-        this.nameForm.username = this.message.name
+        this.nameForm.username = this.name
       },
       cancelModifyName() {
         this.modifyName = false
@@ -231,14 +249,12 @@
             new Promise((resolve, reject) => {
               modifyName(this.nameForm.username, this.token).then(response => {
                 if (response.state === 'OK') {
-                  this.message.name = this.nameForm.username
                   this.modifyName = false
-                  // this.$store.dispatch('SetMessage', {
-                  //   message: this.message
-                  // }).then(() => {
-                  //   // alert(this.message.name)
-                  // }).catch(() => {
-                  // })
+
+                  // 更新前端 vuex
+                  this.$store.dispatch('UpdateName', this.nameForm.username).then(() => {
+                  }).catch(() => {
+                  })
                 }
                 resolve()
               }).catch(error => {
@@ -252,9 +268,13 @@
           }
         })
       },
+
+      /*
+      修改密码相关
+       */
       modifyMyPassword() {
         this.modifyPassword = true
-        this.passwordForm.old_password = ''
+        this.passwordForm.oldPassword = ''
         this.passwordForm.pass = ''
         this.passwordForm.checkPass = ''
       },
@@ -265,7 +285,7 @@
         this.$refs['passwordForm'].validate((valid) => {
           if (valid) {
             new Promise((resolve, reject) => {
-              modifyPassword(this.passwordForm.pass, this.passwordForm.checkPass).then(response => {
+              modifyPassword(this.token, this.passwordForm.oldPassword, this.passwordForm.pass).then(response => {
                 if (response.state === 'OK') {
                   this.modifyPassword = false
                 }
@@ -281,6 +301,7 @@
           }
         })
       },
+
       handlePreview(file) {
         // console.log(file)
         // console.log(URL.createObjectURL(file.raw))
@@ -375,6 +396,7 @@
     .el-icon-edit-outline:hover{
       /*font-size: 20px;*/
       cursor: pointer;
+      // TODO gy 为什么报错了
       cursor: #F78978;
     }
     .upload-portrait {

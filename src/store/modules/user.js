@@ -45,24 +45,21 @@ const user = {
       setToken(token)
     },
 
-    // 获取用户信息
-    GetInfo({ commit, state }) {
-      //    TODO fjj
-      return new Promise((resolve, reject) => {
-        getInfo(state.token).then(response => {
-          if (response.state === 'OK') {
-            const data = JSON.parse(response.object)
-            // console.log(data)
-            commit('SET_NAME', data.user.id)
-            // 场馆多一个是否已被审核通过的属性
-            // if (data.role[0] === 'SPOT') commit('SET_SPOT_EXAMINED', data.examined)
-            // commit('SET_AVATAR', data.avatar)
-          }
-          resolve(response)
-        }).catch(error => {
-          reject(error)
-        })
-      })
+    // vuex 保存用户信息
+    StoreInfo({ commit }, { email, name, portrait }) {
+      commit('SET_EMAIL', email)
+      commit('SET_NAME', name)
+      commit('SET_PORTRAIT', portrait)
+    },
+
+    // 更新昵称
+    UpdateName({ commit}, name) {
+      commit('SET_NAME', name)
+    },
+
+    // 更新头像
+    UpdatePortrait({ commit}, portrait) {
+      commit('SET_PORTRAIT', portrait)
     },
 
     // 会员登出

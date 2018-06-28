@@ -16,11 +16,15 @@ export function star(programID) {
 /**
  * 修改密码
  */
-export function modifyPassword(oldPass, newPass) {
+export function modifyPassword(token, old_password, new_password) {
   return request({
-    url: '/user/star',
+    url: '/user/modifyPassword',
     method: 'post',
-    data: qs.stringify({ old_password: oldPass, newPass })
+    data: qs.stringify({
+      token,
+      old_password,
+      new_password
+    })
   })
 }
 
@@ -63,43 +67,6 @@ export function getUser(token) {
     url: '/user',
     method: 'post',
     data: qs.stringify({ token: token })
-  })
-}
-
-/**
- * 会员修改数据
- */
-export function memberModify(token, pwd) {
-  return request({
-    url: '/user/member_modify',
-    method: 'post',
-    data: qs.stringify({
-      token,
-      pwd
-    })
-  })
-}
-
-/**
- * 场馆修改数据
- */
-export function spotModify(token, spot_basic, spot_seats_map, cur_seat_type_count, seat_names) {
-  const seatInfos = computeSeatNameNumMap(cur_seat_type_count, spot_seats_map, seat_names)
-  console.log(seatInfos)
-
-  return request({
-    url: '/user/spot_modify',
-    method: 'post',
-    data: qs.stringify({
-      token,
-      password: spot_basic.password,
-      name: spot_basic.name,
-      site: spot_basic.site,
-      alipayId: spot_basic.alipayId,
-      seatInfos: JSON.stringify(seatInfos),
-      seatsMap: JSON.stringify(spot_seats_map),
-      curSeatTypeCount: cur_seat_type_count
-    })
   })
 }
 

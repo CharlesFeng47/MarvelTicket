@@ -10,6 +10,8 @@
 
 <script>
   import Item from '../../home/recommendation/line/item/index'
+
+  // 我的收藏
   export default {
     name: 'like',
     components: {

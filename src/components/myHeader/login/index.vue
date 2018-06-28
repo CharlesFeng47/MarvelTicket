@@ -1,21 +1,13 @@
 <template>
   <div>
-    <div v-if="!hasLogin" style="margin-top: 28px">
-      <a href="/loginAndRegister/login">
-      <span class="svg-container">
-        <svg-icon icon-class="user"/>
-        <el-button type="text">登录/注册</el-button>
-      </span>
-      </a>
-    </div>
-    <div v-else>
+    <div v-if="hasLogin">
       <el-dropdown @command="handleCommand">
-        <a href="/center/manage/order">
+        <a href="/center/manage/message">
           <div class="portrait" style="float: left">
-            <img :src="portrait"/>
+            <img :src="this.portrait"/>
           </div>
           <div class="name" style="float: left">
-            {{ name }}
+            {{ this.name }}
           </div>
         </a>
         <el-dropdown-menu slot="dropdown">
@@ -25,52 +17,33 @@
           <el-dropdown-item command="logout">登出</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
-
+    </div>
+    <div v-else style="margin-top: 28px">
+      <a href="/loginAndRegister/login">
+      <span class="svg-container">
+        <svg-icon icon-class="user"/>
+        <el-button type="text">登录/注册</el-button>
+      </span>
+      </a>
     </div>
   </div>
 </template>
 
 <script>
   import { mapGetters } from 'vuex'
-  import { getToken } from '@/utils/auth' // 验权
-  import { getInfo, logout } from '../../../api/login'
+  import { logout } from '../../../api/login'
 
   export default {
     name: 'login-panel',
-    data: function() {
-      return {
-        hasLogin: false,
-        portrait: '',
-        name: ''
-      }
-    },
     computed: {
       ...mapGetters([
         'token',
-        'message'
-      ])
-    },
-    mounted: function() {
-      // TODO 不是这个方法
-      console.log(getToken())
-      if (getToken()) {
-        this.hasLogin = true
-        this.initMemberMessage()
-      } else {
-        this.hasLogin = false
-      }
-    },
-    watch: {
-      message: {
-        handler: function(newVal, oldVal) {
-          // todo FJJ 看一下，修改头像之后 在center/message/sureModifyPortrait，明明SetMessage了， 但是这里没有监听到
-        }
-      },
-      token: {
-        handler: function(newVal, oldVal) {
-          console.log('init' + this.token)
-          this.initMemberMessage()
-        }
+        'name',
+        'portrait'
+      ]),
+      hasLogin: function () {
+        console.log('token: ' + this.token)
+        return this.token !== undefined && this.token !== ''
       }
     },
     methods: {
@@ -100,34 +73,6 @@
             })
           }
         )
-      },
-
-      // 初始化会员信息
-      initMemberMessage() {
-        new Promise((resolve, reject) => {
-          getInfo(this.token).then(response => {
-            if (response.state === 'OK') {
-              const data = JSON.parse(response.object)
-              // 将用户信息保存
-              console.log(data)
-              this.$store.dispatch('SetMessage', {
-                message: data
-              }).then(() => {
-                if (this.message == null) {
-                  this.hasLogin = false
-                } else {
-                  this.hasLogin = true
-                  this.portrait = this.message.portrait
-                  this.name = this.message.name
-                }
-              }).catch(() => {
-              })
-            }
-            resolve(response)
-          }).catch(error => {
-            reject(error)
-          })
-        }).then()
       }
     }
   }

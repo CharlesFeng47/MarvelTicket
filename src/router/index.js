@@ -137,15 +137,6 @@ export const constantRouterMap = [
       }
     ]
   },
-  {
-    path: '/spot_sign_up', component: () => import('@/views/user/spot/modify/index'), hidden: true,
-    children: [
-      { path: '', hidden: true, component: () => import('@/views/user/spot/modify/step1'), meta: { isNew: true }},
-      { path: 'step1', hidden: true, component: () => import('@/views/user/spot/modify/step1'), meta: { isNew: true }},
-      { path: 'step2', hidden: true, component: () => import('@/views/user/spot/modify/step2'), meta: { isNew: true }},
-      { path: 'step3', hidden: true, component: () => import('@/views/user/spot/modify/step3'), meta: { isNew: true }}
-    ]
-  },
 
   {
     path: '/',
@@ -161,52 +152,6 @@ export const constantRouterMap = [
 ]
 
 export const asyncRouterMap = [
-  {
-    path: '/user_info',
-    component: Layout,
-    name: 'UserInfo',
-    meta: { title: '身份' },
-    hidden: true,
-    children: [
-      { path: '', component: () => import('@/views/user/index') },
-      {
-        path: 'modify_spot', component: () => import('@/views/user/spot/modify/index'), meta: { roles: ['SPOT'] },
-        children: [
-          {
-            path: '',
-            hidden: true,
-            component: () => import('@/views/user/spot/modify/step1'),
-            meta: { isNew: false, roles: ['SPOT'] }
-          },
-          {
-            path: 'step1',
-            hidden: true,
-            component: () => import('@/views/user/spot/modify/step1'),
-            meta: { isNew: false, roles: ['SPOT'] }
-          },
-          {
-            path: 'step2',
-            hidden: true,
-            component: () => import('@/views/user/spot/modify/step2'),
-            meta: { isNew: false, roles: ['SPOT'] }
-          },
-          {
-            path: 'step3',
-            hidden: true,
-            component: () => import('@/views/user/spot/modify/step3'),
-            meta: { isNew: false, roles: ['SPOT'] }
-          }
-        ]
-      },
-      {
-        path: 'modify_member',
-        hidden: true,
-        component: () => import('@/views/user/member/modify'),
-        meta: { roles: ['MEMBER'] }
-      }
-    ]
-  },
-
   {
     path: '/order',
     component: Layout,
@@ -313,38 +258,38 @@ export const asyncRouterMap = [
     ]
   },
 
-  {
-    path: '/examine',
-    component: Layout,
-    redirect: '/examine/spot',
-    name: 'Examine',
-    meta: { title: '审核', icon: 'example', roles: ['MANAGER'] },
-    children: [
-      {
-        path: 'spot',
-        name: 'ExamineSpot',
-        hidden: false,
-        component: () => import('@/views/examine/spot/index'),
-        meta: { title: '场馆审批', icon: 'schedule', roles: ['MANAGER'] },
-        children: [
-          { path: '', component: () => import('@/views/examine/spot/overall/index'), meta: { roles: ['MANAGER'] }},
-          {
-            path: ':spotId',
-            name: 'UnexaminedSpotDetail',
-            component: () => import('@/views/examine/spot/unexaminedSpotDetail/index'),
-            meta: { title: '场馆详情', roles: ['MANAGER'] }
-          }
-        ]
-      },
-      {
-        path: 'schedule',
-        name: 'SettleSchedule',
-        hidden: false,
-        component: () => import('@/views/examine/schedule/index'),
-        meta: { title: '计划结算', icon: 'schedule', roles: ['MANAGER'] }
-      }
-    ]
-  },
+  // {
+  //   path: '/examine',
+  //   component: Layout,
+  //   redirect: '/examine/spot',
+  //   name: 'Examine',
+  //   meta: { title: '审核', icon: 'example', roles: ['MANAGER'] },
+  //   children: [
+  //     {
+  //       path: 'spot',
+  //       name: 'ExamineSpot',
+  //       hidden: false,
+  //       component: () => import('@/views/examine/spot/index'),
+  //       meta: { title: '场馆审批', icon: 'schedule', roles: ['MANAGER'] },
+  //       children: [
+  //         { path: '', component: () => import('@/views/examine/spot/overall/index'), meta: { roles: ['MANAGER'] }},
+  //         {
+  //           path: ':spotId',
+  //           name: 'UnexaminedSpotDetail',
+  //           component: () => import('@/views/examine/spot/unexaminedSpotDetail/index'),
+  //           meta: { title: '场馆详情', roles: ['MANAGER'] }
+  //         }
+  //       ]
+  //     },
+  //     {
+  //       path: 'schedule',
+  //       name: 'SettleSchedule',
+  //       hidden: false,
+  //       component: () => import('@/views/examine/schedule/index'),
+  //       meta: { title: '计划结算', icon: 'schedule', roles: ['MANAGER'] }
+  //     }
+  //   ]
+  // },
 
   {
     path: '/statistics',
