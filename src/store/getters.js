@@ -1,13 +1,12 @@
 const getters = {
   // user
   token: state => state.user.token,
+  email: state => state.user.email,
+  name: state => state.user.name,
+  portrait: state => state.user.portrait,
+
   // 保存用户信息
   message: state => state.user.message,
-
-  // avatar: state => state.user.avatar,
-  name: state => state.user.name,
-  roles: state => state.user.roles,
-  spot_examined: state => state.user.spot_examined,
 
   // permission
   permission_routers: state => state.permission.routers,

@@ -23,6 +23,8 @@
 
 <script>
   import { isValidUsername, isValidateEmail } from '@/utils/validate'
+  import { login } from '../../../api/login'
+  import { Message } from 'element-ui'
 
   export default {
     name: 'MyLogin',
@@ -63,14 +65,47 @@
         this.$refs.loginForm.validate(valid => {
           if (valid) {
             this.loading = true
-            this.$store.dispatch('Login', this.loginForm).then(() => {
-              this.loading = false
-              // alert("登录成功");
-              // this.$router.go(-1)
-              this.$router.push('/home')
-            }).catch(() => {
-              this.loading = false
-            })
+
+            new Promise((resolve, reject) => {
+              login(this.loginForm.email, this.loginForm.password).then(response => {
+                if (response.state === 'OK') {
+                  const token = JSON.parse(response.object)
+
+                  // 登录成功，保存到 vuex 中
+                  this.$store.dispatch('Login', {
+                    token: token
+                  }).then(() => {
+                    this.loading = false
+                    this.$router.push('/home')
+                  }).catch(() => {
+                    this.loading = false
+                  })
+                } else {
+                  var errorMsg = '未知错误，请联系管理员！'
+                  if (response.state === 'USER_NOT_EXIST') {
+                    errorMsg = '此会员名还未被注册，请先注册哦～'
+                  } else if (response.state === 'USER_PWD_WRONG') {
+                    errorMsg = '密码错误，请检查后重试！'
+                    // TODO 未激活是否可以登录
+                  } else if (response.state === 'MEMBER_INACTIVE') {
+                    errorMsg = '此用户还未被激活哦～'
+                  }
+                  Message({
+                    message: errorMsg,
+                    type: 'error',
+                    duration: 3 * 1000,
+                    center: true,
+                    showClose: true
+                  })
+
+                  this.loading = false
+                }
+                resolve()
+              }).catch(error => {
+                this.loading = false
+                reject(error)
+              })
+            }).then()
           } else {
             console.log('error submit!!')
             return false
