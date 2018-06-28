@@ -101,14 +101,16 @@
 </template>
 
 <script>
-
-  import ElRow from "element-ui/packages/row/src/row";
-
+  import { getOrder } from '../../api/order'
   export default {
     name: 'pay',
     components: {
-      ElRow
 
+    },
+    computed: {
+      orderid: function() {
+        return this.$route.query.orderid
+      }
     },
     data() {
       return {
@@ -131,6 +133,18 @@
       }
     },
     mounted: function() {
+      new Promise((resolve, reject) => {
+        getOrder(this.orderid).then(response => {
+          if (response.state === 'OK') {
+            console.log(response.object)
+          }
+          resolve()
+        }).catch(error => {
+          reject(error)
+        })
+      }).then(() => {
+      }).catch(() => {
+      })
       this.order_time = new Date('2018/06/26 11:00:00')
       // 定时器，计算剩余时间
       var passed_second = (new Date().getTime() - this.order_time.getTime()) / 1000
@@ -151,7 +165,7 @@
       }
     },
     methods: {
-      surePay(){
+      surePay() {
         this.$router.push('/paySuccess')
       }
     }

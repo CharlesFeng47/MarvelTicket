@@ -38,7 +38,7 @@
     },
     methods: {
       initHome() {
-        this.recommendationLoading = true;
+        this.recommendationLoading = true
         new Promise((resolve, reject) => {
           recommend(this.cur_city).then(response => {
             if (response.state === 'OK') {
@@ -67,7 +67,7 @@
           for (var i in data[key]) {
             var recommendation = {}
             recommendation.programID = data[key][i]['id']
-            recommendation.posterSrc = 'http://localhost:3000/TicketsManagementSystem/image/' + data[key][i]['programTypeName'] + '/' + recommendation.programID + '.jpg'
+            recommendation.posterSrc = data[key][i]['imageUrl']
             recommendation.name = data[key][i]['programName']
             recommendation.basePrice = data[key][i]['lowPrice']
             recommendation.city = data[key][i]['city']

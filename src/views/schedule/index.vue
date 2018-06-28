@@ -74,14 +74,14 @@
       ...mapGetters([
         'cur_city'
       ]),
-      type: function () {
+      type: function() {
         return this.$route.query.type
       },
-      key: function () {
+      key: function() {
         return this.$route.query.key
       }
     },
-    mounted: function () {
+    mounted: function() {
       if (this.$route.meta.isSearch === false) {
         // 普通查看非搜索
         this.initCurProgramsByType(this.$route.query.type)
@@ -89,13 +89,12 @@
         // 搜索查看
         this.initCurProgramsBySearchKey(this.$route.query.key)
       }
-
     },
     watch: {
       // TODO 讨论路由更换时原有内容要不要清空
       // 根据路由参数选定当前加载的类型
       type: {
-        handler: function (newVal, oldVal) {
+        handler: function(newVal, oldVal) {
           if (this.$route.meta.isSearch === false) {
             this.initCurProgramsByType(newVal)
           }
@@ -104,7 +103,7 @@
 
       // 根据搜索关键字选定内容
       key: {
-        handler: function (newVal, oldVal) {
+        handler: function(newVal, oldVal) {
           if (this.$route.meta.isSearch === true) {
             this.initCurProgramsBySearchKey(newVal)
           }
@@ -113,14 +112,14 @@
 
       // 页码改变后，重新加载内容
       currentPage: {
-        handler: function (newVal, oldVal) {
+        handler: function(newVal, oldVal) {
           this.refreshBriefs()
         }
       },
 
       // 城市的修改只影响根据类型展示，不影响根据关键字搜索的结果
       cur_city: {
-        handler: function (newVal, oldVal) {
+        handler: function(newVal, oldVal) {
           if (this.$route.meta.isSearch === false) {
             this.initCurProgramsByType(this.type)
           }
@@ -129,7 +128,7 @@
 
       // 节目的筛选条件修改显示的内容并排序
       'criteriaForm.pick': {
-        handler: function (newVal, oldVal) {
+        handler: function(newVal, oldVal) {
           this.filteredProgramBriefs = toPick(newVal, this.programBriefsOrigin)
           console.log('after filter: ' + this.filteredProgramBriefs.length + '<==' + this.programBriefsOrigin.length)
 
@@ -146,7 +145,7 @@
 
       // 节目的排序条件修改
       'criteriaForm.sort': {
-        handler: function (newVal, oldVal) {
+        handler: function(newVal, oldVal) {
           this.filteredProgramBriefs = toSort(newVal, this.filteredProgramBriefs)
 
           // 排序之后回到第一页
@@ -160,7 +159,7 @@
 
     methods: {
       // 根据节目类型从后端获取此类型的节目数据
-      initCurProgramsByType: function (type) {
+      initCurProgramsByType: function(type) {
         this.curTypeSchedulesLoading = true
         new Promise((resolve, reject) => {
           getProgramsByType(this.cur_city, getProgramTypeEnum(type)).then(response => {
@@ -182,7 +181,7 @@
       },
 
       // 根据搜索关键字从后端获取相关的节目数据
-      initCurProgramsBySearchKey: function (key) {
+      initCurProgramsBySearchKey: function(key) {
         this.curTypeSchedulesLoading = true
         new Promise((resolve, reject) => {
           getProgramsBySearchKey(key).then(response => {
@@ -204,14 +203,14 @@
       },
 
       // 将获取的数据装载到页面中
-      fulfillProgramBriefs: function (curPrograms) {
+      fulfillProgramBriefs: function(curPrograms) {
         this.programBriefsOrigin = []
         for (var index = 0; index < curPrograms.length; index++) {
           var brief = {}
           brief.id = curPrograms[index].id
           brief.title = curPrograms[index].programName
           brief.description = curPrograms[index].description
-          brief.posterSrc = 'http://localhost:3000/TicketsManagementSystem/image/' + curPrograms[index]['programTypeName'] + '/' + brief.id + '.jpg'
+          brief.posterSrc = curPrograms[index].imageUrl
           brief.saleType = curPrograms[index].saleType
           brief.time = curPrograms[index].time
           brief.spot = curPrograms[index].venueName
@@ -226,7 +225,7 @@
       },
 
       // 初始化界面中的页码信息
-      initDefaultInfo: function () {
+      initDefaultInfo: function() {
         this.filteredProgramBriefs = []
         for (let i = 0; i < this.programBriefsOrigin.length; i++) {
           this.filteredProgramBriefs.push(this.programBriefsOrigin[i])
@@ -238,17 +237,17 @@
       },
 
       // 因为 当前页号修改 / 筛选排序标准修改 导致界面展示的数据改变
-      refreshBriefs: function () {
+      refreshBriefs: function() {
         this.showingBriefs = []
         for (var index = (this.currentPage - 1) * this.everyPage;
-             index < this.currentPage * this.everyPage && index < this.filteredProgramBriefs.length;
-             index++) {
+          index < this.currentPage * this.everyPage && index < this.filteredProgramBriefs.length;
+          index++) {
           this.showingBriefs.push(this.filteredProgramBriefs[index])
         }
       },
 
       // 子组件 Pagination 修改后回调此组件更新 currentPage，以更新展示的数据
-      changePage: function (page) {
+      changePage: function(page) {
         this.currentPage = page
       }
     }

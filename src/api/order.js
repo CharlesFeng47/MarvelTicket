@@ -5,11 +5,11 @@ const qs = require('qs')
 /**
  * 生成订单
  */
-export function generateOrder(programID, seatType, ticketNum) {
+export function generateOrder(programID, seatType, programTime, ticketNum) {
   return request({
     url: '/order/generateOrder',
     method: 'post',
-    data: qs.stringify({ programID: programID, seatType: seatType, ticket_num: ticketNum })
+    data: qs.stringify({ programID: programID, seatType: seatType, programTime: programTime, ticket_num: ticketNum })
   })
 }
 
@@ -18,8 +18,9 @@ export function generateOrder(programID, seatType, ticketNum) {
  */
 export function getOrder(oid) {
   return request({
-    url: '/order/' + oid,
-    method: 'get'
+    url: '/order/getOneOrder',
+    method: 'post',
+    data: qs.stringify({ order_time: oid })
   })
 }
 

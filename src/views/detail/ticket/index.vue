@@ -9,7 +9,7 @@
         <transition name="like">
           <svg-icon v-if="this.programDetail.star" icon-class="heart" style="color: #FF5161;"/>
         </transition>
-        <svg-icon v-if="!this.programDetail.star" icon-class="heart"/>
+        <svg-icon v-if="!this.programDetail.star" icon-class="heart2"/>
         <span id="is_like" :class="{ hasStar: this.programDetail.star }">
           <span id="favourNum"> {{ programDetail.favoriteNum }}</span>人想看</span>
       </div>

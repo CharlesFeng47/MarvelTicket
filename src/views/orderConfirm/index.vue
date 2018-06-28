@@ -81,9 +81,10 @@
     methods: {
       pay: function() {
         new Promise((resolve, reject) => {
-          generateOrder(this.order_detail.id, this.order_detail.seatType, this.order_detail.buyNum).then(response => {
+          generateOrder(this.order_detail.id, this.order_detail.seatType, this.order_detail.curField, this.order_detail.buyNum).then(response => {
             if (response.state === 'OK') {
-              console.log('訂單生成成功')
+              console.log(JSON.parse(response.object))
+              this.$router.push('/pay?orderid=' + JSON.parse(response.object))
             }
             resolve()
           }).catch(error => {
@@ -92,8 +93,6 @@
         }).then(() => {
         }).catch(() => {
         })
-        console.log(this.order_detail)
-        this.$router.push('/pay')
       }
     }
   }
