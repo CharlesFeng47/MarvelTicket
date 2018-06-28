@@ -1,3 +1,6 @@
+/*
+登录注册的输入框
+*/
 .login-register-input {
   font-weight: 400;
   height: 50px;
@@ -10,8 +13,11 @@
   color: #666;
 }
 
+/*
+提交表单的按钮
+ */
 .login-btn {
-  background-color: #ff6633;
+  background-color: #F78989;
   border: 0 none;
   border-radius: 3px;
   color: #fff;

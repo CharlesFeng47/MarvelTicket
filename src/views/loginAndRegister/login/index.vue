@@ -1,15 +1,21 @@
 <template>
-  <el-form autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm">
+  <el-form :model="loginForm" :rules="loginRules" ref="loginForm">
     <el-form-item prop="email" class="login-register-input">
-      <el-input name="email" v-model="loginForm.email" autoComplete="on" type="text" placeholder="请输入电子邮箱"/>
+      <el-input name="email" v-model="loginForm.email" type="text" placeholder="请输入电子邮箱"/>
     </el-form-item>
     <el-form-item prop="password" class="login-register-input">
-      <el-input name="password" v-model="loginForm.password" autoComplete="on" type="password" placeholder="请输入密码"/>
+
+      <el-input name="password" type="password" v-model="loginForm.password" placeholder="请输入密码"/>
+
+      <!--TODO gy 可查看密码-->
+      <!--<el-input name="password" :type="pwdType" v-model="loginForm.password" placeholder="请输入密码"/>-->
+      <!--<span class="show-pwd" @click="showPwd"><svg-icon icon-class="eye" /></span>-->
+
     </el-form-item>
     <el-button class="login-btn" :loading="loading" @click="handleLogin">立即登录</el-button>
-    <!-- todo click -->
+
+    <!--TODO 讨论忘记密码之后的处理，比如直接发送一个链接并重置密码？感觉比较简单不需要再做界面emm-->
     <a>
-      <!-- todo click -->
       <p class="forget-pwd-btn">忘记密码</p>
     </a>
   </el-form>
@@ -20,14 +26,7 @@
 
   export default {
     name: 'MyLogin',
-    data: function() {
-      const validateUsername = (rule, value, callback) => {
-        if (!isValidUsername(value)) {
-          callback(new Error('请输入正确的会员名'))
-        } else {
-          callback()
-        }
-      }
+    data: function () {
       const validatePass = (rule, value, callback) => {
         if (value.length < 6) {
           callback(new Error('密码不能少于 6 位'))
@@ -44,25 +43,20 @@
       }
       return {
         loginForm: {
-          password: '',
           email: '',
+          password: '',
           userType: 'member'
         },
         loginRules: {
           password: [{ required: true, trigger: 'blur', validator: validatePass }],
           email: [{ required: true, trigger: 'blur', validator: validateEmail }]
         },
-        loading: false,
-        pwdType: 'password',
-        wantToLogin: true
+
+        loading: false
       }
-      // return {
-      //   user: {
-      //     email: '',
-      //     password: ''
-      //   },
-      //   loading: false
-      // }
+    },
+    mounted: function () {
+      this.$emit('login')
     },
     methods: {
       handleLogin() {
@@ -83,9 +77,6 @@
           }
         })
       }
-    },
-    mounted: function() {
-      this.$emit('login')
     }
   }
 </script>
@@ -94,7 +85,7 @@
   @import "../common.css";
 
   .forget-pwd-btn {
-    color: #ff6633;
+    color: #F78989;
     cursor: pointer;
     font-size: 13px;
     margin-top: 13px;

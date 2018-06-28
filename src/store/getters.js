@@ -1,6 +1,5 @@
 const getters = {
-  // app + user
-  sidebar: state => state.app.sidebar,
+  // user
   token: state => state.user.token,
   // 保存用户信息
   message: state => state.user.message,

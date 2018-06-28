@@ -1,7 +1,7 @@
 <template>
-  <div class="Bg">
-    <div class="Bg-w w">
-      <div class="tanchuang-dz">
+  <div class="backgroud">
+    <div class="backgroud_photo">
+      <div class="input_box">
         <el-row class="link-tab">
           <el-col :span="12" class="login-link link" :class="{'link-on': loginOn}">
             <router-link to="login">登录</router-link>
@@ -10,6 +10,7 @@
             <router-link to="register">注册</router-link>
           </el-col>
         </el-row>
+
         <router-view @login="handleLogin" @register="handleRegister"/>
       </div>
     </div>
@@ -19,7 +20,7 @@
 <script>
   export default {
     name: 'LoginAndRegister',
-    data: function() {
+    data: function () {
       return {
         loginOn: true,
         registerOn: false
@@ -39,26 +40,23 @@
 </script>
 
 <style scoped>
-  .Bg {
+  .backgroud {
     width: 100%;
     height: 599px;
     background-color: #0c1130;
   }
 
-  .Bg-w {
+  .backgroud_photo {
     height: 599px;
     background: url(../../../src/assets/background.jpg) no-repeat;
     background-size: 100% 599px;
     position: relative;
-  }
 
-  .w {
     margin: 0 auto;
-    position: relative;
     width: 1200px !important;
   }
 
-  .tanchuang-dz {
+  .input_box {
     background-color: #ffffff;
     border-radius: 3px;
     right: 55px;
@@ -90,6 +88,6 @@
   }
 
   .link-on {
-    color: #ff6633 !important;
+    color: #F78989 !important;
   }
 </style>
