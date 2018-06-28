@@ -27,10 +27,11 @@ export function getOrder(oid) {
 /**
  * 获取所有计划
  */
-export function getMyOrders(mid) {
+export function getMyOrders(type) {
   return request({
-    url: '/order/all?mid=' + mid,
-    method: 'get'
+    url: '/order/getMyOrdersByState',
+    method: 'post',
+    data: qs.stringify({ orderType: type })
   })
 }
 

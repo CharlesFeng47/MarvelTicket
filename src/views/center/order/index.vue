@@ -2,73 +2,121 @@
   <div>
     <!-- 订单界面的上部导航 -->
     <OrderNav/>
-    <div class="order-panel">
-      <template v-for="order in orders">
-        <MyOrder :order="order"/>
-      </template>
-    </div>
+    <template v-if="maxPage != 0">
+      <div class="order-panel">
+        <template v-for="order in showOrders">
+          <MyOrder :order="order"/>
+        </template>
+      </div>
+      <Pagination :max_page="maxPage" :current_page="currentPage" v-on:changePage="changePage"/>
+    </template>
+    <template v-else>
+        <div class="no-order" >
+          你没有该类型的订单！
+        </div>
+    </template>
   </div>
 </template>
 
 <script>
   import OrderNav from './orderNav/index'
   import MyOrder from './Order'
-
+  import { getMyOrders } from '../../../api/order'
+  import Pagination from '../../../components/pagination/index'
   // 我的订单管理
   export default {
     name: 'order-panel',
     components: {
       OrderNav,
-      MyOrder
+      MyOrder,
+      Pagination
     },
     computed: {
-      type: function () {
-        return this.$route.query.type
+      type: function() {
+        if (this.$route.query.type <= 4 && this.$route.query.type >= 0) {
+          return this.$route.query.type
+        } else {
+          return '0'
+        }
       }
     },
     watch: {
       // 根据路由参数选定当前激活的type
       type: {
-        handler: function (newVal, oldVal) {
-          // todo 通过type获取指定订单
-          // type 0: 全部订单 1：未支付订单 2：已支付订单 3：已取消订单
-          // console.log(this.type)
+        handler: function(newVal, oldVal) {
+          this.initOrders()
+        }
+      },
+      currentPage: {
+        handler: function(newVal, oldVal) {
+          this.initPage()
         }
       }
     },
+    mounted: function() {
+      this.initOrders()
+    },
     data() {
       return {
-        //todo 初始默认为全部订单
-        orders:[
-          {
-            orderid : "1234567890",
-            planid : "123456789",
-            posterSrc: 'https://api.ypiao.com/event/cover.json?event_code=70a76cfa6eaab7715104a01c9fa47620&platform=6&w=196&h=252&q=80',
-            name: '"绝色"莫文蔚巡回演唱会2018-上海站5',
-            state : "未支付",
-            orderTime : "2018-06-10 18:35",
-            planTime : "2018-06-23 19:30",
-            spot : "虹口足球场",
-            orderNum : 1,
-            orderPrice : 400
-          },
-          {
-            orderid : "1234567890",
-            planid : "123456789",
-            posterSrc: 'https://api.ypiao.com/event/cover.json?event_code=70a76cfa6eaab7715104a01c9fa47620&platform=6&w=196&h=252&q=80',
-            name: '"绝色"莫文蔚巡回演唱会2018-上海站5',
-            state : "未支付",
-            orderTime : "2018-06-10 18:35",
-            planTime : "2018-06-23 19:30",
-            spot : "虹口足球场",
-            orderNum : 1,
-            orderPrice : 400
-          }
-        ]
+        orders: [],
+        // 当前展示的当页概况
+        showOrders: [],
+        // 当前的页码
+        currentPage: 1,
+        // 最大页码
+        maxPage: 1,
+        // 每页的条数
+        everyPage: 4
       }
     },
     methods: {
-
+      initPage() {
+        this.showOrders = []
+        console.log(this.currentPage)
+        for (var index = (this.currentPage - 1) * this.everyPage;
+          index < this.currentPage * this.everyPage && index < this.orders.length;
+          index++) {
+          this.showOrders.push(this.orders[index])
+        }
+      },
+      changePage: function(page) {
+        this.currentPage = page
+      },
+      initOrders() {
+        var typeName = ''
+        switch (this.type) {
+          case '0':
+            typeName = '全部'
+            break
+          case '1':
+            typeName = '未支付'
+            break
+          case '2':
+            typeName = '已支付'
+            break
+          case '3':
+            typeName = '已取消'
+            break
+          case '4':
+            typeName = '已退款'
+            break
+        }
+        new Promise((resolve, reject) => {
+          getMyOrders(typeName).then(response => {
+            if (response.state === 'OK') {
+              this.orders = JSON.parse(response.object)
+              this.maxPage = Math.ceil(this.orders.length / this.everyPage)
+              this.currentPage = 1
+              this.initPage()
+            }
+            resolve()
+          }).catch(error => {
+            reject(error)
+          })
+        }).then(() => {
+        }).catch(() => {
+        })
+      }
     }
   }
 </script>
@@ -78,5 +126,13 @@
     border: #EFEFEF solid 1px;
     padding: 0px 0 30px 0;
     margin: 30px 0 0;
+  }
+  .no-order{
+    margin-top: 10px;
+    height: 300px;
+    line-height: 200px;
+    /*text-align: center;*/
+    width: 90%;
+    padding-left: 43%;
   }
 </style>

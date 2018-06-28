@@ -28,23 +28,27 @@
       }
     },
     computed: {
-      type: function () {
-        return this.$route.query.type
+      type: function() {
+        if (this.$route.query.type <= 4 && this.$route.query.type >= 0) {
+          return this.$route.query.type
+        } else {
+          return '0'
+        }
       }
     },
-    mounted: function () {
+    mounted: function() {
       this.toActiveType(this.type)
     },
     watch: {
       // 根据路由参数选定当前激活的type
       type: {
-        handler: function (newVal, oldVal) {
+        handler: function(newVal, oldVal) {
           this.toActiveType(newVal)
         }
       }
     },
     methods: {
-      link: function (route, type) {
+      link: function(route, type) {
         this.$router.push(
           {
             path: route,
@@ -58,12 +62,12 @@
       toActiveType(type) {
         const _this = this
         if (type === undefined) {
-          Object.keys(this.typeActives).forEach(function (key) {
+          Object.keys(this.typeActives).forEach(function(key) {
             _this.typeActives[key] = false
           })
           this.typeActives.typeActive0 = true
         } else {
-          Object.keys(this.typeActives).forEach(function (key) {
+          Object.keys(this.typeActives).forEach(function(key) {
             if (key.charAt(key.length - 1) === type) {
               _this.typeActives[key] = true
             } else {

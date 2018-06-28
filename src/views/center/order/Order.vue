@@ -4,10 +4,10 @@
       <el-row>
         <el-col :span="6">
           <span class="order-id">订单号：</span>
-          <span>{{ order.orderid }}</span>
+          <span>{{ order.orderID }}</span>
         </el-col>
         <el-col :span="5" :offset="2">
-          <span class="order-state">{{ order.state }}</span>
+          <span class="order-state">{{ order.orderState }}</span>
         </el-col>
         <el-col :span="5" :offset="6">
           <span class="order-time">{{ order.orderTime }}</span>
@@ -18,22 +18,28 @@
       <el-row>
         <el-col :span="14">
           <div class="order-plan">
-            <div class="plan-img">
-              <a href="/" target="_blank">
-                <img :src="order.posterSrc" alt="项目海报">
-              </a>
-            </div>
-            <div class="plan-info">
-              <p class="plan-name">{{ order.name }}</p>
-              <p class="plan-time">时间：<span>{{ order.planTime }}</span></p>
-              <p class="plan-spot">场馆：<span>{{ order.spot }}</span></p>
-            </div>
+            <el-row>
+              <el-col :span="6">
+                <div class="plan-img">
+                  <a href="/" target="_blank">
+                    <img :src="order.imagesUrl" alt="项目海报">
+                  </a>
+                </div>
+              </el-col>
+              <el-col :span="18">
+                <div class="plan-info">
+                  <p class="plan-name">{{ order.programName }}</p>
+                  <p class="plan-time">时间：<span>{{ order.programTime }}</span></p>
+                  <p class="plan-spot">场馆：<span>{{ order.venueName }}</span></p>
+                </div>
+              </el-col>
+            </el-row>
           </div>
         </el-col>
         <el-col :span="5">
           <div class="order-consume">
-            <p>票数：<span>{{ order.orderNum }}</span>张</p>
-            <p>共计：¥<span>{{ order.orderPrice }}</span>元</p>
+            <p>票数：<span>{{ order.num }}</span>张</p>
+            <p>共计：¥<span>{{ order.totalPrice }}</span>元</p>
           </div>
         </el-col>
         <el-col :span="5">
@@ -63,57 +69,55 @@
     margin: 20px 20px 0px 20px;
     border: 1px solid #EFEFEF;
     border-radius: 3px;
-    .order-top{
+    .order-top {
       height: 30px;
       background-color: #F78989;
       padding-left: 10px;
-      line-height:30px;
+      line-height: 30px;
     }
-    .order-detail{
+    .order-detail {
       padding: 20px;
       max-height: 200px;
-      .order-plan{
-        img{
+      .order-plan {
+        img {
+          width: 95%;
           height: 160px;
         }
-        .plan-info{
+        .plan-info {
           float: left;
           padding-left: 10px;
           height: 160px;
-          position:relative;
-          .plan-name{
+          position: relative;
+          .plan-name {
             margin: 4px 0;
 
           }
-          .plan-spot{
+          .plan-spot {
             bottom: 5px;
             margin-bottom: 0px;
-            position:absolute;
+            position: absolute;
           }
-          .plan-time{
+          .plan-time {
             bottom: 30px;
             margin-bottom: 0px;
-            position:absolute;
+            position: absolute;
           }
         }
-        .plan-img{
-          float: left;
-        }
       }
-      .order-consume{
+      .order-consume {
         text-align: center;
-        p{
+        p {
           margin: 0;
-          line-height:40px;
+          line-height: 40px;
         }
         padding-top: 35px;
         height: 160px;
         border-left: 1px #CACACA solid;
         border-right: 1px #CACACA solid;
       }
-      .order-operate{
+      .order-operate {
         text-align: center;
-        .pay-button{
+        .pay-button {
           width: 77px;
           height: 28px;
           line-height: 28px;
@@ -124,10 +128,10 @@
           cursor: pointer;
           margin: 0 auto 5px;
         }
-        .pay-button:hover{
+        .pay-button:hover {
           background-color: #F78978;
         }
-        .cancel-button:hover{
+        .cancel-button:hover {
           color: #F56C6C;
           cursor: pointer;
         }

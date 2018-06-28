@@ -18,17 +18,16 @@
 </template>
 
 <script>
-
   export default {
     name: 'left-nav',
     methods: {
-      manageOrder(){
-        this.$router.push('/center/manage/order')
+      manageOrder() {
+        this.$router.push('/center/manage/order?type=0')
       },
-      manageLike(){
+      manageLike() {
         this.$router.push('/center/manage/like')
       },
-      manageMine(){
+      manageMine() {
         this.$router.push('/center/manage/message')
       }
     }

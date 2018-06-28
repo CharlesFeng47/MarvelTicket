@@ -156,7 +156,6 @@
         modifyPassword: false,
         modifyPortrait: false,
 
-        // TODO preUpload 是啥
         preUpload: false,
         imageUrl: '',
 
@@ -305,9 +304,9 @@
       handlePreview(file) {
         // console.log(file)
         // console.log(URL.createObjectURL(file.raw))
-        const isJPG = file.raw.type == 'image/jpeg'
+        const isJPG = file.raw.type === 'image/jpeg'
         const isLt2M = file.raw.size / 1024 / 1024 < 2
-        const isPNG = file.raw.type == 'image/png'
+        const isPNG = file.raw.type === 'image/png'
         if (!isLt2M) {
           this.$message.error('上传头像图片大小不能超过 2MB!')
         } else if (!isJPG && !isPNG) {
@@ -396,8 +395,6 @@
     .el-icon-edit-outline:hover{
       /*font-size: 20px;*/
       cursor: pointer;
-      // TODO gy 为什么报错了
-      cursor: #F78978;
     }
     .upload-portrait {
       .button-block-sm {
