@@ -36,7 +36,7 @@ export function getProgramsBySearchKey(key) {
 /**
  * 模糊搜索
  */
-export function previewSearch(condition){
+export function previewSearch(condition) {
   return request({
     url: '/program/previewSearch?conditions=' + condition,
     method: 'get'
@@ -52,6 +52,20 @@ export function getProgramDetail(programId) {
   return request({
     url: '/program/getProgramDetail?program_id=' + programId,
     method: 'get'
+  })
+}
+
+/**
+ * 获取当前用户是否已经喜欢过该节目
+ */
+export function hasStarredCurProgram(program_id, token) {
+  return request({
+    url: '/program/isLikeProgram',
+    method: 'post',
+    data: qs.stringify({
+      program_id,
+      token
+    })
   })
 }
 

@@ -46,8 +46,8 @@
           <el-col :span="20" class="price-list">
             <div>
               <template v-for="par in programDetail.pars">
-                <el-radio v-if="par.comments===''" v-model="seatType" :label="par.seatType" border size="medium">{{ par.basePrice }}</el-radio>
-                <el-radio v-if="par.comments!==''" v-model="seatType" :label="par.seatType" border size="medium">{{ par.basePrice }} | {{ par.comments }}</el-radio>
+                <el-radio v-if="par.comments===''" v-model="curSeatType" :label="par.seatType" border size="medium">{{ par.basePrice }}</el-radio>
+                <el-radio v-if="par.comments!==''" v-model="curSeatType" :label="par.seatType" border size="medium">{{ par.basePrice }} | {{ par.comments }}</el-radio>
               </template>
             </div>
           </el-col>
@@ -82,7 +82,7 @@
         </el-row>
         <div class="list-box">
           <!--<a href="/orderConfirm">-->
-          <button class="buy-ticket" @click="$emit('generateOrder',{seatType,buyNum,curField,price})">立即购票</button>
+          <button class="buy-ticket" @click="generateOrder({seatType: curSeatType, buyNum, curField, price})">立即购票</button>
           <!--</a>-->
         </div>
       </div>
@@ -98,11 +98,13 @@
     ],
     data() {
       return {
-        // 当前选定的场次和票面
+        // 购买数量
+        buyNum: 1,
+
+        // 当前选定的场次、票面、座位类型
         curField: '',
         curParPrice: 0,
-        buyNum: 1,
-        seatType: ''
+        curSeatType: ''
       }
     },
     computed: {
@@ -111,13 +113,18 @@
         return this.curParPrice * this.buyNum
       }
     },
-    // watch: {
-    //   'this.programDetail.star': {
-    //     handler: function(newVal, oldVal) {
-    //       this.star = newVal
-    //     }
-    //   }
-    // },
+    watch: {
+      curSeatType: {
+        handler: function(newVal, oldVal) {
+          console.log(this.programDetail)
+          for (var i in this.programDetail.pars){
+            if( this.programDetail.pars[i].seatType === newVal ){
+              this.curParPrice =  this.programDetail.pars[i].basePrice
+            }
+          }
+        }
+      }
+    },
     methods: {
       changeStar() {
         this.$emit('changeStar')
@@ -126,20 +133,49 @@
       initDefaultFieldAndParAndBuyNum(fields, pars) {
         this.curField = fields[0]
         this.curParPrice = pars[0].basePrice
-        this.seatType = pars[0].seatType
+        this.curSeatType = pars[0].seatType
         this.buyNum = 1
       },
 
-      add: function(event) {
+      // 修改购买数量
+      add: function() {
         if (this.buyNum++ === 6) {
           this.buyNum = 6
           this.$message('购买的票数不能大于5张')
         }
       },
-      reduce: function(event) {
+      reduce: function() {
         if (this.buyNum-- === 1) {
           this.buyNum = 1
         }
+      },
+
+      // 生成订单之前的信息，保存在 vuex 中
+      generateOrder(order) {
+        order.id = this.programDetail.id
+        order.programName = this.programDetail.title
+        order.typeEnum = this.programDetail.typeEnum
+        order.posterSrc = this.programDetail.posterSrc
+        order.programTime = this.programDetail.time
+        order.spot = this.programDetail.spot
+        order.address = this.programDetail.address
+        // this.programDetail.fields = detail.fields
+        for (var i in this.programDetail.pars) {
+          console.log(this.programDetail.pars[i])
+          if (this.programDetail.pars[i].seatType === order.seatType) {
+            order.par = this.programDetail.pars[i]
+          }
+        }
+
+        // 将order信息保存到store
+        console.log(order)
+        this.$store.dispatch('StoreOrderDetail', {
+          order_detail: order
+        }).then(() => {
+          // 购票弹窗到另一窗口
+          window.open('/orderConfirm')
+        }).catch(() => {
+        })
       }
     }
   }

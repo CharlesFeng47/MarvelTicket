@@ -6,7 +6,7 @@
           <BreadCrumb :program-detail="programDetail"/>
         </el-row>
         <el-row>
-          <TicketDetail :program-detail="programDetail" ref="detail" @changeStar="changeStar" @generateOrder="generateOrder"/>
+          <TicketDetail :program-detail="programDetail" ref="detail" @changeStar="changeStar"/>
         </el-row>
       </el-col>
     </el-row>
@@ -17,8 +17,8 @@
 <script>
   import BreadCrumb from '../../components/MyBreadCrumb/index'
   import TicketDetail from './ticket/index'
-  import { getProgramDetail } from '../../api/program'
-  import { star } from '../../api/user'
+  import { getProgramDetail, hasStarredCurProgram } from '../../api/program'
+  import { star, cancelStar } from '../../api/user'
   import { mapGetters } from 'vuex'
 
   export default {
@@ -32,11 +32,13 @@
         programDetailLoading: false,
         programDetail: {
           id: '',
+          typeEnum: '',
           title: '',
           posterSrc: '',
           // saleType: '',
           time: '',
           spot: '',
+          address: '',
           viewNum: '',
           favoriteNum: '',
           // 场次
@@ -53,6 +55,7 @@
       ])
     },
     activated: function() {
+      // 获取当前节目的详情
       this.programDetailLoading = true
       new Promise((resolve, reject) => {
         getProgramDetail(this.$route.params.programId).then(response => {
@@ -69,10 +72,31 @@
       }).catch(() => {
         this.programDetailLoading = false
       })
+
+
+      // 查看当前已登录用户是否已经收藏过该节目
+      if (this.token !== undefined && this.token !== '') {
+        new Promise((resolve, reject) => {
+          hasStarredCurProgram(this.$route.params.programId, this.token).then(response => {
+            if (response.state === 'OK') {
+              const hasStarred = JSON.parse(response.object)
+              this.programDetail.star = hasStarred
+              console.log(hasLiked)
+            }
+            resolve()
+          }).catch(error => {
+            reject(error)
+          })
+        }).then(() => {
+          this.programDetailLoading = false
+        }).catch(() => {
+          this.programDetailLoading = false
+        })
+      }
     },
     methods: {
       fulfillProgramDetail: function(detail) {
-        // console.log(detail)
+        console.log(detail)
         this.programDetail.id = detail.id
         this.programDetail.typeEnum = detail.programType
         this.programDetail.title = detail.programName
@@ -84,53 +108,45 @@
         this.programDetail.favoriteNum = detail.favoriteVolume
         this.programDetail.fields = detail.fields
         this.programDetail.pars = detail.parIDs
-        // this.programDetail.star = true
-        this.programDetail.star = detail.like
 
         // 初始化默认的票面选择
         this.$refs.detail.initDefaultFieldAndParAndBuyNum(this.programDetail.fields, this.programDetail.pars)
       },
+
+      // 由子组件调用，改变收藏状态
       changeStar: function() {
         // this.programDetail.star = !this.programDetail.star
         console.log(this.programDetail.id)
-        new Promise((resolve, reject) => {
-          star(this.programDetail.id, this.token).then(response => {
-            if (response.state === 'OK') {
-              this.programDetail.star = true
-              this.programDetail.favoriteNum++
-            }
-            resolve()
-          }).catch(error => {
-            reject(error)
+
+        if (this.programDetail.star) {
+          new Promise((resolve, reject) => {
+            cancelStar(this.programDetail.id, this.token).then(response => {
+              if (response.state === 'OK') {
+                this.programDetail.star = false
+                this.programDetail.favoriteNum--
+              }
+              resolve()
+            }).catch(error => {
+              reject(error)
+            })
+          }).then(() => {
+          }).catch(() => {
           })
-        }).then(() => {
-        }).catch(() => {
-        })
-      },
-      // 生成订单之前的信息，保存在orderDetaill中
-      generateOrder(order) {
-        order.id = this.programDetail.id
-        order.programName = this.programDetail.title
-        order.typeEnum = this.programDetail.typeEnum
-        order.posterSrc = this.programDetail.posterSrc
-        order.programTime = this.programDetail.time
-        order.spot = this.programDetail.spot
-        order.address = this.programDetail.address
-        // this.programDetail.fields = detail.fields
-        for (var i in this.programDetail.pars) {
-          // console.log(par)
-          if (this.programDetail.pars[i].seatType === order.seatType) {
-            order.par = this.programDetail.pars[i]
-          }
+        } else {
+          new Promise((resolve, reject) => {
+            star(this.programDetail.id, this.token).then(response => {
+              if (response.state === 'OK') {
+                this.programDetail.star = true
+                this.programDetail.favoriteNum++
+              }
+              resolve()
+            }).catch(error => {
+              reject(error)
+            })
+          }).then(() => {
+          }).catch(() => {
+          })
         }
-        // 将order信息保存到store
-        // console.log(order)
-        this.$store.dispatch('StoreOrderDetail', {
-          order_detail: order
-        }).then(() => {
-          location.href = '/orderConfirm'
-        }).catch(() => {
-        })
       }
     }
   }
