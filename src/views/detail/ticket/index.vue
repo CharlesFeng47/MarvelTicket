@@ -232,7 +232,7 @@
         100% {font-size: 14px;}
       }
       .like{
-        -webkit-animation: turnLike 2s
+        -webkit-animation: turnLike 1s
       }
 
       @-webkit-keyframes turnDislike
@@ -244,7 +244,7 @@
       }
 
       .not-like{
-        -webkit-animation: turnDislike 2s
+        -webkit-animation: turnDislike 1s
       }
 
     }
