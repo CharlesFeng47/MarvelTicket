@@ -2,7 +2,7 @@
   <div class="base" @click="hideSearch">
     <MyHeader/>
     <keep-alive>
-      <router-view></router-view>
+      <router-view/>
     </keep-alive>
     <div class="quick-button">
       <el-tooltip class="item" effect="light" content="回到顶部" placement="left">
@@ -77,5 +77,10 @@
   }
   .el-tooltip__popper.is-light[x-placement^=right] .popper__arrow{
     border-right-color:#F78978
+  }
+  .el-dropdown-menu{
+    .el-dropdown-menu{
+      text-align: center;
+    }
   }
 </style>
