@@ -152,8 +152,8 @@
       const validateUsername = (rule, value, callback) => {
         if (!isValidUsername(value)) {
           callback(new Error('请输入只包含数字、字母的用户名'))
-        } else if (value.length > 6) {
-          callback(new Error('昵称的长度不能超过6个字'))
+        } else if (value.length > 9) {
+          callback(new Error('昵称的长度不能超过 9 位'))
         } else {
           callback()
         }
