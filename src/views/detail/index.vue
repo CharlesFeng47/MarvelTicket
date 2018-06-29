@@ -128,7 +128,7 @@
         this.$store.dispatch('StoreOrderDetail', {
           order_detail: order
         }).then(() => {
-          this.$router.push('/orderConfirm')
+          location.href = '/orderConfirm'
         }).catch(() => {
         })
       }

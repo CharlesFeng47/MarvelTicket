@@ -1,16 +1,16 @@
 <template>
   <div class="order-block">
-    <div class="order-top">
+    <div class="order-top" :class="isPositive ? 'positive':'negative'">
       <el-row>
-        <el-col :span="6">
+        <el-col :span="3" style="padding-left: 10px; font-size: 14px">
+          <strong class="order-time">{{ date }}</strong>
+        </el-col>
+        <el-col :span="7" style="font-size: 13px">
           <span class="order-id">订单号：</span>
           <span>{{ order.orderID }}</span>
         </el-col>
-        <el-col :span="5" :offset="2">
+        <el-col :span="2" :offset="11">
           <span class="order-state">{{ order.orderState }}</span>
-        </el-col>
-        <el-col :span="5" :offset="6">
-          <span class="order-time">{{ order.orderTime }}</span>
         </el-col>
       </el-row>
     </div>
@@ -19,27 +19,50 @@
         <el-col :span="14">
           <div class="order-plan">
             <el-row>
-              <el-col :span="6">
+              <el-col :span="5">
                 <div class="plan-img">
                   <a :href="toDetail" target="_blank">
                     <img :src="order.imagesUrl" alt="项目海报">
                   </a>
                 </div>
               </el-col>
-              <el-col :span="18">
+              <el-col :span="19">
                 <div class="plan-info">
                   <p class="plan-name">{{ order.programName }}</p>
                   <p class="plan-time">时间：<span>{{ order.programTime }}</span></p>
-                  <p class="plan-spot">场馆：<span>{{ order.venueName }}</span></p>
+                  <p class="plan-spot">场馆：
+                    <span>
+                      <el-popover
+                        placement="right-start"
+                        trigger="hover">
+                        <div>
+                          {{ order.venueAddress.city }}市{{ order.venueAddress.district }}区{{ order.venueAddress.number }}号{{ order.venueAddress.street }}{{ order.venueAddress.comment }}
+                        </div>
+                        <span slot="reference" class="venue-name">{{ order.venueName }}</span>
+                      </el-popover>
+                    </span>
+                  </p>
                 </div>
               </el-col>
             </el-row>
           </div>
         </el-col>
         <el-col :span="5">
-          <div class="order-consume">
-            <p>票数：<span>{{ order.num }}</span>张</p>
+          <div class="order-consume" v-if="order.num !== 0">
+            <p class="ticket-num">
+              <el-popover
+                placement="right-start"
+                trigger="hover">
+                <div v-for="seat in seatInfo">
+                  {{ seat }}
+                </div>
+                <span slot="reference" class="ticket-num">票数：<span>{{ order.num }}</span>张</span>
+              </el-popover>
+            </p>
             <p>共计：¥<span>{{ order.totalPrice }}</span>元</p>
+          </div>
+          <div class="order-consume" v-else>
+            <p style="margin-top: 23px">共计：¥<span>{{ order.totalPrice }}</span>元</p>
           </div>
         </el-col>
         <el-col :span="5">
@@ -47,13 +70,13 @@
             <template v-if="order.orderState === '未支付'">
               <template v-if="!overdue">
                 <p style="margin-top:34px;margin-bottom: 4px" v-if="!overdue">剩余支付时间:
-                  <br/><span style="color:red">{{ minute }}</span>分<span  style="color:red">{{ second }}</span>秒
+                  <br/><span style="color:red">{{ minute }}</span>分<span style="color:red">{{ second }}</span>秒
                 </p>
-                <div class="pay-button" @click="goToPay" >立即支付</div>
+                <div class="pay-button" @click="goToPay">立即支付</div>
                 <div class="cancel-button" @click="cancelOrder">取消订单</div>
               </template>
               <template v-else>
-                <p style="margin-top:60px;margin-bottom: 10px">
+                <p style="margin-top:46px;margin-bottom: 10px">
                   订单超时
                 </p>
                 <div class="pay-button" @click="buyAgain">重新购买</div>
@@ -85,7 +108,9 @@
 <script>
   import { cancelOrder, unsubscribeOrder } from '../../../api/order'
   import { mapGetters } from 'vuex'
+
   export default {
+    components: {},
     name: 'MyOrder',
     props: [
       'order'
@@ -101,7 +126,11 @@
         // 节目的时间是否过时
         overtime: false,
         // 保存跳转到详情界面的url
-        toDetail: ''
+        toDetail: '',
+        // 订单生成日期
+        date: '',
+        isPositive: false,
+        seatInfo: []
       }
     },
     watch: {
@@ -109,7 +138,8 @@
         handler: function(newVal, oldVal) {
           if (newVal) {
             // 定时器，计算剩余时间
-            this.startClock()
+            console.log(newVal)
+            this.init()
           }
         }
       }
@@ -127,17 +157,28 @@
       }
     },
     mounted: function() {
-      this.startClock()
+      this.init()
     },
     methods: {
-      startClock() {
+      init() {
+        // 设置座位信息
+        this.seatInfo = []
+        for (var key in this.order.ticketInfo) {
+          this.seatInfo.push(key)
+        }
+        // 设置标题颜色
+        this.isPositive = (this.order.orderState === '已支付')
+        // 设置节目时间
+        this.date = this.order.programTime.split(' ')[0]
         var programTime = new Date(this.order.programTime)
+        // 判断是否超时
         if ((programTime.getTime() - new Date().getTime()) / 1000 < 900) {
           this.overtime = true
         } else {
           this.overtime = false
         }
         this.toDetail = '/detail/' + this.order.programID
+        // 定时器
         var date = this.order.orderTime
         if (this.interval !== -1) {
           window.clearInterval(this.interval)
@@ -197,38 +238,52 @@
   }
 </script>
 <style rel="stylesheet/scss" lang="scss">
+  .order-block:hover {
+    border-color: #BFBFBF;
+  }
+
   .order-block {
     margin: 20px 20px 0px 20px;
-    border: 1px solid #EFEFEF;
+    border: 1px solid #F1F1F1;
     border-radius: 3px;
     .order-top {
       height: 30px;
-      background-color: #F78989;
+
       padding-left: 10px;
       line-height: 30px;
     }
+    .positive {
+      background-color: #EAF8FF;
+    }
+    .negative {
+      background-color: #F1F1F1;
+    }
     .order-detail {
       padding: 20px;
-      max-height: 200px;
+      max-height: 180px;
       .order-plan {
+        font-size: 14px;
         img {
-          width: 95%;
-          height: 160px;
+          width: 98%;
+          height: 140px;
         }
         .plan-info {
           /*float: left;*/
           width: 90%;
-          padding-left: 10px;
-          height: 160px;
+          padding: 10px 10px 10px;
+          height: 140px;
           position: relative;
           .plan-name {
             margin: 4px 0;
-
+            /*word-break:keep-all;*/
           }
           .plan-spot {
             bottom: 5px;
             margin-bottom: 0px;
             position: absolute;
+            .venue-name:hover {
+              cursor: pointer;
+            }
           }
           .plan-time {
             bottom: 30px;
@@ -239,14 +294,17 @@
       }
       .order-consume {
         text-align: center;
+        padding-top: 35px;
+        height: 140px;
+        border-left: 1px #CACACA solid;
+        border-right: 1px #CACACA solid;
         p {
           margin: 0;
           line-height: 40px;
         }
-        padding-top: 35px;
-        height: 160px;
-        border-left: 1px #CACACA solid;
-        border-right: 1px #CACACA solid;
+        .ticket-num:hover {
+          cursor: pointer;
+        }
       }
       .order-operate {
         text-align: center;

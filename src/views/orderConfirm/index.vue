@@ -79,7 +79,6 @@
       // 通过存到localStorage 解决vuex 刷新之后失效的问题
       order_detail: function() {
         const localData = JSON.parse(window.localStorage.getItem('order_detail'))
-        console.log(localData)
         return localData
       }
     },
