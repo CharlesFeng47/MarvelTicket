@@ -1,7 +1,11 @@
+<!--TODO gy 图片加载使用了懒加载，需要指定CSS state以免错位和参数loading（加载时的占位图片）
+    参考地址：'https://github.com/hilongjw/vue-lazyload'-->
+
 <template>
   <div class="brief_container" @click="checkDetail">
     <div class="poster">
-      <img :src="programBrief.posterSrc">
+      <!--TODO gy-->
+      <img v-lazy="programBrief.posterSrc">
       <div class="count">
         <el-row>
           <i class="el-icon-view"></i>{{ programBrief.viewNum }}人浏览
@@ -79,6 +83,7 @@
       margin-top: -25px;
       margin-left: -25px;
       img {
+        /*TODO gy*/
         /*width: 160px;*/
         width: 100%;
         border-radius: 8px;
