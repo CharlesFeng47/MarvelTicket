@@ -10,7 +10,9 @@
         <span v-if="this.programDetail.star" class="like">
           <svg-icon icon-class="heart" style="color: #FF5161;"/>
         </span>
-        <svg-icon v-if="!this.programDetail.star" icon-class="heart2"/>
+        <span v-else class="not-like">
+                 <svg-icon icon-class="heart2"/>
+        </span>
         <span id="is_like" :class="{ hasStar: this.programDetail.star }">
           <span id="favourNum"> {{ programDetail.favoriteNum }}</span>人想看</span>
       </div>
@@ -222,25 +224,27 @@
         color: #FF5161;
       }
 
-      @-webkit-keyframes tran
+      @-webkit-keyframes turnLike
       {
         0%   {font-size: 14px}
         25%  {font-size: 18px;}
-        50%  {font-size: 14px;}
+        50%  {font-size: 19px;}
         100% {font-size: 14px;}
       }
       .like{
-        animation: tran 5s;
-        -webkit-animation: tran 5s
+        -webkit-animation: turnLike 2s
       }
 
-      .like-leave-active {
-        transition: all 0s;
-        font-size: 0px
+      @-webkit-keyframes turnDislike
+      {
+        0%   {font-size: 14px}
+        25%  {font-size: 12px;}
+        50%  {font-size: 10px;}
+        100% {font-size: 14px;}
       }
 
-      .like-leave {
-        font-size: 0px;
+      .not-like{
+        -webkit-animation: turnDislike 2s
       }
 
     }
