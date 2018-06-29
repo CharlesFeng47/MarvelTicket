@@ -38,7 +38,7 @@
 <script>
   import { mapGetters } from 'vuex'
   import { previewSearch } from '../../../api/program'
-
+  import { Message } from 'element-ui'
   export default {
     name: 'input-group',
     data() {
@@ -69,7 +69,13 @@
             }
           })
         } else {
-          this.$message.error("请输入演出信息")
+          Message({
+            message: '请输入节目信息！',
+            type: 'error',
+            duration: 1 * 1000,
+            center: true,
+            showClose: true
+          })
         }
       },
       // show_popover: {
@@ -80,10 +86,10 @@
       search(str) {
         this.key = str
         this.searchResults = []
-        if (str !== "") {
+        if (str !== '') {
           // console.log(str)
           // this.$emit('showPanel')
-          this.searchIsLoading = true;
+          this.searchIsLoading = true
           new Promise((resolve, reject) => {
             previewSearch(str).then(response => {
               if (response.state === 'OK') {
@@ -92,7 +98,7 @@
                 for (var i = 0; i < recommends.length; i++) {
                   var result = {}
                   result.programLink = '/detail/' + recommends[i].id
-                  result.startTime = recommends[i].programID.startTime.split(" ")[0]
+                  result.startTime = recommends[i].programID.startTime.split(' ')[0]
                   result.programName = recommends[i].programName
                   // console.log(result)
                   this.searchResults.push(result)
@@ -112,7 +118,7 @@
         } else {
           this.$store.dispatch('HidePopover').then()
         }
-      },
+      }
     }
   }
 </script>

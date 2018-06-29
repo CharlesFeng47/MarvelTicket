@@ -6,9 +6,10 @@
         <i class="el-icon-view"></i> {{ programDetail.viewNum }}人浏览
       </div>
       <div class="count want"  @click="changeStar()">
-        <transition name="like">
-          <svg-icon v-if="this.programDetail.star" icon-class="heart" style="color: #FF5161;"/>
-        </transition>
+        <!--class like 用于添加动画-->
+        <span v-if="this.programDetail.star" class="like">
+          <svg-icon icon-class="heart" style="color: #FF5161;"/>
+        </span>
         <svg-icon v-if="!this.programDetail.star" icon-class="heart2"/>
         <span id="is_like" :class="{ hasStar: this.programDetail.star }">
           <span id="favourNum"> {{ programDetail.favoriteNum }}</span>人想看</span>
@@ -117,9 +118,9 @@
       curSeatType: {
         handler: function(newVal, oldVal) {
           console.log(this.programDetail)
-          for (var i in this.programDetail.pars){
-            if( this.programDetail.pars[i].seatType === newVal ){
-              this.curParPrice =  this.programDetail.pars[i].basePrice
+          for (var i in this.programDetail.pars) {
+            if (this.programDetail.pars[i].seatType === newVal) {
+              this.curParPrice = this.programDetail.pars[i].basePrice
             }
           }
         }
@@ -220,19 +221,26 @@
       .hasStar{
         color: #FF5161;
       }
-      .like-enter-active{
-        transition: all .5s;
-        font-size: 18px;
+
+      @-webkit-keyframes tran
+      {
+        0%   {font-size: 14px}
+        25%  {font-size: 18px;}
+        50%  {font-size: 14px;}
+        100% {font-size: 14px;}
       }
+      .like{
+        animation: tran 5s;
+        -webkit-animation: tran 5s
+      }
+
       .like-leave-active {
         transition: all 0s;
-        font-size: 15px
+        font-size: 0px
       }
-      .like-enter{
-        font-size: 15px;
-      }
+
       .like-leave {
-        font-size: 15px;
+        font-size: 0px;
       }
 
     }
