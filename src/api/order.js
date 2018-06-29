@@ -5,33 +5,64 @@ const qs = require('qs')
 /**
  * 生成订单
  */
-export function generateOrder(programID, seatType, programTime, ticketNum) {
+export function generateOrder(programID, seatType, programTime, ticketNum, token) {
   return request({
     url: '/order/generateOrder',
     method: 'post',
-    data: qs.stringify({ programID: programID, seatType: seatType, programTime: programTime, ticket_num: ticketNum })
+    data: qs.stringify({ program_id: programID, seat_type: seatType, program_time: programTime, ticket_num: ticketNum, token: token })
   })
 }
 
 /**
  * 获取单条计划
  */
-export function getOrder(oid) {
+export function getOrder(oid, token) {
   return request({
     url: '/order/getOneOrder',
     method: 'post',
-    data: qs.stringify({ order_time: oid })
+    data: qs.stringify({ order_time: oid, token: token })
+  })
+}
+/**
+ * 支付订单
+ */
+export function payOrder(oid, token) {
+  return request({
+    url: '/order/payOrder',
+    method: 'post',
+    data: qs.stringify({ order_id: oid, token: token })
   })
 }
 
 /**
- * 获取所有计划
+ * 未支付订单取消
  */
-export function getMyOrders(type) {
+export function cancelOrder(oid, token) {
+  return request({
+    url: '/order/cancelOrder',
+    method: 'post',
+    data: qs.stringify({ order_id: oid, token: token })
+  })
+}
+/**
+ * 已经支付订单退订
+ */
+export function unsubscribeOrder(oid, token) {
+  return request({
+    url: '/order/unsubscribeOrder',
+    method: 'post',
+    data: qs.stringify({ order_id: oid, token: token })
+  })
+}
+
+/**
+ * 获取类型的所有计划
+ */
+export function getMyOrders(type, token) {
   return request({
     url: '/order/getMyOrdersByState',
     method: 'post',
-    data: qs.stringify({ orderType: type })
+    data: qs.stringify({ order_type: type, token: token })
   })
 }
 
@@ -84,7 +115,7 @@ export function saveOrder(token, scheduleId, order_type, order_num, order_seat_n
 /**
  * 订单付款
  */
-export function payOrder(token, oid, payment_id, payment_pwd) {
+export function payOrder2(token, oid, payment_id, payment_pwd) {
   return request({
     url: '/order/pay',
     method: 'post',

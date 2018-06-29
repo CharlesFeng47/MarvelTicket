@@ -22,25 +22,44 @@
     name: 'PaySuccess',
     data: function() {
       return {
-        time: 6
+        time: 3,
+        interval: -1
       }
     },
     mounted: function() {
-      this.time = 6
-      var _this = this
-      var interval = setInterval(handle_time, 1000)
-      handle_time()
-      function handle_time() {
-        // alert(left_second)
-        if (_this.time === 0) {
-          _this.jumpToOrder()
+      this.initClock()
+    },
+    computed: {
+      orderid: function() {
+        return this.$route.query.orderid
+      }
+    },
+    watch: {
+      orderid: {
+        handler: function(newVal, oldVal) {
+          if (newVal) {
+            this.initClock()
+          }
         }
-        _this.time--
       }
     },
     methods: {
+      initClock() {
+        this.time = 3
+        if (this.interval !== -1) {
+          window.clearInterval(this.interval)
+        }
+        this.interval = setInterval(this.handle_time, 1000)
+      },
       jumpToOrder() {
         this.$router.push('/center/manage/order?type=0')
+      },
+      handle_time() {
+        if (this.time === 1) {
+          this.jumpToOrder()
+          window.clearInterval(this.interval)
+        }
+        this.time--
       }
     }
   }

@@ -23,6 +23,7 @@
   import MyOrder from './Order'
   import { getMyOrders } from '../../../api/order'
   import Pagination from '../../../components/pagination/index'
+  import { mapGetters } from 'vuex'
   // 我的订单管理
   export default {
     name: 'order-panel',
@@ -32,6 +33,9 @@
       Pagination
     },
     computed: {
+      ...mapGetters([
+        'token'
+      ]),
       type: function() {
         if (this.$route.query.type <= 4 && this.$route.query.type >= 0) {
           return this.$route.query.type
@@ -102,7 +106,7 @@
             break
         }
         new Promise((resolve, reject) => {
-          getMyOrders(typeName).then(response => {
+          getMyOrders(typeName, this.token).then(response => {
             if (response.state === 'OK') {
               this.orders = JSON.parse(response.object)
               this.maxPage = Math.ceil(this.orders.length / this.everyPage)

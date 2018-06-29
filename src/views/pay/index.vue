@@ -10,7 +10,7 @@
         <el-row>
           <el-col :span="24">
             <p v-show="overdue" class="pay-time">订单超时</p>
-            <p v-show="!overdue" class="pay-time">您的订单即将取消，请在 <span v-bind="minute">{{ minute }}</span>分<span v-bind="second">{{ second }}</span>秒
+            <p v-show="!overdue" class="pay-time">您的订单即将取消，请在 <span>{{ minute }}</span>分<span>{{ second }}</span>秒
               内完成支付</p>
           </el-col>
         </el-row>
@@ -24,7 +24,7 @@
                     <p>订单编号：</p>
                   </el-col>
                   <el-col :span="14">
-                    <p>{{ order.order_id }}</p>
+                    <p>{{ order.orderID }}</p>
                   </el-col>
                 </el-row>
                 <el-row>
@@ -32,7 +32,7 @@
                     <p>下单时间：</p>
                   </el-col>
                   <el-col :span="14">
-                    <p>{{ order.order_time }}</p>
+                    <p>{{ order.orderTime }}</p>
                   </el-col>
                 </el-row>
                 <el-row>
@@ -40,7 +40,7 @@
                     <p>演出名称：</p>
                   </el-col>
                   <el-col :span="19">
-                    <p>{{ order.order_program.name }}</p>
+                    <p>{{ order.programName }}</p>
                   </el-col>
                 </el-row>
                 <el-row>
@@ -48,7 +48,7 @@
                     <p>演出时间：</p>
                   </el-col>
                   <el-col :span="14">
-                    <p>{{ order.order_program.time }}</p>
+                    <p>{{ order.programTime }}</p>
                   </el-col>
                 </el-row>
                 <el-row>
@@ -56,7 +56,7 @@
                     <p>演出地点：</p>
                   </el-col>
                   <el-col :span="14">
-                    <p>{{ order.order_program.venue }}</p>
+                    <p>{{ order.venueName }}</p>
                   </el-col>
                 </el-row>
                 <el-row>
@@ -64,7 +64,7 @@
                     <p>订单清单：</p>
                   </el-col>
                   <el-col :span="14">
-                    <p>{{ order.order_num}}张 | 共{{ order.order_value }}元</p>
+                    <p>{{ order.num}}张 | 共{{ order.totalPrice }}元</p>
                   </el-col>
                 </el-row>
               </div>
@@ -84,7 +84,7 @@
               <div class="pay-bottom">
                 <el-row>
                   <el-col :span="4" :offset="7">
-                    <div style="color: red">￥ <span>150</span></div>
+                    <div style="color: red">￥ <span>{{ order.totalPrice }}</span></div>
                   </el-col>
                   <el-col :span="3">
                     <el-button type="danger" @click="surePay" :disabled="overdue">确认支付</el-button>
@@ -101,72 +101,93 @@
 </template>
 
 <script>
-  import { getOrder } from '../../api/order'
+  import { getOrder, payOrder } from '../../api/order'
+  import { mapGetters } from 'vuex'
   export default {
     name: 'pay',
-    components: {
-
-    },
+    components: {},
     computed: {
+      ...mapGetters([
+        'token'
+      ]),
       orderid: function() {
         return this.$route.query.orderid
+      }
+    },
+    watch: {
+      orderid: {
+        handler: function(newVal, oldVal) {
+          if (newVal) {
+            this.initOrder()
+          }
+        }
       }
     },
     data() {
       return {
         pay_mode: '1',
         span: 5,
-        order: {
-          order_id: '12345678',
-          order_time: new Date(),
-          order_value: 124,
-          order_num: 2,
-          order_program: {
-            name: '小天鹅音乐节',
-            time: '2018-07-15 15:00:00',
-            venue: '南京博物館'
-          }
-        },
+        order: {},
         overdue: false,
         second: 0,
-        minute: 0
+        minute: 0,
+        left_second: 0,
+        interval: -1
       }
     },
     mounted: function() {
-      new Promise((resolve, reject) => {
-        getOrder(this.orderid).then(response => {
-          if (response.state === 'OK') {
-            console.log(response.object)
-          }
-          resolve()
-        }).catch(error => {
-          reject(error)
-        })
-      }).then(() => {
-      }).catch(() => {
-      })
-      this.order_time = new Date('2018/06/26 11:00:00')
-      // 定时器，计算剩余时间
-      var passed_second = (new Date().getTime() - this.order_time.getTime()) / 1000
-      var left_second = 900 - Math.round(passed_second)
-      var _this = this
-      setInterval(handle_time, 1000)
-      handle_time()
-      function handle_time() {
-        // alert(left_second)
-        if (left_second <= 0) {
-          _this.overdue = true
-        } else {
-          _this.overdue = false
-          _this.minute = Math.floor(left_second / 60)
-          _this.second = left_second % 60
-          left_second--
-        }
-      }
+      this.initOrder()
     },
     methods: {
+      initOrder() {
+        new Promise((resolve, reject) => {
+          getOrder(this.orderid, this.token).then(response => {
+            if (response.state === 'OK') {
+              this.order = JSON.parse(response.object)
+              this.startClock(this.order.orderTime)
+            }
+            resolve()
+          }).catch(error => {
+            reject(error)
+          })
+        }).then(() => {
+        }).catch(() => {
+        })
+      },
       surePay() {
-        this.$router.push('/paySuccess')
+        new Promise((resolve, reject) => {
+          payOrder(this.orderid, this.token).then(response => {
+            if (response.state === 'OK') {
+              this.$router.push('/paySuccess?orderid=' + this.orderid)
+            }
+            resolve()
+          }).catch(error => {
+            reject(error)
+          })
+        }).then(() => {
+        }).catch(() => {
+        })
+      },
+      startClock(date) {
+        if (this.interval !== -1) {
+          window.clearInterval(this.interval)
+        }
+        var order_time = new Date(date)
+        // 定时器，计算剩余时间
+        var passed_second = (new Date().getTime() - order_time.getTime()) / 1000
+        this.left_second = 900 - Math.round(passed_second)
+        this.handleTime()
+        this.interval = setInterval(this.handleTime, 1000)
+      },
+      handleTime() {
+        if (this.left_second <= 0) {
+          this.overdue = true
+        } else {
+          this.overdue = false
+          this.minute = Math.floor(this.left_second / 60)
+          this.second = this.left_second % 60
+          this.left_second--
+        }
       }
     }
   }
@@ -186,18 +207,25 @@
   }
 
   .order-detail {
-    padding: 0 27px;
+    padding: 10px 27px;
     font-size: 15px;
     color: #2D3E4F;
-    /*border: 1px solid #e5e5e5;*/
-    /*border: 1px solid #e5e5e5;*/
-    /*border-radius: 3px;*/
   }
 
   .new-order {
     border: 1px solid #e5e5e5;
     border-radius: 3px;
     height: 350px;
+    p {
+      vertical-align: middle;
+      overflow: hidden;
+      max-lines: 2;
+      height: 33px;
+      -webkit-line-clamp: 2;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      margin: 8px 0 8px;
+    }
     .radio {
       margin: 65px 37% 10px;
       .el-radio.is-bordered {

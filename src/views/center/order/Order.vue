@@ -21,7 +21,7 @@
             <el-row>
               <el-col :span="6">
                 <div class="plan-img">
-                  <a href="/" target="_blank">
+                  <a :href="toDetail" target="_blank">
                     <img :src="order.imagesUrl" alt="项目海报">
                   </a>
                 </div>
@@ -44,11 +44,37 @@
         </el-col>
         <el-col :span="5">
           <div class="order-operate" style="width: 173px;">
-            <p style="margin-top:34px;margin-bottom: 4px">剩余支付时间:
-              <br/><i class="time-fen">08</i>分<i class="time-miao">48</i>秒
-            </p>
-            <div class="pay-button">立即支付</div>
-            <div class="cancel-button">取消订单</div>
+            <template v-if="order.orderState === '未支付'">
+              <template v-if="!overdue">
+                <p style="margin-top:34px;margin-bottom: 4px" v-if="!overdue">剩余支付时间:
+                  <br/><span style="color:red">{{ minute }}</span>分<span  style="color:red">{{ second }}</span>秒
+                </p>
+                <div class="pay-button" @click="goToPay" >立即支付</div>
+                <div class="cancel-button" @click="cancelOrder">取消订单</div>
+              </template>
+              <template v-else>
+                <p style="margin-top:60px;margin-bottom: 10px">
+                  订单超时
+                </p>
+                <div class="pay-button" @click="buyAgain">重新购买</div>
+              </template>
+            </template>
+            <template v-else-if="order.orderState === '已支付'">
+              <template v-if="overtime">
+                <div style="margin-top: 70px">节目过期</div>
+              </template>
+              <template v-else>
+                <div style="margin-top: 70px" class="cancel-button" @click="unsubscribeOrder">取消订单</div>
+              </template>
+            </template>
+            <template v-else>
+              <template v-if="overtime">
+                <div style="margin-top: 70px">节目过期</div>
+              </template>
+              <template v-else>
+                <div style="margin-top: 70px" class="pay-button" @click="buyAgain">重新购买</div>
+              </template>
+            </template>
           </div>
         </el-col>
       </el-row>
@@ -57,11 +83,117 @@
 </template>
 
 <script>
+  import { cancelOrder, unsubscribeOrder } from '../../../api/order'
+  import { mapGetters } from 'vuex'
   export default {
     name: 'MyOrder',
     props: [
       'order'
-    ]
+    ],
+    data() {
+      return {
+        // 订单是否超过支付时间
+        overdue: false,
+        second: 0,
+        minute: 0,
+        left_second: 0,
+        interval: -1,
+        // 节目的时间是否过时
+        overtime: false,
+        // 保存跳转到详情界面的url
+        toDetail: ''
+      }
+    },
+    watch: {
+      order: {
+        handler: function(newVal, oldVal) {
+          if (newVal) {
+            // 定时器，计算剩余时间
+            this.startClock()
+          }
+        }
+      }
+    },
+    computed: {
+      ...mapGetters([
+        'token'
+      ]),
+      type: function() {
+        if (this.$route.query.type <= 4 && this.$route.query.type >= 0) {
+          return this.$route.query.type
+        } else {
+          return '0'
+        }
+      }
+    },
+    mounted: function() {
+      this.startClock()
+    },
+    methods: {
+      startClock() {
+        var programTime = new Date(this.order.programTime)
+        if ((programTime.getTime() - new Date().getTime()) / 1000 < 900) {
+          this.overtime = true
+        } else {
+          this.overtime = false
+        }
+        this.toDetail = '/detail/' + this.order.programID
+        var date = this.order.orderTime
+        if (this.interval !== -1) {
+          window.clearInterval(this.interval)
+        }
+        var order_time = new Date(date)
+        // 定时器，计算剩余时间
+        var passed_second = (new Date().getTime() - order_time.getTime()) / 1000
+        this.left_second = 900 - Math.round(passed_second)
+        this.handleTime()
+        this.interval = setInterval(this.handleTime, 1000)
+      },
+      handleTime() {
+        if (this.left_second <= 0) {
+          this.overdue = true
+        } else {
+          this.overdue = false
+          this.minute = Math.floor(this.left_second / 60)
+          this.second = this.left_second % 60
+          this.left_second--
+        }
+      },
+      cancelOrder() {
+        new Promise((resolve, reject) => {
+          cancelOrder(this.order.orderID, this.token).then(response => {
+            if (response.state === 'OK') {
+              location.reload()
+            }
+            resolve()
+          }).catch(error => {
+            reject(error)
+          })
+        }).then(() => {
+        }).catch(() => {
+        })
+      },
+      unsubscribeOrder() {
+        new Promise((resolve, reject) => {
+          unsubscribeOrder(this.order.orderID, this.token).then(response => {
+            if (response.state === 'OK') {
+              location.reload()
+            }
+            resolve()
+          }).catch(error => {
+            reject(error)
+          })
+        }).then(() => {
+        }).catch(() => {
+        })
+      },
+      buyAgain() {
+        this.$router.push(this.toDetail)
+      },
+      goToPay() {
+        window.open('/pay?orderid=' + this.order.orderID)
+      }
+    }
   }
 </script>
 <style rel="stylesheet/scss" lang="scss">
@@ -84,7 +216,8 @@
           height: 160px;
         }
         .plan-info {
-          float: left;
+          /*float: left;*/
+          width: 90%;
           padding-left: 10px;
           height: 160px;
           position: relative;

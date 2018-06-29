@@ -64,13 +64,18 @@
 
 <script>
   import { generateOrder } from '../../api/order'
+  import { mapGetters } from 'vuex'
   export default {
     name: 'OrderConfirm',
     data: function() {
       return {
       }
     },
+
     computed: {
+      ...mapGetters([
+        'token'
+      ]),
       // 通过存到localStorage 解决vuex 刷新之后失效的问题
       order_detail: function() {
         const localData = JSON.parse(window.localStorage.getItem('order_detail'))
@@ -81,7 +86,7 @@
     methods: {
       pay: function() {
         new Promise((resolve, reject) => {
-          generateOrder(this.order_detail.id, this.order_detail.seatType, this.order_detail.curField, this.order_detail.buyNum).then(response => {
+          generateOrder(this.order_detail.id, this.order_detail.seatType, this.order_detail.curField, this.order_detail.buyNum, this.token).then(response => {
             if (response.state === 'OK') {
               console.log(JSON.parse(response.object))
               this.$router.push('/pay?orderid=' + JSON.parse(response.object))

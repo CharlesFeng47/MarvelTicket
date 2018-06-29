@@ -14,7 +14,7 @@
           <el-dropdown-item command="order">订单管理</el-dropdown-item>
           <el-dropdown-item command="like">我的收藏</el-dropdown-item>
           <el-dropdown-item command="message">我的信息</el-dropdown-item>
-          <el-dropdown-item command="logout">登出</el-dropdown-item>
+          <el-dropdown-item command="logout">注销会员</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </div>
@@ -41,7 +41,7 @@
         'name',
         'portrait'
       ]),
-      hasLogin: function () {
+      hasLogin: function() {
         console.log('token: ' + this.token)
         return this.token !== undefined && this.token !== ''
       }
@@ -68,11 +68,10 @@
             reject(error)
           })
         }).then(() => {
-            this.$store.dispatch('LogOut').then(() => {
-              location.reload() // 为了重新实例化vue-router对象 避免bug
-            })
-          }
-        )
+          this.$store.dispatch('LogOut').then(() => {
+            location.reload() // 为了重新实例化vue-router对象 避免bug
+          })
+        })
       }
     }
   }
