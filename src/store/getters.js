@@ -5,9 +5,6 @@ const getters = {
   name: state => state.user.name,
   portrait: state => state.user.portrait,
 
-  // 保存用户信息
-  message: state => state.user.message,
-
   // permission
   permission_routers: state => state.permission.routers,
   addRouters: state => state.permission.addRouters,

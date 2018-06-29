@@ -7,9 +7,6 @@ const user = {
     email: '',
     name: '',
     portrait: '',
-
-    //TODO
-    message: {}
   },
   mutations: {
     SET_TOKEN: (state, token) => {
@@ -23,20 +20,10 @@ const user = {
     },
     SET_PORTRAIT: (state, portrait) => {
       state.portrait = portrait
-    },
-
-    // TODO
-    SET_MESSAGE: (state, message) => {
-      state.message = message
     }
   },
 
   actions: {
-    // 设置用户的信息
-    SetMessage({ commit }, { message }) {
-      // console.log(obj.message)
-      commit('SET_MESSAGE', message)
-    },
     // 登录
     Login({ commit }, { token }) {
       commit('SET_TOKEN', token)

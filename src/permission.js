@@ -11,7 +11,10 @@ router.beforeEach((to, from, next) => {
   if (getToken()) {
     // 已登录，拉取用户信息
 
+    console.log('已登录')
+
     new Promise((resolve, reject) => {
+      console.log('INTO 获取')
       getInfo(getToken()).then(response => {
         if (response.state === 'OK') {
           const curUser = JSON.parse(response.object)
@@ -29,12 +32,13 @@ router.beforeEach((to, from, next) => {
             //   console.log(router)
             //   next({ ...to, replace: true }) // hack方法 确保addRoutes已完成 ,set the replace: true so the navigation will not leave a history record
             // })
+            console.log('FINISH 获取')
           })
         } else {
           // TODO 登录失败
           store.dispatch('FedLogOut').then(() => {
             Message.error('验证失败,请重新登录')
-            next({path: '/login'})
+            next({path: '/loginAndRegister/login'})
           })
         }
         resolve()

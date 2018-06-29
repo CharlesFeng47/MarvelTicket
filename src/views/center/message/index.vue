@@ -1,14 +1,15 @@
 <template>
   <div class="message-panel">
+
     <el-row>
-      <template v-if="!modifyPortrait">
+      <div v-show="!modifyPortrait">
         <el-col :span="24">
           <div class="portrait" @click="modifyMyPortrait">
             <img :src="this.portrait"/>
           </div>
         </el-col>
-      </template>
-      <template v-else>
+      </div>
+      <div v-show="modifyPortrait">
         <div class="upload-portrait">
           <el-upload
             class="avatar-uploader"
@@ -17,7 +18,7 @@
             :auto-upload="false"
             :show-file-list="false"
             :on-change="handlePreview">
-            <img v-if="imageUrl" :src="imageUrl" class="avatar">
+            <img v-show="preUpload" :src="imageUrl" class="avatar">
             <i class="el-icon-upload"></i>
             <div class="el-upload__text">拖拽，或<em>点击上传</em></div>
           </el-upload>
@@ -30,8 +31,9 @@
             </el-col>
           </el-row>
         </div>
-      </template>
+      </div>
     </el-row>
+
     <el-row class="line">
       <el-col :span="6">
         <span class="label">邮箱：</span>
@@ -40,11 +42,12 @@
         <span class="message">{{ this.email }}</span>
       </el-col>
     </el-row>
+
     <el-row class="line">
       <el-col :span="6">
         <span class="label">昵称：</span>
       </el-col>
-      <template v-if="!modifyName">
+      <div v-show="!modifyName">
         <el-col :span="10">
           <span class="message">{{ this.name }}</span>
         </el-col>
@@ -52,10 +55,10 @@
           <!--<el-button type="danger" @click="modifyMyName" style="margin-top: -10px;">修改昵称</el-button>-->
           <i class="el-icon-edit-outline" @click="modifyMyName"/>
         </el-col>
-      </template>
-      <template v-else>
+      </div>
+      <div v-show="modifyName">
         <el-col :span="15">
-          <el-form :model="nameForm" status-icon :rules="rules2" ref="nameForm" label-width="0px"
+          <el-form :model="nameForm" status-icon :rules="nameRules" ref="nameForm" label-width="0px"
                    style="margin-top: -10px">
             <el-form-item prop="username">
               <el-input v-model="nameForm.username" placeholder="请输入昵称" auto-complete="on" :autofocus="true"
@@ -69,13 +72,14 @@
         <el-col :span="5" :offset="1" class="button-block">
           <el-button type="danger" @click="sureModifyName">保存修改</el-button>
         </el-col>
-      </template>
+      </div>
     </el-row>
+
     <el-row class="line">
       <el-col :span="6">
         <span class="label">密码：</span>
       </el-col>
-      <template v-if="!modifyPassword">
+      <div v-show="!modifyPassword">
         <el-col :span="10">
           <div class="message" style="margin-top: 5px">**********</div>
         </el-col>
@@ -83,10 +87,10 @@
           <i class="el-icon-edit-outline" @click="modifyMyPassword"/>
           <!--<el-button type="danger" @click="modifyMyPassword" style="margin-top: -10px;">修改密码</el-button>-->
         </el-col>
-      </template>
-      <template v-else>
+      </div>
+      <div v-show="modifyPassword">
         <el-col :span="15">
-          <el-form :model="passwordForm" status-icon :rules="rules" ref="passwordForm" label-width="0px"
+          <el-form :model="passwordForm" status-icon :rules="pwdRules" ref="passwordForm" label-width="0px"
                    style="margin-top: -10px">
             <el-form-item prop="oldPassword">
               <el-input placeholder="请输入旧密码" type="password" v-model="passwordForm.oldPassword"/>
@@ -109,12 +113,13 @@
             </el-form-item>
           </el-form>
         </el-col>
-      </template>
+      </div>
     </el-row>
   </div>
 </template>
 
 <script>
+  import { Message } from 'element-ui'
   import { mapGetters } from 'vuex'
   import { isValidUsername } from '@/utils/validate'
   import { modifyName, modifyPassword, modifyPortrait } from '../../../api/user'
@@ -156,35 +161,27 @@
         modifyPassword: false,
         modifyPortrait: false,
 
+        // 选定图片确认上传到后端
         preUpload: false,
+        // 要上传的图片 base64 编码
         imageUrl: '',
+
+        nameForm: {
+          username: ''
+        },
+        nameRules: {
+          username: [{ required: true, trigger: 'blur', validator: validateUsername }]
+        },
 
         passwordForm: {
           oldPassword: '',
           pass: '',
           checkPass: ''
         },
-
-        nameForm: {
-          username: ''
-        },
-
-        rules: {
-          oldPassword: [
-            { validator: validatePass, trigger: 'blur' }
-          ],
-          pass: [
-            { validator: validatePass, trigger: 'blur' }
-          ],
-          checkPass: [
-            { validator: validatePass2, trigger: 'blur' }
-          ]
-        },
-
-        rules2: {
-          username: [
-            { validator: validateUsername, trigger: 'blur' }
-          ]
+        pwdRules: {
+          oldPassword: [{ required: true, trigger: 'blur', validator: validatePass }],
+          pass: [{ required: true, trigger: 'blur', validator: validatePass }],
+          checkPass: [{ required: true, trigger: 'blur', validator: validatePass2 }]
         }
       }
     },
@@ -196,7 +193,6 @@
         'portrait'
       ])
     },
-    watch: {},
     methods: {
       /*
       修改头像相关
@@ -207,7 +203,6 @@
       },
       cancelModifyPortrait() {
         this.modifyPortrait = false
-        this.preUpload = true
         this.imageUrl = ''
       },
       sureModifyPortrait() {
@@ -215,8 +210,7 @@
           modifyPortrait(this.imageUrl, this.token).then(response => {
             if (response.state === 'OK') {
               this.modifyPortrait = false
-              this.preUpload = true
-              this.message.portrait = this.imageUrl
+              this.preUpload = false
 
               // 更新前端 vuex
               this.$store.dispatch('UpdatePortrait', this.imageUrl).then(() => {
@@ -287,6 +281,14 @@
               modifyPassword(this.token, this.passwordForm.oldPassword, this.passwordForm.pass).then(response => {
                 if (response.state === 'OK') {
                   this.modifyPassword = false
+                } else if (response.state === 'USER_PWD_WRONG') {
+                  Message({
+                    message: '原密码输入错误！',
+                    type: 'error',
+                    duration: 3 * 1000,
+                    center: true,
+                    showClose: true
+                  })
                 }
                 resolve()
               }).catch(error => {
@@ -301,16 +303,30 @@
         })
       },
 
+
+      // 对欲上传的文件进行分析处理，并转为 base64 编码
       handlePreview(file) {
         // console.log(file)
         // console.log(URL.createObjectURL(file.raw))
-        const isJPG = file.raw.type === 'image/jpeg'
         const isLt2M = file.raw.size / 1024 / 1024 < 2
+        const isJPG = file.raw.type === 'image/jpeg'
         const isPNG = file.raw.type === 'image/png'
         if (!isLt2M) {
-          this.$message.error('上传头像图片大小不能超过 2MB!')
+          Message({
+            message: '上传头像图片大小不能超过 2MB！',
+            type: 'error',
+            duration: 3 * 1000,
+            center: true,
+            showClose: true
+          })
         } else if (!isJPG && !isPNG) {
-          this.$message.error('上传头像图片只能是 JPG 或 PNG 格式!')
+          Message({
+            message: '上传头像图片只能是 JPG 或 PNG 格式！',
+            type: 'error',
+            duration: 3 * 1000,
+            center: true,
+            showClose: true
+          })
         } else {
           this.preUpload = true
           // this.imageUrl = URL.createObjectURL(file.raw);
