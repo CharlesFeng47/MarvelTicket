@@ -23,9 +23,6 @@ import '@/permission' // permission control
 import charts from './utils/seat-charts'
 Vue.use(charts)
 
-import VueLazyload from 'vue-lazyload'
-Vue.use(VueLazyload)
-
 Vue.use(ElementUI)
 
 Vue.config.productionTip = false
