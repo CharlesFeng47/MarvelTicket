@@ -23,10 +23,12 @@
 
   export default {
     name: 'MyRegister',
-    data: function () {
+    data: function() {
       const validateUsername = (rule, value, callback) => {
         if (!isValidUsername(value)) {
           callback(new Error('请输入只包含数字、字母的用户名'))
+        } else if (value.length > 6) {
+          callback(new Error('昵称的长度不能超过6个字'))
         } else {
           callback()
         }
@@ -47,19 +49,19 @@
       }
       const validatePass2 = (rule, value, callback) => {
         if (value === '') {
-          callback(new Error('请再次输入密码'));
+          callback(new Error('请再次输入密码'))
         } else if (value !== this.registerForm.password) {
-          callback(new Error('两次输入密码不一致'));
+          callback(new Error('两次输入密码不一致'))
         } else {
-          callback();
+          callback()
         }
-      };
+      }
       return {
         registerForm: {
           email: '',
           username: '',
           password: '',
-          checkPwd: ""
+          checkPwd: ''
         },
         registerRules: {
           email: [{ required: true, trigger: 'blur', validator: validateEmail }],
@@ -71,7 +73,7 @@
         loading: false
       }
     },
-    mounted: function () {
+    mounted: function() {
       this.$emit('register')
     },
     methods: {
@@ -95,7 +97,7 @@
                   }).catch(() => {
                     this.loading = false
                   })
-                } else{
+                } else {
                   var errorMsg = '未知错误，请联系管理员！'
                   if (response.state === 'USER_HAS_BEEN_SIGN_UP') {
                     errorMsg = '此会员名已被注册'

@@ -56,7 +56,16 @@
                     <p>演出地点：</p>
                   </el-col>
                   <el-col :span="14">
-                    <p>{{ order.venueName }}</p>
+                    <p>
+                      <el-popover
+                        placement="right-start"
+                        trigger="hover">
+                        <div>
+                          {{ order.venueAddress.city }}市{{ order.venueAddress.district }}区{{ order.venueAddress.number }}号{{ order.venueAddress.street }}{{ order.venueAddress.comment }}
+                        </div>
+                      <span slot="reference" class="venue-name">{{ order.venueName }}</span>
+                    </el-popover>
+                    </p>
                   </el-col>
                 </el-row>
                 <el-row>
@@ -64,7 +73,17 @@
                     <p>订单清单：</p>
                   </el-col>
                   <el-col :span="14">
-                    <p>{{ order.num}}张 | 共{{ order.totalPrice }}元</p>
+                    <p>
+                      <el-popover
+                        placement="right-start"
+                        trigger="hover">
+                        <div v-for="seat in seatInfo">
+                          {{ seat }}
+                        </div>
+                        <span slot="reference" class="venue-name">{{ order.num}}张 | 共{{ order.totalPrice }}元</span>
+                      </el-popover>
+
+                    </p>
                   </el-col>
                 </el-row>
               </div>
@@ -132,7 +151,9 @@
         second: 0,
         minute: 0,
         left_second: 0,
-        interval: -1
+        interval: -1,
+        // 保存座位信息
+        seatInfo: []
       }
     },
     mounted: function() {
@@ -144,7 +165,12 @@
           getOrder(this.orderid, this.token).then(response => {
             if (response.state === 'OK') {
               this.order = JSON.parse(response.object)
+              console.log(this.order)
               this.startClock(this.order.orderTime)
+              this.seatInfo = []
+              for (var key in this.order.ticketInfo) {
+                this.seatInfo.push(key)
+              }
             }
             resolve()
           }).catch(error => {
@@ -225,6 +251,9 @@
       text-overflow: ellipsis;
       display: -webkit-box;
       margin: 8px 0 8px;
+    }
+    .venue-name:hover{
+      cursor: pointer;
     }
     .radio {
       margin: 65px 37% 10px;
