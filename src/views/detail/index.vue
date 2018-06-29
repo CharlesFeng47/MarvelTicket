@@ -19,6 +19,8 @@
   import TicketDetail from './ticket/index'
   import { getProgramDetail } from '../../api/program'
   import { star } from '../../api/user'
+  import { mapGetters } from 'vuex'
+
   export default {
     name: 'detail',
     components: {
@@ -44,6 +46,11 @@
           star: false
         }
       }
+    },
+    computed: {
+      ...mapGetters([
+        'token'
+      ])
     },
     activated: function() {
       this.programDetailLoading = true
@@ -87,7 +94,7 @@
         // this.programDetail.star = !this.programDetail.star
         console.log(this.programDetail.id)
         new Promise((resolve, reject) => {
-          star(this.programDetail.id).then(response => {
+          star(this.programDetail.id, this.token).then(response => {
             if (response.state === 'OK') {
               this.programDetail.star = true
               this.programDetail.favoriteNum++

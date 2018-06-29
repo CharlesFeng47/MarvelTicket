@@ -18,7 +18,7 @@ export function recommend(city) {
  */
 export function getProgramsByType(city, type) {
   return request({
-    url: '/program/getProgramsByType?city=' + city + '&programType=' + type,
+    url: '/program/getProgramsByType?city=' + city + '&program_type=' + type,
     method: 'get'
   })
 }
@@ -50,7 +50,7 @@ export function previewSearch(condition){
 export function getProgramDetail(programId) {
   console.log(programId)
   return request({
-    url: '/program/getProgramDetail?briefProgramID=' + programId,
+    url: '/program/getProgramDetail?program_id=' + programId,
     method: 'get'
   })
 }

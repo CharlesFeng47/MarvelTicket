@@ -7,7 +7,7 @@ const qs = require('qs')
  */
 export function login(email, password) {
   return request({
-    url: '/user/user_login',
+    url: '/user/login',
     method: 'post',
     data: qs.stringify({
       email,
@@ -22,7 +22,7 @@ export function login(email, password) {
  */
 export function signUp(email, username, password) {
   return request({
-    url: '/user/user_sign_up',
+    url: '/user/signUp',
     method: 'post',
     data: qs.stringify({
       email,
