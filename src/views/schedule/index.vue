@@ -19,14 +19,14 @@
       </el-form-item>
     </el-form>
     <el-row>
-    <template v-for="(briefItem, index) in showingBriefs">
-      <el-col v-if="index%2===0" style="width: 48%">
-        <BriefItem :program-brief="briefItem" @changeFavoriteNum="changeFavoriteNum"/>
-      </el-col>
-      <el-col v-if="index%2===1" style="width: 48%;margin-left: 4%">
-        <BriefItem :program-brief="briefItem" @changeFavoriteNum="changeFavoriteNum"/>
-      </el-col>
-    </template>
+      <template v-for="(briefItem, index) in showingBriefs">
+        <el-col v-if="index%2===0" style="width: 48%">
+          <BriefItem :program-brief="briefItem" @changeFavoriteNum="changeFavoriteNum"/>
+        </el-col>
+        <el-col v-if="index%2===1" style="width: 48%;margin-left: 4%">
+          <BriefItem :program-brief="briefItem" @changeFavoriteNum="changeFavoriteNum"/>
+        </el-col>
+      </template>
     </el-row>
     <div>
       <Pagination :max_page="maxPage" :current_page="currentPage" v-on:changePage="changePage"/>

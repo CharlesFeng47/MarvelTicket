@@ -7,7 +7,7 @@
           <i class="el-icon-view"></i>{{ programBrief.viewNum }}人浏览
         </el-row>
         <el-row>
-          <div @click.stop="changeStar">
+          <div @click.stop="changeStar" class="like-panel">
             <!--class like 用于添加动画-->
             <span v-show="star" class="like">
               <svg-icon icon-class="heart" style="color: #FF5161;"/>
@@ -171,19 +171,21 @@
         text-align: left;
         margin-left: 40px;
       }
-
+      .like-panel:hover{
+        color: #FF5161;
+      }
       @-webkit-keyframes turnLike {
         0% {
-          font-size: 14px
+          font-size: 12px
         }
         25% {
-          font-size: 18px;
+          font-size: 15px;
         }
         50% {
-          font-size: 19px;
+          font-size: 16px;
         }
         100% {
-          font-size: 14px;
+          font-size: 12px;
         }
       }
       .like {
@@ -192,16 +194,16 @@
 
       @-webkit-keyframes turnDislike {
         0% {
-          font-size: 14px
+          font-size: 12px
         }
         25% {
-          font-size: 12px;
+          font-size: 9px;
         }
         50% {
           font-size: 10px;
         }
         100% {
-          font-size: 14px;
+          font-size: 12px;
         }
       }
 
