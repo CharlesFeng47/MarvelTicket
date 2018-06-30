@@ -285,9 +285,9 @@
           console.log(id + '_____' + this.programBriefsOrigin[i].star)
           if (this.programBriefsOrigin[i].star) {
             new Promise((resolve, reject) => {
-              cancelStar(id, this.token).then(curFavoriteNum => {
+              cancelStar(id, this.token).then(curMyFavoriteNum => {
                 this.programBriefsOrigin[i].star = false
-                this.programBriefsOrigin[i].favoriteNum = curFavoriteNum
+                this.programBriefsOrigin[i].favoriteNum--
                 resolve()
               }).catch(error => {
                 reject(error)
@@ -297,9 +297,9 @@
             })
           } else {
             new Promise((resolve, reject) => {
-              star(id, this.token).then(curFavoriteNum => {
+              star(id, this.token).then(curMyFavoriteNum => {
                 this.programBriefsOrigin[i].star = true
-                this.programBriefsOrigin[i].favoriteNum = curFavoriteNum
+                this.programBriefsOrigin[i].favoriteNum++
                 resolve()
               }).catch(error => {
               })

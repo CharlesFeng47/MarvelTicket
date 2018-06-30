@@ -111,9 +111,9 @@
         // console.log(this.programDetail.id)
         if (this.programDetail.star) {
           new Promise((resolve, reject) => {
-            cancelStar(this.programDetail.id, this.token).then(curFavoriteNum => {
+            cancelStar(this.programDetail.id, this.token).then(curMyFavoriteNum => {
               this.programDetail.star = false
-              this.programDetail.favoriteNum = curFavoriteNum
+              this.programDetail.favoriteNum--
               resolve()
             }).catch(error => {
             })
@@ -121,9 +121,9 @@
           })
         } else {
           new Promise((resolve, reject) => {
-            star(this.programDetail.id, this.token).then(curFavoriteNum => {
+            star(this.programDetail.id, this.token).then(curMyFavoriteNum => {
               this.programDetail.star = true
-              this.programDetail.favoriteNum = curFavoriteNum
+              this.programDetail.favoriteNum++
               resolve()
             }).catch(error => {
             })
