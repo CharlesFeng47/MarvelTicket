@@ -37,7 +37,9 @@ export function getStarPrograms(token) {
   return request({
     url: '/user/getStarPrograms',
     method: 'post',
-    data: qs.stringify({token})
+    data: qs.stringify({
+      token
+    })
   })
 }
 

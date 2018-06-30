@@ -1,10 +1,10 @@
 <template>
-  <div class="brief_container" @click="checkDetail">
-    <div class="poster">
+  <div class="brief_container" :class="$route.meta.isLike ? 'gap-small' : 'gap-large'"  @click="checkDetail">
+    <div class="poster" :class="$route.meta.isLike ? 'poster-small' : 'poster-large'">
       <img :src="programBrief.posterSrc">
       <div class="count">
-        <el-row>
-          <i class="el-icon-view"></i>{{ programBrief.viewNum }}人浏览
+        <el-row v-if="!$route.meta.isLike">
+          <i class="el-icon-view"></i> {{ programBrief.viewNum }}人浏览
         </el-row>
         <el-row>
           <div @click.stop="changeStar" class="like-panel">
@@ -142,6 +142,14 @@
 
 <style rel="stylesheet/scss" lang="scss">
   $border-color: #f7f7f7;
+  .gap-small{
+    margin-bottom: 20px;
+    margin-top: 30px;
+  }
+  .gap-large{
+    margin-bottom: 40px;
+    margin-top: 40px;
+  }
   .brief_container {
     :hover {
       cursor: pointer;
@@ -151,21 +159,26 @@
     border-radius: 14px;
     background-color: #fff;
     box-shadow: 0 1px 20px 0 #eee;
-    margin-top: 50px;
-    margin-bottom: 50px;
     border: 1px solid #eee;
     margin-left: 25px;
+    .poster-small {
+      img {
+        height: 195px;
+      }
+    }
+    .poster-large {
+      img {
+        height: 220px;
+      }
+    }
     .poster {
       float: left;
       width: 32%;
       margin-top: -25px;
       margin-left: -25px;
       img {
-        /*width: 160px;*/
         width: 100%;
         border-radius: 8px;
-        /*height: 180px;*/
-        height: 220px;
         background-color: #fff;
         box-shadow: 0 4px 16px 0 #ccc;
       }
@@ -179,6 +192,11 @@
       }
       .like-panel:hover{
         color: #FF5161;
+      }
+      .like-panel{
+        max-height: 24px;
+        height: 24px;
+        overflow: hidden;
       }
       @-webkit-keyframes turnLike {
         0% {

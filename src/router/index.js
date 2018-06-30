@@ -26,6 +26,7 @@ import Layout from '../components/Layout/index'
     noCache: true                if true ,the page will no be cached(default is false)
     isHome: true                 展示首页轮播图
     isSearch: true               搜索界面不展示二级导航
+    isLike: true                 是否为我的收藏界面
   }
  **/
 export const constantRouterMap = [
@@ -35,7 +36,10 @@ export const constantRouterMap = [
       {
         path: '', component: HomeLayout, hidden: true,
         children: [
-          { path: '', hidden: true, component: () => import('@/views/home/index'), meta: { isHome: true, isSearch: false }}
+          { path: '',
+            hidden: true,
+            component: () => import('@/views/home/index'),
+            meta: { isHome: true, isSearch: false, isLike: false }}
         ]
       }
     ]
@@ -51,7 +55,7 @@ export const constantRouterMap = [
             path: '',
             hidden: true,
             component: () => import('@/views/schedule/index'),
-            meta: { isHome: false, isSearch: false }
+            meta: { isHome: false, isSearch: false, isLike: false }
           }
         ]
       }
@@ -67,7 +71,7 @@ export const constantRouterMap = [
             path: '',
             hidden: true,
             component: () => import('@/views/schedule/index'),
-            meta: { isHome: false, isSearch: true }
+            meta: { isHome: false, isSearch: true, isLike: false }
           }
         ]
       }
@@ -86,7 +90,7 @@ export const constantRouterMap = [
         path: 'manage', hidden: true, component: () => import('@/views/center/index'),
         children: [
           { path: 'order', hidden: true, component: () => import('@/views/center/order/index'), meta: { manage: 1 }},
-          { path: 'like', hidden: true, component: () => import('@/views/center/like/index'), meta: { manage: 2 }},
+          { path: 'like', hidden: true, component: () => import('@/views/center/like/index'), meta: { manage: 2, isLike: true }},
           { path: 'message', hidden: true, component: () => import('@/views/center/message/index'), meta: { manage: 3 }}
         ]
       }
