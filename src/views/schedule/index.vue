@@ -91,7 +91,6 @@
       }
     },
     watch: {
-      // TODO 讨论路由更换时原有内容要不要清空
       // 根据路由参数选定当前加载的类型
       type: {
         handler: function(newVal, oldVal) {
@@ -239,17 +238,18 @@
           this.showingBriefs.push(this.filteredProgramBriefs[index])
         }
       },
+
       // 子组件 Pagination 修改后回调此组件更新 currentPage，以更新展示的数据
       changePage: function(page) {
         this.currentPage = page
       },
-      // 子组件 BriefItem 中点击收藏后回调此组件更新 programDetail
-      changeFavoriteNum: function(id, isStar) {
+      // 子组件 BriefItem 中点击收藏后回调此组件更新 programDetail 中的收藏数值，toStar 为 true 表示增加，反之减少
+      changeFavoriteNum: function(id, toStar) {
         for (let i = 0; i < this.programBriefsOrigin.length; i++) {
           // 筛选出当前节目
           if (this.programBriefsOrigin[i].id !== id) continue
-          console.log(id + '_____' + this.programBriefsOrigin[i].star)
-          this.programBriefsOrigin[i].favoriteNum += (isStar ? 1 : -1)
+
+          this.programBriefsOrigin[i].favoriteNum += (toStar ? 1 : -1)
         }
       }
     }

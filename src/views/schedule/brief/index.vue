@@ -48,6 +48,7 @@
 </template>
 
 <script>
+  import { Message } from 'element-ui'
   import { hasStarredCurProgram } from '../../../api/program'
   import { star, cancelStar } from '../../../api/user'
   import { mapGetters } from 'vuex'
@@ -68,12 +69,14 @@
       }
     },
     mounted: function() {
-      this.getMyStarOfCurProgram()
+      // 初始化当前用用户是否喜欢过当前节目
+      this.initMyStarOfCurProgram()
     },
     watch: {
+      // 显示不同的概况时，需要重新加载是否喜欢该节目
       programBrief: {
         handler: function(newVal, oldVal) {
-          this.getMyStarOfCurProgram()
+          this.initMyStarOfCurProgram()
         }
       }
     },
@@ -83,28 +86,33 @@
         if (this.token !== undefined && this.token !== '') {
           if (this.star) {
             new Promise((resolve, reject) => {
-              cancelStar(this.programBrief.id, this.token).then(() => {
+              cancelStar(this.programBrief.id, this.token).then(curMyFavoriteNum => {
                 this.star = false
                 resolve()
               }).catch(error => {
-                reject(error)
               })
             }).then(() => {
               this.$emit('changeFavoriteNum', this.programBrief.id, this.star)
-            }).catch(() => {
             })
           } else {
             new Promise((resolve, reject) => {
-              star(this.programBrief.id, this.token).then(() => {
+              star(this.programBrief.id, this.token).then(curMyFavoriteNum => {
                 this.star = true
                 resolve()
               }).catch(error => {
               })
             }).then(() => {
               this.$emit('changeFavoriteNum', this.programBrief.id, this.star)
-            }).catch(() => {
             })
           }
+        } else {
+          Message({
+            message: '登录后才可以进行收藏哦～',
+            type: 'error',
+            duration: 5 * 1000,
+            center: true,
+            showClose: true
+          })
         }
       },
       // 查看详情
@@ -113,20 +121,18 @@
         this.$router.push('/detail/' + this.programBrief.id)
       },
       // 获取此节目是否当前用户所喜欢
-      getMyStarOfCurProgram() {
+      initMyStarOfCurProgram() {
         // 查看当前已登录用户是否已经收藏过该节目
         if (this.token !== undefined && this.token !== '') {
-          console.log('发送请求：' + this.programBrief.id)
+          console.log('获取是否喜欢节目：' + this.programBrief.id)
           new Promise((resolve, reject) => {
             hasStarredCurProgram(this.programBrief.id, this.token).then(hasStarred => {
               this.star = hasStarred
               console.log('结束：' + this.programBrief.id)
               resolve()
             }).catch(error => {
-              reject(error)
             })
           }).then(() => {
-          }).catch(() => {
           })
         }
       }

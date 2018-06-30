@@ -24,7 +24,6 @@
 <script>
   import { isValidUsername, isValidateEmail } from '@/utils/validate'
   import { login } from '../../../api/login'
-  import { Message } from 'element-ui'
 
   export default {
     name: 'MyLogin',

@@ -93,6 +93,9 @@
 </template>
 
 <script>
+  import { Message } from 'element-ui'
+  import { mapGetters } from 'vuex'
+
   export default {
     name: 'Detail',
     props: [
@@ -110,6 +113,9 @@
       }
     },
     computed: {
+      ...mapGetters([
+        'token'
+      ]),
       price: function() {
         // console.log(this.programDetail)
         return this.curParPrice * this.buyNum
@@ -128,7 +134,18 @@
     },
     methods: {
       changeStar() {
-        this.$emit('changeStar')
+        // 只在登录状态下做操作
+        if (this.token !== undefined && this.token !== '') {
+          this.$emit('changeStar')
+        } else {
+          Message({
+            message: '登录后才可以进行收藏哦～',
+            type: 'error',
+            duration: 5 * 1000,
+            center: true,
+            showClose: true
+          })
+        }
       },
       // 从当前节目的场次和票面中选择第一个作为默认显示，当父组件加载完数据后调用此方法
       initDefaultFieldAndParAndBuyNum(fields, pars) {

@@ -77,12 +77,8 @@
             this.programDetail.star = hasStarred
             resolve()
           }).catch(error => {
-            reject(error)
           })
         }).then(() => {
-          this.programDetailLoading = false
-        }).catch(() => {
-          this.programDetailLoading = false
         })
       }
     },
