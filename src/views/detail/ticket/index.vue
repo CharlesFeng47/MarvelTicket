@@ -7,14 +7,16 @@
       </div>
       <div class="count want"  @click="changeStar()">
         <!--class like 用于添加动画-->
-        <span v-if="this.programDetail.star" class="like">
+        <span v-show="this.programDetail.star" class="like">
           <svg-icon icon-class="heart" style="color: #FF5161;"/>
         </span>
-        <span v-else class="not-like">
-                 <svg-icon icon-class="heart2"/>
+        <span v-show="!this.programDetail.star" class="not-like">
+          <svg-icon icon-class="heart2"/>
         </span>
+
         <span id="is_like" :class="{ hasStar: this.programDetail.star }">
-          <span id="favourNum"> {{ programDetail.favoriteNum }}</span>人想看</span>
+          <span id="favourNum"> {{ programDetail.favoriteNum }}</span>人想看
+        </span>
       </div>
     </div>
     <div class="detail">
@@ -119,10 +121,9 @@
     watch: {
       curSeatType: {
         handler: function(newVal, oldVal) {
-          console.log(this.programDetail)
-          for (var i in this.programDetail.pars) {
-            if (this.programDetail.pars[i].seatType === newVal) {
-              this.curParPrice = this.programDetail.pars[i].basePrice
+          for (var i in this.programDetail.pars){
+            if( this.programDetail.pars[i].seatType === newVal ){
+              this.curParPrice =  this.programDetail.pars[i].basePrice
             }
           }
         }

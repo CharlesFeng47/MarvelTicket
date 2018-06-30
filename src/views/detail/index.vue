@@ -79,9 +79,7 @@
         new Promise((resolve, reject) => {
           hasStarredCurProgram(this.$route.params.programId, this.token).then(response => {
             if (response.state === 'OK') {
-              const hasStarred = JSON.parse(response.object)
-              this.programDetail.star = hasStarred
-              console.log(hasLiked)
+              this.programDetail.star = JSON.parse(response.object)
             }
             resolve()
           }).catch(error => {
@@ -115,9 +113,7 @@
 
       // 由子组件调用，改变收藏状态
       changeStar: function() {
-        // this.programDetail.star = !this.programDetail.star
-        console.log(this.programDetail.id)
-
+        // console.log(this.programDetail.id)
         if (this.programDetail.star) {
           new Promise((resolve, reject) => {
             cancelStar(this.programDetail.id, this.token).then(response => {

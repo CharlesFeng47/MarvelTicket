@@ -19,12 +19,12 @@
       </el-form-item>
     </el-form>
     <el-row>
-    <template v-for="(briefItem,index) in showingBriefs">
+    <template v-for="(briefItem, index) in showingBriefs">
       <el-col v-if="index%2===0" style="width: 48%">
-        <BriefItem :program-brief="briefItem"/>
+        <BriefItem :program-brief="briefItem" @changeStar="changeStar"/>
       </el-col>
       <el-col v-if="index%2===1" style="width: 48%;margin-left: 4%">
-        <BriefItem :program-brief="briefItem"/>
+        <BriefItem :program-brief="briefItem" @changeStar="changeStar"/>
       </el-col>
     </template>
     </el-row>
@@ -38,7 +38,8 @@
 <script>
   import BriefItem from './brief/index'
   import Pagination from '../../components/pagination/index'
-  import { getProgramsByType, getProgramsBySearchKey } from '../../api/program'
+  import { getProgramsByType, getProgramsBySearchKey, hasStarredCurProgram } from '../../api/program'
+  import { star, cancelStar } from '../../api/user'
   import { getProgramTypeEnum } from '../../utils/program_helper'
   import { toPick, toSort } from '../../utils/program_helper'
   import { mapGetters } from 'vuex'
@@ -217,6 +218,7 @@
           brief.viewNum = curPrograms[index].scanVolume
           brief.favoriteNum = curPrograms[index].favoriteVolume
           brief.basePrice = curPrograms[index].lowPrice
+          brief.star = false
           this.programBriefsOrigin.push(brief)
         }
 
@@ -242,13 +244,83 @@
         for (var index = (this.currentPage - 1) * this.everyPage;
           index < this.currentPage * this.everyPage && index < this.filteredProgramBriefs.length;
           index++) {
+          console.log('refresh: ' + this.filteredProgramBriefs[index].id)
+
+          // TODO gy 在循环里面使用异步方法会报错
+          // (function(brief) {
+          //   this.getMyStarOfCurProgram(brief)
+          // })(this.filteredProgramBriefs[index])
+          this.getMyStarOfCurProgram(this.filteredProgramBriefs[index])
+
           this.showingBriefs.push(this.filteredProgramBriefs[index])
+        }
+      },
+
+      // 获取此节目是否当前用户所喜欢
+      getMyStarOfCurProgram(brief) {
+        // 查看当前已登录用户是否已经收藏过该节目
+        if (this.token !== undefined && this.token !== '') {
+          console.log('发送请求：' + brief.id)
+
+
+          new Promise((resolve, reject) => {
+            hasStarredCurProgram(brief.id, this.token).then(response => {
+              if (response.state === 'OK') {
+                brief.star = JSON.parse(response.object)
+                console.log('结束：' + brief.id)
+              }
+              resolve()
+            }).catch(error => {
+              reject(error)
+            })
+          }).then(() => {
+          }).catch(() => {
+          })
         }
       },
 
       // 子组件 Pagination 修改后回调此组件更新 currentPage，以更新展示的数据
       changePage: function(page) {
         this.currentPage = page
+      },
+
+      // 子组件 BriefItem 中点击收藏后回调此组件更新 programDetail
+      changeStar: function(id) {
+        for (let i = 0; i < this.programBriefsOrigin.length; i++) {
+          // 筛选出当前节目
+          if (this.programBriefsOrigin[i].id !== id) continue
+
+          console.log(id + '_____' + this.programBriefsOrigin[i].star)
+          if (this.programBriefsOrigin[i].star) {
+            new Promise((resolve, reject) => {
+              cancelStar(id, this.token).then(response => {
+                if (response.state === 'OK') {
+                  this.programBriefsOrigin[i].star = false
+                  this.programBriefsOrigin[i].favoriteNum--
+                }
+                resolve()
+              }).catch(error => {
+                reject(error)
+              })
+            }).then(() => {
+            }).catch(() => {
+            })
+          } else {
+            new Promise((resolve, reject) => {
+              star(id, this.token).then(response => {
+                if (response.state === 'OK') {
+                  this.programBriefsOrigin[i].star = true
+                  this.programBriefsOrigin[i].favoriteNum++
+                }
+                resolve()
+              }).catch(error => {
+                reject(error)
+              })
+            }).then(() => {
+            }).catch(() => {
+            })
+          }
+        }
       }
     }
   }
