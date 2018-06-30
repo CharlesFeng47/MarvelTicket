@@ -56,7 +56,7 @@
           <i class="el-icon-edit-outline" @click="modifyMyName"/>
         </el-col>
       </div>
-      <div v-show="modifyName">
+      <div v-show="modifyName" class="name-block">
         <el-col :span="15">
           <el-form :model="nameForm" status-icon :rules="nameRules" ref="nameForm" label-width="0px"
                    style="margin-top: -10px">
@@ -151,7 +151,7 @@
       }
       const validateUsername = (rule, value, callback) => {
         if (!isValidUsername(value)) {
-          callback(new Error('请输入只包含数字、字母的用户名'))
+          callback(new Error('用户名只能包含数字、字母'))
         } else if (value.length > 9) {
           callback(new Error('昵称的长度不能超过 9 位'))
         } else {
@@ -239,12 +239,12 @@
           if (valid) {
             new Promise((resolve, reject) => {
               modifyName(this.nameForm.username, this.token).then(() => {
-                  this.modifyName = false
+                this.modifyName = false
 
-                  // 更新前端 vuex
-                  this.$store.dispatch('UpdateName', this.nameForm.username).then(() => {
-                  }).catch(() => {
-                  })
+                // 更新前端 vuex
+                this.$store.dispatch('UpdateName', this.nameForm.username).then(() => {
+                }).catch(() => {
+                })
                 resolve()
               }).catch(error => {
               })
@@ -284,7 +284,6 @@
           }
         })
       },
-
 
       // 对欲上传的文件进行分析处理，并转为 base64 编码
       handlePreview(file) {
@@ -351,7 +350,7 @@
     border: #EFEFEF solid 1px;
     padding: 10px 35% 50px 35%;
     margin: 0px;
-    .portrait{
+    .portrait {
       width: 180px;
       height: 180px;
       margin: 0 auto;
@@ -360,19 +359,19 @@
         height: 100%;
         border-radius: 10px;
       }
-      :hover{
+      :hover {
         cursor: pointer;
       }
     }
-    .line{
+    .line {
       margin-top: 50px;
-      .el-button--danger{
+      .el-button--danger {
         border-radius: 30px;
         width: 50px;
-        height: 30px ;
+        height: 30px;
       }
       .button-block {
-        width:80px;
+        width: 80px;
         /*margin: 0px;*/
         button {
           width: 100%;
@@ -383,14 +382,14 @@
         }
       }
 
-      .el-form-item__content{
+      .el-form-item__content {
         margin-left: 0px !important;
       }
     }
-    .el-icon-edit-outline{
+    .el-icon-edit-outline {
       font-size: 20px;
     }
-    .el-icon-edit-outline:hover{
+    .el-icon-edit-outline:hover {
       /*font-size: 20px;*/
       cursor: pointer;
     }
@@ -406,13 +405,13 @@
           padding: 0;
         }
       }
-      padding:0px 50px 0px 50px;
+      padding: 0px 50px 0px 50px;
       .avatar-uploader .el-upload {
         border: 1px dashed #d9d9d9;
         border-radius: 6px;
         cursor: pointer;
         width: 178px;
-        .el-upload-dragger{
+        .el-upload-dragger {
           width: 100%;
         }
         /*position: relative;*/
@@ -434,6 +433,19 @@
         height: 178px;
         display: block;
       }
+    }
+    /* 动画*/
+    @-webkit-keyframes portrait {
+      0% {
+        height: 180px
+      }
+      100% {
+        height: 216px;
+      }
+    }
+    .portrait-block {
+      overflow: hidden;
+      -webkit-animation: portrait 1s
     }
   }
 </style>
