@@ -1,18 +1,21 @@
 <template>
   <div class="like-panel">
 
-    <el-row v-if="maxPage !== 0">
-    <template v-for="(briefItem, index) in showingBriefs">
-      <el-col v-if="index%2===0" style="width: 48%">
-        <BriefItem :program-brief="briefItem" @changeFavoriteNum="changeFavoriteNum"/>
-      </el-col>
-      <el-col v-if="index%2===1" style="width: 48%;margin-left: 4%">
-        <BriefItem :program-brief="briefItem" @changeFavoriteNum="changeFavoriteNum"/>
-      </el-col>
-    </template>
-    </el-row>
-    <div v-else style="">
-      你还没有收藏节目！
+    <div v-loading="curLikedSchedulesLoading">
+      <el-row v-if="maxPage !== 0">
+        <template v-for="(briefItem, index) in showingBriefs">
+          <el-col v-if="index%2===0" style="width: 48%">
+            <BriefItem :program-brief="briefItem" @changeFavoriteNum="changeFavoriteNum"/>
+          </el-col>
+          <el-col v-if="index%2===1" style="width: 48%;margin-left: 4%">
+            <BriefItem :program-brief="briefItem" @changeFavoriteNum="changeFavoriteNum"/>
+          </el-col>
+        </template>
+      </el-row>
+
+      <div v-else style="">
+        你还没有收藏节目！
+      </div>
     </div>
     <div>
       <Pagination :max_page="maxPage" :current_page="currentPage" v-on:changePage="changePage"/>
@@ -38,7 +41,7 @@
     },
     data() {
       return {
-        curTypeSchedulesLoading: false,
+        curLikedSchedulesLoading: false,
         // 全部的概况
         programBriefsOrigin: [],
         // 当前展示的当页概况
@@ -67,7 +70,7 @@
     methods: {
       // 根据节目类型从后端获取此类型的节目数据
       initLike: function(type) {
-        this.curTypeSchedulesLoading = true
+        this.curLikedSchedulesLoading = true
         new Promise((resolve, reject) => {
           getStarPrograms(this.token).then(curPrograms => {
             console.log(curPrograms)
@@ -78,9 +81,9 @@
             reject(error)
           })
         }).then(() => {
-          this.curTypeSchedulesLoading = false
+          this.curLikedSchedulesLoading = false
         }).catch(() => {
-          this.curTypeSchedulesLoading = false
+          this.curLikedSchedulesLoading = false
         })
       },
       // 将获取的数据装载到页面中
@@ -118,6 +121,7 @@
           this.showingBriefs.push(this.programBriefsOrigin[index])
         }
       },
+
       // 子组件 Pagination 修改后回调此组件更新 currentPage，以更新展示的数据
       changePage: function(page) {
         this.currentPage = page
@@ -127,7 +131,7 @@
         for (let i = 0; i < this.programBriefsOrigin.length; i++) {
           // 筛选出当前节目
           if (this.programBriefsOrigin[i].id !== id) continue
-          console.log(id + '_____' + this.programBriefsOrigin[i].star)
+
           this.programBriefsOrigin[i].favoriteNum += (isStar ? 1 : -1)
         }
       }

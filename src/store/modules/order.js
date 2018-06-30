@@ -42,6 +42,8 @@ const order = {
   mutations: {
     SET_ORDER: (state, order_detail) => {
       state.order_detail = order_detail
+
+      // 存入 localStorage 以免刷新后 vuex 也被刷新，数据消失
       window.localStorage.setItem('order_detail', JSON.stringify(state.order_detail))
     },
     SET_ORDER_TYPE: (state, order_type) => {

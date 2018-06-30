@@ -5,11 +5,22 @@ const qs = require('qs')
 /**
  * 生成订单
  */
-export function generateOrder(programID, seatType, programTime, ticketNum, token) {
+export function generateOrder(program_id, seat_type, program_time, ticket_num, token) {
+  // console.log(program_id)
+  // console.log(seat_type)
+  // console.log(program_time)
+  // console.log(ticket_num)
+  // console.log(token)
   return request({
     url: '/order/generateOrder',
     method: 'post',
-    data: qs.stringify({ program_id: programID, seat_type: seatType, program_time: programTime, ticket_num: ticketNum, token: token })
+    data: qs.stringify({
+      program_id,
+      seat_type,
+      program_time,
+      ticket_num,
+      token
+    })
   })
 }
 

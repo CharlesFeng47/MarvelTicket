@@ -72,7 +72,7 @@
           Message({
             message: '请输入节目信息！',
             type: 'error',
-            duration: 1 * 1000,
+            duration: 1000,
             center: true,
             showClose: true
           })

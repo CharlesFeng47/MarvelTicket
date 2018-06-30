@@ -36,7 +36,8 @@ export const constantRouterMap = [
       {
         path: '', component: HomeLayout, hidden: true,
         children: [
-          { path: '',
+          {
+            path: '',
             hidden: true,
             component: () => import('@/views/home/index'),
             meta: { isHome: true, isSearch: false, isLike: false }}

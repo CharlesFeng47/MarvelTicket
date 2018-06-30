@@ -2,7 +2,7 @@
   <div>
     <!-- 订单界面的上部导航 -->
     <OrderNav/>
-    <template v-if="maxPage != 0">
+    <template v-if="maxPage !== 0">
       <div class="order-panel">
         <template v-for="order in showOrders">
           <MyOrder :order="order"/>
@@ -53,7 +53,7 @@
       },
       currentPage: {
         handler: function(newVal, oldVal) {
-          this.initPage()
+          this.refreshLikes()
         }
       }
     },
@@ -74,7 +74,7 @@
       }
     },
     methods: {
-      initPage() {
+      refreshLikes() {
         this.showOrders = []
         console.log(this.currentPage)
         for (var index = (this.currentPage - 1) * this.everyPage;
@@ -106,19 +106,15 @@
             break
         }
         new Promise((resolve, reject) => {
-          getMyOrders(typeName, this.token).then(response => {
-            if (response.state === 'OK') {
-              this.orders = JSON.parse(response.object)
-              this.maxPage = Math.ceil(this.orders.length / this.everyPage)
-              this.currentPage = 1
-              this.initPage()
-            }
+          getMyOrders(typeName, this.token).then(orders => {
+            this.orders = orders
+            this.maxPage = Math.ceil(this.orders.length / this.everyPage)
+            this.currentPage = 1
+            this.refreshLikes()
             resolve()
           }).catch(error => {
-            reject(error)
           })
         }).then(() => {
-        }).catch(() => {
         })
       }
     }

@@ -168,7 +168,7 @@
         }
         // 设置标题颜色
         this.isPositive = (this.order.orderState === '已支付')
-        // 设置节目时间
+        // 设置节目时间 TODO 时间格式造成的报错
         this.date = this.order.programTime.split(' ')[0]
         var programTime = new Date(this.order.programTime)
         // 判断是否超时
