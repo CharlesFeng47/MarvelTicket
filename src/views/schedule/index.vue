@@ -21,10 +21,10 @@
     <el-row>
     <template v-for="(briefItem, index) in showingBriefs">
       <el-col v-if="index%2===0" style="width: 48%">
-        <BriefItem :program-brief="briefItem" @changeStar="changeStar"/>
+        <BriefItem :program-brief="briefItem" @changeFavoriteNum="changeFavoriteNum"/>
       </el-col>
       <el-col v-if="index%2===1" style="width: 48%;margin-left: 4%">
-        <BriefItem :program-brief="briefItem" @changeStar="changeStar"/>
+        <BriefItem :program-brief="briefItem" @changeFavoriteNum="changeFavoriteNum"/>
       </el-col>
     </template>
     </el-row>
@@ -38,8 +38,7 @@
 <script>
   import BriefItem from './brief/index'
   import Pagination from '../../components/pagination/index'
-  import { getProgramsByType, getProgramsBySearchKey, hasStarredCurProgram } from '../../api/program'
-  import { star, cancelStar } from '../../api/user'
+  import { getProgramsByType, getProgramsBySearchKey } from '../../api/program'
   import { getProgramTypeEnum } from '../../utils/program_helper'
   import { toPick, toSort } from '../../utils/program_helper'
   import { mapGetters } from 'vuex'
@@ -164,7 +163,7 @@
         this.curTypeSchedulesLoading = true
         new Promise((resolve, reject) => {
           getProgramsByType(this.cur_city, getProgramTypeEnum(type)).then(curPrograms => {
-            console.log(curPrograms)
+            // console.log(curPrograms)
             this.fulfillProgramBriefs(curPrograms)
             this.refreshBriefs()
             resolve()
@@ -183,7 +182,7 @@
         this.curTypeSchedulesLoading = true
         new Promise((resolve, reject) => {
           getProgramsBySearchKey(key).then(curPrograms => {
-            console.log(curPrograms)
+            // console.log(curPrograms)
             this.fulfillProgramBriefs(curPrograms)
             this.refreshBriefs()
             resolve()
@@ -212,7 +211,6 @@
           brief.viewNum = curPrograms[index].scanVolume
           brief.favoriteNum = curPrograms[index].favoriteVolume
           brief.basePrice = curPrograms[index].lowPrice
-          brief.star = false
           this.programBriefsOrigin.push(brief)
         }
 
@@ -238,75 +236,20 @@
         for (var index = (this.currentPage - 1) * this.everyPage;
           index < this.currentPage * this.everyPage && index < this.filteredProgramBriefs.length;
           index++) {
-          console.log('refresh: ' + this.filteredProgramBriefs[index].id)
-
-          // TODO gy 在循环里面使用异步方法会报错
-          // (function(brief) {
-          //   this.getMyStarOfCurProgram(brief)
-          // })(this.filteredProgramBriefs[index])
-          // this.getMyStarOfCurProgram(this.filteredProgramBriefs[index])
-
           this.showingBriefs.push(this.filteredProgramBriefs[index])
         }
       },
-
-      // 获取此节目是否当前用户所喜欢
-      getMyStarOfCurProgram(brief) {
-        // 查看当前已登录用户是否已经收藏过该节目
-        if (this.token !== undefined && this.token !== '') {
-          console.log('发送请求：' + brief.id)
-
-
-          new Promise((resolve, reject) => {
-            hasStarredCurProgram(brief.id, this.token).then(hasStarred => {
-              brief.star = hasStarred
-              console.log('结束：' + brief.id)
-              resolve()
-            }).catch(error => {
-              reject(error)
-            })
-          }).then(() => {
-          }).catch(() => {
-          })
-        }
-      },
-
       // 子组件 Pagination 修改后回调此组件更新 currentPage，以更新展示的数据
       changePage: function(page) {
         this.currentPage = page
       },
-
       // 子组件 BriefItem 中点击收藏后回调此组件更新 programDetail
-      changeStar: function(id) {
+      changeFavoriteNum: function(id, isStar) {
         for (let i = 0; i < this.programBriefsOrigin.length; i++) {
           // 筛选出当前节目
           if (this.programBriefsOrigin[i].id !== id) continue
-
           console.log(id + '_____' + this.programBriefsOrigin[i].star)
-          if (this.programBriefsOrigin[i].star) {
-            new Promise((resolve, reject) => {
-              cancelStar(id, this.token).then(curMyFavoriteNum => {
-                this.programBriefsOrigin[i].star = false
-                this.programBriefsOrigin[i].favoriteNum--
-                resolve()
-              }).catch(error => {
-                reject(error)
-              })
-            }).then(() => {
-            }).catch(() => {
-            })
-          } else {
-            new Promise((resolve, reject) => {
-              star(id, this.token).then(curMyFavoriteNum => {
-                this.programBriefsOrigin[i].star = true
-                this.programBriefsOrigin[i].favoriteNum++
-                resolve()
-              }).catch(error => {
-              })
-            }).then(() => {
-            }).catch(() => {
-            })
-          }
+          this.programBriefsOrigin[i].favoriteNum += (isStar ? 1 : -1)
         }
       }
     }

@@ -70,7 +70,6 @@
         this.programDetailLoading = false
       })
 
-
       // 查看当前已登录用户是否已经收藏过该节目
       if (this.token !== undefined && this.token !== '') {
         new Promise((resolve, reject) => {

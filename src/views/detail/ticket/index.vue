@@ -13,10 +13,7 @@
         <span v-show="!this.programDetail.star" class="not-like">
           <svg-icon icon-class="heart2"/>
         </span>
-
-        <span id="is_like" :class="{ hasStar: this.programDetail.star }">
-          <span id="favourNum"> {{ programDetail.favoriteNum }}</span>人想看
-        </span>
+        <span id="favourNum"> {{ programDetail.favoriteNum }}</span>人想看
       </div>
     </div>
     <div class="detail">
@@ -121,9 +118,9 @@
     watch: {
       curSeatType: {
         handler: function(newVal, oldVal) {
-          for (var i in this.programDetail.pars){
-            if( this.programDetail.pars[i].seatType === newVal ){
-              this.curParPrice =  this.programDetail.pars[i].basePrice
+          for (var i in this.programDetail.pars) {
+            if (this.programDetail.pars[i].seatType === newVal) {
+              this.curParPrice = this.programDetail.pars[i].basePrice
             }
           }
         }

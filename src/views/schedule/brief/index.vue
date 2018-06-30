@@ -9,10 +9,10 @@
         <el-row>
           <div @click.stop="changeStar">
             <!--class like 用于添加动画-->
-            <span v-show="programBrief.star" class="like">
+            <span v-show="star" class="like">
               <svg-icon icon-class="heart" style="color: #FF5161;"/>
             </span>
-            <span v-show="!programBrief.star" class="not-like">
+            <span v-show="!star" class="not-like">
               <svg-icon icon-class="heart2"/>
             </span>
 
@@ -48,21 +48,87 @@
 </template>
 
 <script>
+  import { hasStarredCurProgram } from '../../../api/program'
+  import { star, cancelStar } from '../../../api/user'
+  import { mapGetters } from 'vuex'
+
   export default {
     name: 'BriefItem',
     props: [
       'programBrief'
     ],
+    computed: {
+      ...mapGetters([
+        'token'
+      ])
+    },
+    data() {
+      return {
+        star: false
+      }
+    },
+    mounted: function() {
+      this.getMyStarOfCurProgram()
+    },
+    watch: {
+      programBrief: {
+        handler: function(newVal, oldVal) {
+          this.getMyStarOfCurProgram()
+        }
+      }
+    },
     methods: {
       // 通知父组件更新收藏信息
       changeStar() {
-        this.$emit('changeStar', this.programBrief.id)
+        if (this.token !== undefined && this.token !== '') {
+          if (this.star) {
+            new Promise((resolve, reject) => {
+              cancelStar(this.programBrief.id, this.token).then(() => {
+                this.star = false
+                resolve()
+              }).catch(error => {
+                reject(error)
+              })
+            }).then(() => {
+              this.$emit('changeFavoriteNum', this.programBrief.id, this.star)
+            }).catch(() => {
+            })
+          } else {
+            new Promise((resolve, reject) => {
+              star(this.programBrief.id, this.token).then(() => {
+                this.star = true
+                resolve()
+              }).catch(error => {
+              })
+            }).then(() => {
+              this.$emit('changeFavoriteNum', this.programBrief.id, this.star)
+            }).catch(() => {
+            })
+          }
+        }
       },
-
       // 查看详情
       checkDetail: function() {
         console.log(this.programBrief)
         this.$router.push('/detail/' + this.programBrief.id)
+      },
+      // 获取此节目是否当前用户所喜欢
+      getMyStarOfCurProgram() {
+        // 查看当前已登录用户是否已经收藏过该节目
+        if (this.token !== undefined && this.token !== '') {
+          console.log('发送请求：' + this.programBrief.id)
+          new Promise((resolve, reject) => {
+            hasStarredCurProgram(this.programBrief.id, this.token).then(hasStarred => {
+              this.star = hasStarred
+              console.log('结束：' + this.programBrief.id)
+              resolve()
+            }).catch(error => {
+              reject(error)
+            })
+          }).then(() => {
+          }).catch(() => {
+          })
+        }
       }
     }
   }
@@ -71,7 +137,7 @@
 <style rel="stylesheet/scss" lang="scss">
   $border-color: #f7f7f7;
   .brief_container {
-    :hover{
+    :hover {
       cursor: pointer;
     }
     /*width: 500px;*/
@@ -106,26 +172,40 @@
         margin-left: 40px;
       }
 
-      @-webkit-keyframes turnLike
-      {
-        0%   {font-size: 14px}
-        25%  {font-size: 18px;}
-        50%  {font-size: 19px;}
-        100% {font-size: 14px;}
+      @-webkit-keyframes turnLike {
+        0% {
+          font-size: 14px
+        }
+        25% {
+          font-size: 18px;
+        }
+        50% {
+          font-size: 19px;
+        }
+        100% {
+          font-size: 14px;
+        }
       }
-      .like{
+      .like {
         -webkit-animation: turnLike 1s
       }
 
-      @-webkit-keyframes turnDislike
-      {
-        0%   {font-size: 14px}
-        25%  {font-size: 12px;}
-        50%  {font-size: 10px;}
-        100% {font-size: 14px;}
+      @-webkit-keyframes turnDislike {
+        0% {
+          font-size: 14px
+        }
+        25% {
+          font-size: 12px;
+        }
+        50% {
+          font-size: 10px;
+        }
+        100% {
+          font-size: 14px;
+        }
       }
 
-      .not-like{
+      .not-like {
         -webkit-animation: turnDislike 1s
       }
     }
@@ -136,17 +216,17 @@
       .el-row {
         margin-bottom: 10px;
       }
-      .el-tag{
+      .el-tag {
         border-radius: 15px;
       }
-      .message{
+      .message {
         font-size: 12px;
         color: #aaa;
         padding: 5px 0;
         line-height: 16px;
         font-weight: 500;
         /*height: 48px;*/
-        overflow:hidden;
+        overflow: hidden;
         max-lines: 2;
         -webkit-line-clamp: 2;
         text-overflow: ellipsis;
@@ -164,7 +244,7 @@
         color: #331612;
         line-height: 30px;
         height: 60px;
-        overflow:hidden;
+        overflow: hidden;
         max-lines: 2;
         -webkit-line-clamp: 2;
         text-overflow: ellipsis;
