@@ -58,14 +58,9 @@
       // 会员登出
       memberLogOut() {
         new Promise((resolve, reject) => {
-          logout(this.token).then(response => {
-            if (response.state === 'OK') {
-              resolve()
-            } else {
-              reject()
-            }
+          logout(this.token).then(() => {
+            resolve()
           }).catch(error => {
-            reject(error)
           })
         }).then(() => {
           this.$store.dispatch('LogOut').then(() => {

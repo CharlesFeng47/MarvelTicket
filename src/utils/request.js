@@ -24,16 +24,23 @@ service.interceptors.request.use(config => {
 
 // respone拦截器
 service.interceptors.response.use(
+
+  // 请求成功直接返回后端的结果
   response => {
-    console.log('response state: ' + response.data.state)
     return response.data
   },
+
+  // 请求错误回返回 400 状态码
   error => {
-    console.log('err' + error) // for debug
+    console.log('err: ')
+    console.log(error.response)
+    // console.log('err code' + error.code)
     Message({
-      message: error.message,
+      message: error.response.data.message,
       type: 'error',
-      duration: 5 * 1000
+      duration: 5 * 1000,
+      center: true,
+      showClose: true
     })
     return Promise.reject(error)
   }

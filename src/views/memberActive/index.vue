@@ -26,6 +26,7 @@
     mounted: function() {
       this.activating = true
       new Promise((resolve, reject) => {
+        // TODO 解析方式需要修改
         memberActivate(this.$route.params.activeUrl).then(response => {
           if (response.state === 'OK') {
             this.hasError = false

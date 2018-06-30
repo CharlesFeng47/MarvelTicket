@@ -91,20 +91,17 @@
           // this.$emit('showPanel')
           this.searchIsLoading = true
           new Promise((resolve, reject) => {
-            previewSearch(str).then(response => {
-              if (response.state === 'OK') {
-                var recommends = JSON.parse(response.object)
-                // console.log(recommends)
-                for (var i = 0; i < recommends.length; i++) {
-                  var result = {}
-                  result.programLink = '/detail/' + recommends[i].id
-                  result.startTime = recommends[i].programID.startTime.split(' ')[0]
-                  result.programName = recommends[i].programName
-                  // console.log(result)
-                  this.searchResults.push(result)
-                }
-                // console.log(this.searchResults)
+            previewSearch(str).then(recommends => {
+              // console.log(recommends)
+              for (var i = 0; i < recommends.length; i++) {
+                var result = {}
+                result.programLink = '/detail/' + recommends[i].id
+                result.startTime = recommends[i].programID.startTime.split(' ')[0]
+                result.programName = recommends[i].programName
+                // console.log(result)
+                this.searchResults.push(result)
               }
+              // console.log(this.searchResults)
               resolve()
             }).catch(error => {
               reject(error)

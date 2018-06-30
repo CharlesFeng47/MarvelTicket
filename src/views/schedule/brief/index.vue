@@ -9,10 +9,10 @@
         <el-row>
           <div @click.stop="changeStar">
             <!--class like 用于添加动画-->
-            <span v-show="this.programDetail.star" class="like">
+            <span v-show="programBrief.star" class="like">
               <svg-icon icon-class="heart" style="color: #FF5161;"/>
             </span>
-            <span v-show="!this.programDetail.star" class="not-like">
+            <span v-show="!programBrief.star" class="not-like">
               <svg-icon icon-class="heart2"/>
             </span>
 

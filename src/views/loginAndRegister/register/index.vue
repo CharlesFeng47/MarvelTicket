@@ -83,38 +83,21 @@
             this.loading = true
 
             new Promise((resolve, reject) => {
-              signUp(this.registerForm.email, this.registerForm.username, this.registerForm.password).then(response => {
-                if (response.state === 'OK') {
-                  const token = JSON.parse(response.object)
+              signUp(this.registerForm.email, this.registerForm.username, this.registerForm.password).then(responseToken => {
 
-                  // TODO 未激活是否可以登录
-                  // 注册成功，自动登录，将信息保存到 vuex 中
-                  this.$store.dispatch('Login', {
-                    token: token
-                  }).then(() => {
-                    this.loading = false
-                    this.$router.push('/home')
-                  }).catch(() => {
-                    this.loading = false
-                  })
-                } else {
-                  var errorMsg = '未知错误，请联系管理员！'
-                  if (response.state === 'USER_HAS_BEEN_SIGN_UP') {
-                    errorMsg = '此会员名已被注册'
-                  }
-                  Message({
-                    message: errorMsg,
-                    type: 'error',
-                    duration: 3 * 1000,
-                    center: true,
-                    showClose: true
-                  })
-
+                // TODO 未激活是否可以登录
+                // 注册成功，自动登录，将信息保存到 vuex 中
+                this.$store.dispatch('Login', {
+                  token: responseToken
+                }).then(() => {
                   this.loading = false
-                }
+                  this.$router.push('/home')
+                }).catch(error => {
+                  this.loading = false
+                })
                 resolve()
-              }).catch(error => {
-                reject(error)
+              }).catch(() => {
+                this.loading = false
               })
             }).then()
           } else {

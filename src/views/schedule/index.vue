@@ -163,13 +163,10 @@
       initCurProgramsByType: function(type) {
         this.curTypeSchedulesLoading = true
         new Promise((resolve, reject) => {
-          getProgramsByType(this.cur_city, getProgramTypeEnum(type)).then(response => {
-            if (response.state === 'OK') {
-              const curPrograms = JSON.parse(response.object)
-              console.log(curPrograms)
-              this.fulfillProgramBriefs(curPrograms)
-              this.refreshBriefs()
-            }
+          getProgramsByType(this.cur_city, getProgramTypeEnum(type)).then(curPrograms => {
+            console.log(curPrograms)
+            this.fulfillProgramBriefs(curPrograms)
+            this.refreshBriefs()
             resolve()
           }).catch(error => {
             reject(error)
@@ -185,13 +182,10 @@
       initCurProgramsBySearchKey: function(key) {
         this.curTypeSchedulesLoading = true
         new Promise((resolve, reject) => {
-          getProgramsBySearchKey(key).then(response => {
-            if (response.state === 'OK') {
-              const curPrograms = JSON.parse(response.object)
-              console.log(curPrograms)
-              this.fulfillProgramBriefs(curPrograms)
-              this.refreshBriefs()
-            }
+          getProgramsBySearchKey(key).then(curPrograms => {
+            console.log(curPrograms)
+            this.fulfillProgramBriefs(curPrograms)
+            this.refreshBriefs()
             resolve()
           }).catch(error => {
             reject(error)
@@ -250,7 +244,7 @@
           // (function(brief) {
           //   this.getMyStarOfCurProgram(brief)
           // })(this.filteredProgramBriefs[index])
-          this.getMyStarOfCurProgram(this.filteredProgramBriefs[index])
+          // this.getMyStarOfCurProgram(this.filteredProgramBriefs[index])
 
           this.showingBriefs.push(this.filteredProgramBriefs[index])
         }
@@ -264,11 +258,9 @@
 
 
           new Promise((resolve, reject) => {
-            hasStarredCurProgram(brief.id, this.token).then(response => {
-              if (response.state === 'OK') {
-                brief.star = JSON.parse(response.object)
-                console.log('结束：' + brief.id)
-              }
+            hasStarredCurProgram(brief.id, this.token).then(hasStarred => {
+              brief.star = hasStarred
+              console.log('结束：' + brief.id)
               resolve()
             }).catch(error => {
               reject(error)
@@ -293,11 +285,9 @@
           console.log(id + '_____' + this.programBriefsOrigin[i].star)
           if (this.programBriefsOrigin[i].star) {
             new Promise((resolve, reject) => {
-              cancelStar(id, this.token).then(response => {
-                if (response.state === 'OK') {
-                  this.programBriefsOrigin[i].star = false
-                  this.programBriefsOrigin[i].favoriteNum--
-                }
+              cancelStar(id, this.token).then(curFavoriteNum => {
+                this.programBriefsOrigin[i].star = false
+                this.programBriefsOrigin[i].favoriteNum = curFavoriteNum
                 resolve()
               }).catch(error => {
                 reject(error)
@@ -307,14 +297,11 @@
             })
           } else {
             new Promise((resolve, reject) => {
-              star(id, this.token).then(response => {
-                if (response.state === 'OK') {
-                  this.programBriefsOrigin[i].star = true
-                  this.programBriefsOrigin[i].favoriteNum++
-                }
+              star(id, this.token).then(curFavoriteNum => {
+                this.programBriefsOrigin[i].star = true
+                this.programBriefsOrigin[i].favoriteNum = curFavoriteNum
                 resolve()
               }).catch(error => {
-                reject(error)
               })
             }).then(() => {
             }).catch(() => {

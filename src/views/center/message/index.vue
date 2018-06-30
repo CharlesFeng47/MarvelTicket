@@ -209,22 +209,18 @@
       },
       sureModifyPortrait() {
         new Promise((resolve, reject) => {
-          modifyPortrait(this.imageUrl, this.token).then(response => {
-            if (response.state === 'OK') {
-              this.modifyPortrait = false
-              this.preUpload = false
+          modifyPortrait(this.imageUrl, this.token).then(() => {
+            this.modifyPortrait = false
+            this.preUpload = false
 
-              // 更新前端 vuex
-              this.$store.dispatch('UpdatePortrait', this.imageUrl).then(() => {
-              }).catch(() => {
-              })
-            }
+            // 更新前端 vuex
+            this.$store.dispatch('UpdatePortrait', this.imageUrl).then(() => {
+            }).catch(() => {
+            })
             resolve()
           }).catch(error => {
-            reject(error)
           })
         }).then(() => {
-        }).catch(() => {
         })
       },
 
@@ -242,21 +238,17 @@
         this.$refs['nameForm'].validate((valid) => {
           if (valid) {
             new Promise((resolve, reject) => {
-              modifyName(this.nameForm.username, this.token).then(response => {
-                if (response.state === 'OK') {
+              modifyName(this.nameForm.username, this.token).then(() => {
                   this.modifyName = false
 
                   // 更新前端 vuex
                   this.$store.dispatch('UpdateName', this.nameForm.username).then(() => {
                   }).catch(() => {
                   })
-                }
                 resolve()
               }).catch(error => {
-                reject(error)
               })
             }).then(() => {
-            }).catch(() => {
             })
           } else {
             return false
@@ -280,24 +272,12 @@
         this.$refs['passwordForm'].validate((valid) => {
           if (valid) {
             new Promise((resolve, reject) => {
-              modifyPassword(this.token, this.passwordForm.oldPassword, this.passwordForm.pass).then(response => {
-                if (response.state === 'OK') {
-                  this.modifyPassword = false
-                } else if (response.state === 'USER_PWD_WRONG') {
-                  Message({
-                    message: '原密码输入错误！',
-                    type: 'error',
-                    duration: 3 * 1000,
-                    center: true,
-                    showClose: true
-                  })
-                }
+              modifyPassword(this.token, this.passwordForm.oldPassword, this.passwordForm.pass).then(() => {
+                this.modifyPassword = false
                 resolve()
               }).catch(error => {
-                reject(error)
               })
             }).then(() => {
-            }).catch(() => {
             })
           } else {
             return false

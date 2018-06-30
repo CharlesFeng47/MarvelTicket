@@ -58,11 +58,8 @@
       // 获取当前节目的详情
       this.programDetailLoading = true
       new Promise((resolve, reject) => {
-        getProgramDetail(this.$route.params.programId).then(response => {
-          if (response.state === 'OK') {
-            const detail = JSON.parse(response.object)
-            this.fulfillProgramDetail(detail)
-          }
+        getProgramDetail(this.$route.params.programId).then(detail => {
+          this.fulfillProgramDetail(detail)
           resolve()
         }).catch(error => {
           reject(error)
@@ -77,10 +74,8 @@
       // 查看当前已登录用户是否已经收藏过该节目
       if (this.token !== undefined && this.token !== '') {
         new Promise((resolve, reject) => {
-          hasStarredCurProgram(this.$route.params.programId, this.token).then(response => {
-            if (response.state === 'OK') {
-              this.programDetail.star = JSON.parse(response.object)
-            }
+          hasStarredCurProgram(this.$route.params.programId, this.token).then(hasStarred => {
+            this.programDetail.star = hasStarred
             resolve()
           }).catch(error => {
             reject(error)
@@ -116,31 +111,23 @@
         // console.log(this.programDetail.id)
         if (this.programDetail.star) {
           new Promise((resolve, reject) => {
-            cancelStar(this.programDetail.id, this.token).then(response => {
-              if (response.state === 'OK') {
-                this.programDetail.star = false
-                this.programDetail.favoriteNum--
-              }
+            cancelStar(this.programDetail.id, this.token).then(curFavoriteNum => {
+              this.programDetail.star = false
+              this.programDetail.favoriteNum = curFavoriteNum
               resolve()
             }).catch(error => {
-              reject(error)
             })
           }).then(() => {
-          }).catch(() => {
           })
         } else {
           new Promise((resolve, reject) => {
-            star(this.programDetail.id, this.token).then(response => {
-              if (response.state === 'OK') {
-                this.programDetail.star = true
-                this.programDetail.favoriteNum++
-              }
+            star(this.programDetail.id, this.token).then(curFavoriteNum => {
+              this.programDetail.star = true
+              this.programDetail.favoriteNum = curFavoriteNum
               resolve()
             }).catch(error => {
-              reject(error)
             })
           }).then(() => {
-          }).catch(() => {
           })
         }
       }

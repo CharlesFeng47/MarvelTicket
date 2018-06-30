@@ -40,11 +40,8 @@
       initHome() {
         this.recommendationLoading = true
         new Promise((resolve, reject) => {
-          recommend(this.cur_city).then(response => {
-            if (response.state === 'OK') {
-              const recommendations = JSON.parse(response.object)
-              this.changeRecommendations(recommendations)
-            }
+          recommend(this.cur_city).then(recommendations => {
+            this.changeRecommendations(recommendations)
             resolve()
           }).catch(error => {
             reject(error)
