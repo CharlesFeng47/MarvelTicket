@@ -282,7 +282,7 @@
     /*border-left: 3px solid #FF5219;*/
     border-radius: 3px;
     height: 48px;
-    background-color: #FD6857;
+    background-color: #F56C6C;
     line-height: 48px;
     font-size: 22px;
     color: #FFFFFF;

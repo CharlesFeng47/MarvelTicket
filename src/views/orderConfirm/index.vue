@@ -10,8 +10,6 @@
       </div>
       <el-container class="confirm-body">
         <el-aside width="200px" class="aside">
-          <!-- todo href -->
-          <!-- todo src -->
           <a @click="$router.go(-1)" target="_blank"><img
             :src="order_detail.posterSrc" :alt="order_detail.programName"></a>
         </el-aside>
@@ -106,6 +104,7 @@
     border: 3px solid #eee;
     border-top: 0px;
     padding: 25px;
+    height: 330px;
   }
   .top{
     margin-top: 34px;
@@ -114,7 +113,7 @@
     /*border-left: 3px solid #FF5219;*/
     border-radius: 2px;
     height: 48px;
-    background-color: #FD6857;
+    background-color: #F56C6C;
     line-height: 48px;
     font-size: 22px;
     color: #FFFFFF;

@@ -17,10 +17,10 @@
 提交表单的按钮
  */
 .login-btn {
-  background-color: #F78989;
+  /*background-color: #F78989;*/
   border: 0 none;
   border-radius: 3px;
-  color: #fff;
+  /*color: #fff;*/
   cursor: pointer;
   font-size: 17px;
   height: 40px;

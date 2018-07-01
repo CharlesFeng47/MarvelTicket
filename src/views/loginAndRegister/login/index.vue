@@ -12,22 +12,22 @@
       <!--<span class="show-pwd" @click="showPwd"><svg-icon icon-class="eye" /></span>-->
 
     </el-form-item>
-    <el-button class="login-btn" :loading="loading" @click="handleLogin">立即登录</el-button>
+    <el-button type="danger" class="login-btn" :loading="loading" @click="handleLogin">立即登录</el-button>
 
     <!--TODO 讨论忘记密码之后的处理，比如直接发送一个链接并重置密码？感觉比较简单不需要再做界面emm-->
     <a>
-      <p class="forget-pwd-btn">忘记密码</p>
+      <!--<p class="forget-pwd-btn">忘记密码</p>-->
     </a>
   </el-form>
 </template>
 
 <script>
-  import { isValidUsername, isValidateEmail } from '@/utils/validate'
+  import { isValidateEmail } from '@/utils/validate'
   import { login } from '../../../api/login'
 
   export default {
     name: 'MyLogin',
-    data: function () {
+    data: function() {
       const validatePass = (rule, value, callback) => {
         if (value.length < 6) {
           callback(new Error('密码不能少于 6 位'))
@@ -56,7 +56,7 @@
         loading: false
       }
     },
-    mounted: function () {
+    mounted: function() {
       this.$emit('login')
     },
     methods: {
