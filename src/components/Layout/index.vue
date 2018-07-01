@@ -78,6 +78,9 @@
   .el-tooltip__popper.is-light[x-placement^=right] .popper__arrow{
     border-right-color:#F78978
   }
+  .el-tooltip__popper.is-light[x-placement^=left] .popper__arrow {
+    border-left-color: #F78978;
+  }
   .el-dropdown-menu{
     .el-dropdown-menu{
       text-align: center;

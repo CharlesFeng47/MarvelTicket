@@ -18,7 +18,7 @@ router.beforeEach((to, from, next) => {
         // 当前信息仍有效，更新前端信息
         store.dispatch('StoreInfo', {
           email: curUser.email,
-          name: curUser.name,
+          name: curUser.username,
           portrait: curUser.portrait
         }).then(res => {
           // TODO 加入异步路由
@@ -31,7 +31,7 @@ router.beforeEach((to, from, next) => {
           console.log('FINISH 获取')
         })
         resolve()
-      }).catch(error => {
+      }).catch(() => {
       })
     }).then()
 
