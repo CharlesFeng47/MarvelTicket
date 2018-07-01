@@ -42,7 +42,7 @@ service.interceptors.response.use(
       center: true,
       showClose: true
     })
-    return Promise.reject(error)
+    return Promise.reject(error.response.data)
   }
 )
 

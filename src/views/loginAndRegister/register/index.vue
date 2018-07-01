@@ -84,16 +84,9 @@
             new Promise((resolve, reject) => {
               signUp(this.registerForm.email, this.registerForm.username, this.registerForm.password).then(responseToken => {
 
-                // TODO 未激活是否可以登录
-                // 注册成功，自动登录，将信息保存到 vuex 中
-                this.$store.dispatch('Login', {
-                  token: responseToken
-                }).then(() => {
-                  this.loading = false
-                  this.$router.push('/home')
-                }).catch(error => {
-                  this.loading = false
-                })
+                // 注册成功，自动跳转到登录界面
+                this.$router.push('/loginAndRegister/login')
+                this.loading = false
                 resolve()
               }).catch(() => {
                 this.loading = false

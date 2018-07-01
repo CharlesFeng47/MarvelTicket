@@ -106,7 +106,7 @@ export const constantRouterMap = [
     ]
   },
   {
-    path: '/member_active/:activeUrl', component: () => import('@/views/memberActive/index'), hidden: true
+    path: '/user_active/:activeUrl', component: () => import('@/views/userActive/index'), hidden: true
   },
   { path: '/404', component: () => import('@/views/404'), hidden: true },
   {
