@@ -12,7 +12,7 @@
     <el-form-item prop="checkPwd" class="login-register-input">
       <el-input name="checkPwd" v-model="registerForm.checkPwd" type="password" placeholder="请确认密码"/>
     </el-form-item>
-    <el-button class="login-btn" :loading="loading" @click="handleSignUp">注册</el-button>
+    <el-button type="danger" class="login-btn" :loading="loading" @click="handleSignUp">注册</el-button>
   </el-form>
 </template>
 
@@ -83,7 +83,6 @@
 
             new Promise((resolve, reject) => {
               signUp(this.registerForm.email, this.registerForm.username, this.registerForm.password).then(responseToken => {
-
                 // 注册成功，自动跳转到登录界面
                 this.$router.push('/loginAndRegister/login')
                 this.loading = false

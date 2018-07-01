@@ -8,7 +8,7 @@ import { Message } from 'element-ui'
 
 const permissionList = ['/orderConfirm', '/pay', '/paySuccess', '/center/manage/order', '/center/manage/like',
   '/center/manage/message']
-
+const loginList = ['/loginAndRegister/login', '/loginAndRegister/register']
 router.beforeEach((to, from, next) => {
   NProgress.start()
   if (to.path.startsWith('/member_active')) {
@@ -51,15 +51,18 @@ router.beforeEach((to, from, next) => {
       // 未登录
       if (permissionList.indexOf(to.path) !== -1) {
         // 不可在未登录下直接访问的网址
-        next('/home')
+        next('/loginAndRegister/login')
         Message({
-          message: '登录后才可以访问哦～您已被重定向至首页～',
+          message: '登录后才可以访问哦～已跳转至首页～',
           type: 'error',
           duration: 5 * 1000,
           center: true,
           showClose: true
         })
       } else {
+        if (loginList.indexOf(to.path) == -1) {
+          window.localStorage.setItem('href', window.location.href)
+        }
         next()
       }
     }

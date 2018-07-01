@@ -73,7 +73,18 @@
                   <br/><span style="color:red">{{ minute }}</span>分<span style="color:red">{{ second }}</span>秒
                 </p>
                 <div class="pay-button" @click="goToPay">立即支付</div>
-                <div class="cancel-button" @click="cancelOrder">取消订单</div>
+                <div class="cancel-button">
+                  <el-popover
+                    placement="right-start"
+                    width="160">
+                    <div style="text-align: center;padding: 10px 0 10px">
+                      <div style="margin-bottom: 7px"><i class="el-icon-warning" style="color:#E9AE54"/> 确认取消订单？</div>
+                      <el-button type="warning" size="mini" @click="cancelOrder">确定</el-button>
+                    </div>
+                    <span  slot="reference">取消订单</span>
+                  </el-popover>
+                </div>
+                <!--<div class="cancel-button" @click="cancelOrder">取消订单</div>-->
               </template>
               <template v-else>
                 <p style="margin-top:46px;margin-bottom: 10px">
@@ -87,7 +98,17 @@
                 <div style="margin-top: 70px">节目过期</div>
               </template>
               <template v-else>
-                <div style="margin-top: 70px" class="cancel-button" @click="unsubscribeOrder">取消订单</div>
+                <div class="cancel-button" style="margin-top: 65px">
+                  <el-popover
+                    placement="right-start"
+                    width="160">
+                    <div style="text-align: center;padding: 10px 0 10px">
+                      <div style="margin-bottom: 7px"><i class="el-icon-warning" style="color:#E9AE54"/> 确认取消订单？</div>
+                      <el-button type="warning" size="mini" @click="unsubscribeOrder">确定</el-button>
+                    </div>
+                    <span  slot="reference">取消订单</span>
+                  </el-popover>
+                </div>
               </template>
             </template>
             <template v-else>
@@ -95,7 +116,7 @@
                 <div style="margin-top: 70px">节目过期</div>
               </template>
               <template v-else>
-                <div style="margin-top: 70px" class="pay-button" @click="buyAgain">重新购买</div>
+                <div style="margin-top: 64px" class="pay-button" @click="buyAgain">重新购买</div>
               </template>
             </template>
           </div>

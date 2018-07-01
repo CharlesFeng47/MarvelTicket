@@ -14,7 +14,7 @@
           <el-dropdown-item command="order">订单管理</el-dropdown-item>
           <el-dropdown-item command="like">我的收藏</el-dropdown-item>
           <el-dropdown-item command="message">我的信息</el-dropdown-item>
-          <el-dropdown-item command="logout">注销会员</el-dropdown-item>
+          <el-dropdown-item command="logout">注销登录</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </div>
