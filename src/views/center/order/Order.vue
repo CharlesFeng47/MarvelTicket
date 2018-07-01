@@ -202,10 +202,8 @@
       },
       cancelOrder() {
         new Promise((resolve, reject) => {
-          cancelOrder(this.order.orderID, this.token).then(response => {
-            if (response.state === 'OK') {
-              location.reload()
-            }
+          cancelOrder(this.order.orderID, this.token).then(() => {
+            location.reload()
             resolve()
           }).catch(error => {
             reject(error)
@@ -216,10 +214,8 @@
       },
       unsubscribeOrder() {
         new Promise((resolve, reject) => {
-          unsubscribeOrder(this.order.orderID, this.token).then(response => {
-            if (response.state === 'OK') {
-              location.reload()
-            }
+          unsubscribeOrder(this.order.orderID, this.token).then(() => {
+            location.reload()
             resolve()
           }).catch(error => {
             reject(error)

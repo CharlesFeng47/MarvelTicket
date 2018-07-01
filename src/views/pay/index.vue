@@ -61,7 +61,7 @@
                         placement="right-start"
                         trigger="hover">
                         <div>
-                          {{ order.venueAddress.city }}市{{ order.venueAddress.district }}区{{ order.venueAddress.number }}号{{ order.venueAddress.street }}{{ order.venueAddress.comment }}
+                          {{ order.venueAddress.city }}市{{ order.venueAddress.district }}区{{ order.venueAddress.street }}{{ order.venueAddress.number }}号{{ order.venueAddress.comment }}
                         </div>
                       <span slot="reference" class="venue-name">{{ order.venueName }}</span>
                     </el-popover>
@@ -162,30 +162,24 @@
     methods: {
       initOrder() {
         new Promise((resolve, reject) => {
-          getOrder(this.orderid, this.token).then(response => {
-            if (response.state === 'OK') {
-              this.order = JSON.parse(response.object)
-              console.log(this.order)
-              this.startClock(this.order.orderTime)
-              this.seatInfo = []
-              for (var key in this.order.ticketInfo) {
-                this.seatInfo.push(key)
-              }
+          getOrder(this.orderid, this.token).then(order => {
+            this.order = order
+            console.log(this.order)
+            this.startClock(this.order.orderTime)
+            this.seatInfo = []
+            for (var key in this.order.ticketInfo) {
+              this.seatInfo.push(key)
             }
             resolve()
           }).catch(error => {
-            reject(error)
           })
         }).then(() => {
-        }).catch(() => {
         })
       },
       surePay() {
         new Promise((resolve, reject) => {
-          payOrder(this.orderid, this.token).then(response => {
-            if (response.state === 'OK') {
-              this.$router.push('/paySuccess?orderid=' + this.orderid)
-            }
+          payOrder(this.orderid, this.token).then(paySuccess => {
+            this.$router.push('/paySuccess?orderid=' + this.orderid)
             resolve()
           }).catch(error => {
             reject(error)

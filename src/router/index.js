@@ -157,22 +157,6 @@ export const constantRouterMap = [
 ]
 
 export const asyncRouterMap = [
-  {
-    path: '/payment',
-    component: Layout,
-    name: 'Payment',
-    meta: { title: '支付' },
-    hidden: true,
-    children: [
-      {
-        path: ':orderId',
-        name: 'PaymentIndex',
-        component: () => import('@/views/payment/index'),
-        meta: { title: '订单支付', roles: ['MEMBER'] }
-      }
-    ]
-  },
-
   // {
   //   path: '/examine',
   //   component: Layout,
