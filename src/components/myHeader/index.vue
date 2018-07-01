@@ -3,11 +3,13 @@
     <el-row>
       <el-col :span="20" :offset="2">
         <el-row type="flex" justify="space-between">
-          <el-col :span="5" style="padding-left: 1.1%">
+          <el-col :span="6" style="padding-left: 1.1%">
             <a href="/home"  style="float: left">
               <div class="logo">
-                Marvel
-                <!--<img src="../../assets/logo.png" width="100%"/>-->
+                <!--Marvel-->
+                <img src="../../assets/logo1.png" style="width: 110px">
+                <!--<img src="../../assets/logo2.png" style="width: 110px">-->
+                <!--<img src="../../assets/logo3.png" style="width: 110px">-->
               </div>
             </a>
             <div class="location"  style="float: left">
