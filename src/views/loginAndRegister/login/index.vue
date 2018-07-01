@@ -71,9 +71,9 @@
                 this.$store.dispatch('Login', {
                   token: responseToken
                 }).then(() => {
-                  console.log('bbb')
                   this.loading = false
-                  this.$router.push('/home')
+                  alert(window.localStorage.getItem('href'))
+                  window.location.href = window.localStorage.getItem('href')
                 }).catch(() => {
                   this.loading = false
                 })

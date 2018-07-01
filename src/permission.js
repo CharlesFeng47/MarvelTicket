@@ -8,7 +8,7 @@ import { Message } from 'element-ui'
 
 const permissionList = ['/orderConfirm', '/pay', '/paySuccess', '/center/manage/order', '/center/manage/like',
   '/center/manage/message']
-
+const loginList = ['/loginAndRegister/login', '/loginAndRegister/register']
 router.beforeEach((to, from, next) => {
   NProgress.start()
   if (to.path.startsWith('/member_active')) {
@@ -60,6 +60,9 @@ router.beforeEach((to, from, next) => {
           showClose: true
         })
       } else {
+        if (loginList.indexOf(to.path) == -1) {
+          window.localStorage.setItem('href', window.location.href)
+        }
         next()
       }
     }
