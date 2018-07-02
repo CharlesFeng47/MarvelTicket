@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-row>
-      <el-col :span="18" :offset="3">
+      <el-col :span="18" :offset="3" style="margin-bottom: 40px">
         <el-row>
           <div align="center" style="margin-top: 20px">
             <img src="../../assets/step3.png" width="600"/>

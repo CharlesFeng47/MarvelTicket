@@ -1,9 +1,9 @@
 <template>
   <span >
     <span class="venue-name" >{{ spotName }}</span>
-    <div class="map-block">
+    <span class="map-block">
       <div id="allmap"></div>
-    </div>
+    </span>
   </span>
 </template>
 
