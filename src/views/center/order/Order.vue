@@ -1,6 +1,6 @@
 <template>
   <div class="order-block">
-    <div class="order-top" :class="isPositive ? 'positive':'negative'">
+    <div class="order-top">
       <el-row>
         <el-col :span="3" style="padding-left: 10px; font-size: 14px">
           <strong class="order-time">{{ date }}</strong>
@@ -9,8 +9,10 @@
           <span class="order-id">订单号：</span>
           <span>{{ order.orderID }}</span>
         </el-col>
-        <el-col :span="2" :offset="11">
-          <span class="order-state">{{ order.orderState }}</span>
+        <el-col :span="2" :offset="10">
+          <div style="margin-left: 12px">
+            <span class="order-state">{{ order.orderState }}</span>
+          </div>
         </el-col>
       </el-row>
     </div>
@@ -36,7 +38,7 @@
                         placement="right-start"
                         trigger="hover">
                         <div>
-                          {{ order.venueAddress.city }}市{{ order.venueAddress.district }}区{{ order.venueAddress.number }}号{{ order.venueAddress.street }}{{ order.venueAddress.comment }}
+                          {{ order.venueAddress }}
                         </div>
                         <span slot="reference" class="venue-name">{{ order.venueName }}</span>
                       </el-popover>
@@ -78,8 +80,8 @@
                     placement="right-start"
                     width="160">
                     <div style="text-align: center;padding: 10px 0 10px">
-                      <div style="margin-bottom: 7px"><i class="el-icon-warning" style="color:#E9AE54"/> 确认取消订单？</div>
-                      <el-button type="warning" size="mini" @click="cancelOrder">确定</el-button>
+                      <div style="margin-bottom: 7px"><i class="el-icon-warning" style="color:#F56c6c"/> 确认取消订单？</div>
+                      <el-button type="danger" size="mini" @click="cancelOrder">确定</el-button>
                     </div>
                     <span  slot="reference">取消订单</span>
                   </el-popover>
@@ -103,8 +105,8 @@
                     placement="right-start"
                     width="160">
                     <div style="text-align: center;padding: 10px 0 10px">
-                      <div style="margin-bottom: 7px"><i class="el-icon-warning" style="color:#E9AE54"/> 确认取消订单？</div>
-                      <el-button type="warning" size="mini" @click="unsubscribeOrder">确定</el-button>
+                      <div style="margin-bottom: 7px"><i class="el-icon-warning" style="color:#F56c6c"/> 确认取消订单？</div>
+                      <el-button type="danger" size="mini" @click="unsubscribeOrder">确定</el-button>
                     </div>
                     <span  slot="reference">取消订单</span>
                   </el-popover>
@@ -256,7 +258,7 @@
 </script>
 <style rel="stylesheet/scss" lang="scss">
   .order-block:hover {
-    border-color: #BFBFBF;
+    box-shadow: 2px 1px 1px #E1E5E7;
   }
 
   .order-block {
@@ -265,15 +267,10 @@
     border-radius: 3px;
     .order-top {
       height: 30px;
-
+      background-color: #F56C6C;
       padding-left: 10px;
       line-height: 30px;
-    }
-    .positive {
-      background-color: #EAF8FF;
-    }
-    .negative {
-      background-color: #F1F1F1;
+      color: ghostwhite;
     }
     .order-detail {
       padding: 20px;

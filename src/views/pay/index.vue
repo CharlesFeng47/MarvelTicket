@@ -57,14 +57,7 @@
                   </el-col>
                   <el-col :span="14">
                     <p>
-                      <el-popover
-                        placement="right-start"
-                        trigger="hover">
-                        <div>
-                          {{ order.venueAddress.city }}市{{ order.venueAddress.district }}区{{ order.venueAddress.street }}{{ order.venueAddress.number }}号{{ order.venueAddress.comment }}
-                        </div>
-                      <span slot="reference" class="venue-name">{{ order.venueName }}</span>
-                    </el-popover>
+                      <MyMap :address="order.venueAddress" :spotName="order.venueName" :big=false></MyMap>
                     </p>
                   </el-col>
                 </el-row>
@@ -122,9 +115,13 @@
 <script>
   import { getOrder, payOrder } from '../../api/order'
   import { mapGetters } from 'vuex'
+  import MyMap from '../map/index'
+
   export default {
     name: 'pay',
-    components: {},
+    components: {
+      MyMap
+    },
     computed: {
       ...mapGetters([
         'token'

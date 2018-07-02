@@ -23,11 +23,12 @@
       <div class="show-info">
         <i class="el-icon-time"/><span>{{ programDetail.time }} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
         <i class="el-icon-location-outline"/>
-        <el-tooltip :content="programDetail.address" placement="right" effect="light">
-          <span>{{ programDetail.spot }}</span>
-        </el-tooltip>
+        <MyMap :address="programDetail.address" :spotName="programDetail.spot" :big=false></MyMap>
+        <!--<span class="venue-name">{{ programDetail.spot }}</span>-->
+        <!--<div class="map-block">-->
+          <!--<div id="allmap" style="width: 100%; height: 100%"></div>-->
+        <!--</div>-->
       </div>
-
       <div class="ticket-info">
         <el-row>
           <el-col :span="3">
@@ -95,12 +96,16 @@
 <script>
   import { Message } from 'element-ui'
   import { mapGetters } from 'vuex'
+  import MyMap from '../../map/index'
 
   export default {
     name: 'Detail',
     props: [
       'programDetail'
     ],
+    components: {
+      MyMap
+    },
     data() {
       return {
         // 购买数量
@@ -281,6 +286,7 @@
         margin-top: 20px;
         color:#F78989;
       }
+
       .ticket-info{
         margin-left: 10px;
         margin-top: 10px;
