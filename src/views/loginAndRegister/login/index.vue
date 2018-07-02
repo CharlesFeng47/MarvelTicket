@@ -72,7 +72,7 @@
                   token: responseToken
                 }).then(() => {
                   this.loading = false
-                  alert(window.localStorage.getItem('href'))
+                  // alert(window.localStorage.getItem('href'))
                   window.location.href = window.localStorage.getItem('href')
                 }).catch(() => {
                   this.loading = false

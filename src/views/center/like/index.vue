@@ -13,7 +13,7 @@
         </template>
       </el-row>
 
-      <div v-else style="">
+      <div v-else style="line-height: 300px;height: 300px; text-align: center">
         你还没有收藏节目！
       </div>
     </div>

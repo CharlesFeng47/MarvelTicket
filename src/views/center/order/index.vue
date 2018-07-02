@@ -24,6 +24,7 @@
   import { getMyOrders } from '../../../api/order'
   import Pagination from '../../../components/pagination/index'
   import { mapGetters } from 'vuex'
+
   // 我的订单管理
   export default {
     name: 'order-panel',
@@ -53,7 +54,7 @@
       },
       currentPage: {
         handler: function(newVal, oldVal) {
-          this.refreshLikes()
+          this.refreshOrders()
         }
       }
     },
@@ -74,9 +75,9 @@
       }
     },
     methods: {
-      refreshLikes() {
+      refreshOrders() {
         this.showOrders = []
-        console.log(this.currentPage)
+        console.log(this.showOrders)
         for (var index = (this.currentPage - 1) * this.everyPage;
           index < this.currentPage * this.everyPage && index < this.orders.length;
           index++) {
@@ -110,7 +111,7 @@
             this.orders = orders
             this.maxPage = Math.ceil(this.orders.length / this.everyPage)
             this.currentPage = 1
-            this.refreshLikes()
+            this.refreshOrders()
             resolve()
           }).catch(error => {
           })
