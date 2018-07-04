@@ -12,10 +12,16 @@
           </el-col>
         </template>
       </el-row>
-
-      <div v-else style="line-height: 300px;height: 300px; text-align: center">
-        你还没有收藏节目！
-      </div>
+      <template v-else>
+        <el-row>
+          <el-col :span="11" style="text-align: right">
+            <img  src="../../../assets/sad.png" style="margin-top: 60px;margin-bottom: 60px" height="100" width="100"/>
+          </el-col>
+          <el-col :span="13" style="text-align: left">
+            <div style="display: inline-block;margin-top: 100px"> 你还没有收藏节目！</div>
+          </el-col>
+        </el-row>
+      </template>
     </div>
     <div>
       <Pagination :max_page="maxPage" :current_page="currentPage" v-on:changePage="changePage"/>

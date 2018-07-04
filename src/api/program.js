@@ -11,7 +11,15 @@ export function recommend(city) {
     method: 'get'
   })
 }
-
+/**
+ * 轮播图
+ */
+export function getSowingMapUrl(city) {
+  return request({
+    url: '/program/getSowingMapUrl?city=' + city,
+    method: 'get'
+  })
+}
 
 /**
  * 获取该类型的所有节目

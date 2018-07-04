@@ -19,6 +19,16 @@
       </el-form-item>
     </el-form>
     <el-row>
+      <template v-if="showingBriefs.length === 0">
+        <el-row>
+          <el-col :span="11" style="text-align: right">
+          <img  src="../../assets/sad.png" style="margin-top: 60px" height="100" width="100"/>
+          </el-col>
+          <el-col :span="13" style="text-align: left">
+            <div style="display: inline-block;margin-top: 100px"> 暂时没有此类节目的演出信息！</div>
+          </el-col>
+        </el-row>
+      </template>
       <template v-for="(briefItem, index) in showingBriefs">
         <el-col v-if="index%2===0" style="width: 48%">
           <BriefItem :program-brief="briefItem" @changeFavoriteNum="changeFavoriteNum"/>
@@ -42,9 +52,11 @@
   import { getProgramTypeEnum } from '../../utils/program_helper'
   import { toPick, toSort } from '../../utils/program_helper'
   import { mapGetters } from 'vuex'
+  import ElRow from "element-ui/packages/row/src/row";
 
   export default {
     components: {
+      ElRow,
       BriefItem,
       Pagination
     },

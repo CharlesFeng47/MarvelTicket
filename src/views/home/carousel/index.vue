@@ -16,21 +16,55 @@
 </template>
 
 <script>
+  import { getSowingMapUrl } from '../../../api/program'
+  import { mapGetters } from 'vuex'
+
   export default {
     components: {},
     name: 'carousel',
+    computed: {
+      ...mapGetters([
+        'cur_city'
+      ])
+    },
+    watch: {
+      cur_city: {
+        handler: function(newVal, oldVal) {
+          this.initSowing()
+        }
+      }
+    },
     data() {
       return {
         recommendList: [
-          { url: require('../../../assets/【上海站】《2018光辉岁月致敬黄家驹》逝世25周年纪念演唱会.jpg')},
-          { url: require('../../../assets/【南京站】2018德云社全国巡演》.jpg') },
-          { url: require('../../../assets/【南京站】喜剧《蒋公的面子》.jpg') },
-          { url: require('../../../assets/【南京站】2018谢天笑“那不是我”巡回演唱会.jpg') },
-          { url: require('../../../assets/【南京站】阿加莎推理巨作《谋杀启事》.jpg') },
+        //   { url: require('../../../assets/【上海站】《2018光辉岁月致敬黄家驹》逝世25周年纪念演唱会.jpg')},
+        //   { url: require('../../../assets/【南京站】2018德云社全国巡演》.jpg') },
+        //   { url: require('../../../assets/【南京站】喜剧《蒋公的面子》.jpg') },
+        //   { url: require('../../../assets/【南京站】2018谢天笑“那不是我”巡回演唱会.jpg') },
+        //   { url: require('../../../assets/【南京站】阿加莎推理巨作《谋杀启事》.jpg') },
         ]
       }
     },
-    methods: {}
+    mounted: function () {
+      this.initSowing()
+    },
+    methods: {
+      initSowing() {
+        new Promise((resolve, reject) => {
+          getSowingMapUrl(this.cur_city).then(curPrograms => {
+            console.log((curPrograms))
+            this.recommendList = curPrograms
+            resolve()
+          }).catch(error => {
+            reject(error)
+          })
+        }).then(() => {
+          this.curTypeSchedulesLoading = false
+        }).catch(() => {
+          this.curTypeSchedulesLoading = false
+        })
+      }
+    }
   }
 </script>
 

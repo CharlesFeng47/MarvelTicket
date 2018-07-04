@@ -53,7 +53,7 @@ router.beforeEach((to, from, next) => {
         // 不可在未登录下直接访问的网址
         next('/loginAndRegister/login')
         Message({
-          message: '登录后才可以访问哦～已跳转至首页～',
+          message: '登录后才可以访问哦～已跳转至登录界面～',
           type: 'error',
           duration: 5 * 1000,
           center: true,

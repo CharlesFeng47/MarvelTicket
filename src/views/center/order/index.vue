@@ -11,9 +11,14 @@
       <Pagination :max_page="maxPage" :current_page="currentPage" v-on:changePage="changePage"/>
     </template>
     <template v-else>
-        <div class="no-order" >
-          你没有该类型的订单！
-        </div>
+      <el-row>
+        <el-col :span="11" style="text-align: right">
+          <img  src="../../../assets/sad.png" style="margin-top: 80px;margin-bottom: 60px" height="100" width="100"/>
+        </el-col>
+        <el-col :span="13" style="text-align: left">
+          <div style="display: inline-block;margin-top: 100px"> 你还没有该类型的订单！</div>
+        </el-col>
+      </el-row>
     </template>
   </div>
 </template>

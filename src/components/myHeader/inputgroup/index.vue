@@ -7,9 +7,16 @@
         </div>
         <div id="search-panel" v-show="show_popover">
           <ul v-show="!searchIsLoading">
-            <div v-if="searchResults.length === 0" style="margin: 30px auto 30px;text-align: center">
-              您的输入没有搜索结果
-            </div>
+            <template v-if="searchResults.length === 0">
+              <el-row>
+                <el-col :span="10" style="text-align: right">
+                  <img  src="../../../assets/sad.png" style="margin-top: 20px;margin-bottom: 10px" height="80" width="80"/>
+                </el-col>
+                <el-col :span="13" style="text-align: left">
+                  <div style="display: inline-block;margin-top: 40px">  您的输入没有搜索结果！</div>
+                </el-col>
+              </el-row>
+            </template>
             <li v-else v-for="result in searchResults">
               <a :href="result.programLink">
                 <el-row>
