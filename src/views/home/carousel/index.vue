@@ -3,9 +3,9 @@
     <el-row class="carousel1">
       <el-col :span="22" :offset="1">
         <el-carousel indicator-position="outside" type="card">
-          <el-carousel-item v-for="(img,index) in recommendList" :key="index">
-            <a href="/detail" target="_blank">
-              <img v-bind:src="img.url"/>
+          <el-carousel-item v-for="(item,index) in recommendList" :key="index">
+            <a :href="item.id" target="_blank">
+              <img v-bind:src="item.url"/>
             </a>
           </el-carousel-item>
         </el-carousel>
@@ -30,6 +30,7 @@
     watch: {
       cur_city: {
         handler: function(newVal, oldVal) {
+          this.recommendList = []
           this.initSowing()
         }
       }
@@ -53,7 +54,12 @@
         new Promise((resolve, reject) => {
           getSowingMapUrl(this.cur_city).then(curPrograms => {
             console.log((curPrograms))
-            this.recommendList = curPrograms
+            for (var key in curPrograms) {
+              var res = {}
+              res.id = '/detail/' + key
+              res.url = curPrograms[key]
+              this.recommendList.push(res)
+            }
             resolve()
           }).catch(error => {
             reject(error)

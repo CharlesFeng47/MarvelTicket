@@ -40,7 +40,7 @@
                         <div>
                           {{ order.venueAddress }}
                         </div>
-                        <span slot="reference" class="venue-name">{{ order.venueName }}</span>
+                        <span slot="reference" class="venue-name">{{ order.venueName }} <i class="el-icon-view" style="color:#F56C6C"></i></span>
                       </el-popover>
                     </span>
                   </p>
@@ -58,7 +58,7 @@
                 <div v-for="seat in seatInfo">
                   {{ seat }}
                 </div>
-                <span slot="reference" class="ticket-num">票数：<span>{{ order.num }}</span>张</span>
+                <span slot="reference" class="ticket-num">票数：<span>{{ order.num }}</span>张 <i class="el-icon-view" style="color:#F56C6C"></i></span>
               </el-popover>
             </p>
             <p>共计：¥<span>{{ order.totalPrice }}</span>元</p>
@@ -258,7 +258,7 @@
 </script>
 <style rel="stylesheet/scss" lang="scss">
   .order-block:hover {
-    box-shadow: 2px 1px 1px #E1E5E7;
+    box-shadow: 2px 2px 1px #E1E5E7;
   }
 
   .order-block {
@@ -301,13 +301,14 @@
           }
           .plan-time {
             bottom: 30px;
-            margin-bottom: 0px;
+            margin-bottom: 0;
             position: absolute;
           }
         }
       }
       .order-consume {
-        text-align: center;
+        text-align: left;
+        padding-left: 21%;
         padding-top: 35px;
         height: 140px;
         border-left: 1px #CACACA solid;

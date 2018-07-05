@@ -1,6 +1,6 @@
 <template>
   <span >
-    <span class="venue-name" >{{ spotName }}</span>
+    <span class="venue-name" >{{ spotName }} <i class="el-icon-view" style="color:#F56C6C"></i></span>
     <span class="map-block">
       <div id="allmap"></div>
     </span>

@@ -73,7 +73,7 @@
                         <div v-for="seat in seatInfo">
                           {{ seat }}
                         </div>
-                        <span slot="reference" class="venue-name">{{ order.num}}张 | 共{{ order.totalPrice }}元</span>
+                        <span slot="reference" class="venue-name">{{ order.num}}张 | 共{{ order.totalPrice }}元 <i class="el-icon-view" style="color:#F56C6C"></i></span>
                       </el-popover>
 
                     </p>
