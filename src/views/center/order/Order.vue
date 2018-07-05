@@ -31,7 +31,7 @@
               <el-col :span="19">
                 <div class="plan-info">
                   <p class="plan-name">{{ order.programName }}</p>
-                  <p class="plan-time">时间：<span>{{ order.programTime }}</span></p>
+                  <p class="plan-time">时间：<span>{{ order.programTime.slice(0,-3) }}</span></p>
                   <p class="plan-spot">场馆：
                     <span>
                       <el-popover
@@ -97,7 +97,7 @@
             </template>
             <template v-else-if="order.orderState === '已支付'">
               <template v-if="overtime">
-                <div style="margin-top: 70px">节目过期</div>
+                <div style="margin-top: 70px">订单生效</div>
               </template>
               <template v-else>
                 <div class="cancel-button" style="margin-top: 65px">

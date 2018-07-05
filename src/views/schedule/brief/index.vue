@@ -34,7 +34,7 @@
       <el-tag type="danger" v-if="programBrief.saleType==='补票中'">补票中</el-tag>
 
       <div class="show-info1">
-        <i class="el-icon-time"/><span style="font-size: 12px">{{ programBrief.time }}</span>
+        <i class="el-icon-time"/><span style="font-size: 12px">{{ programBrief.time.slice(0, -3) }}</span>
       </div>
       <div class="show-info2">
         <i class="el-icon-location-outline"/><span style="font-size: 12px">{{ programBrief.spot }}</span>

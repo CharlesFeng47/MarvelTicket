@@ -21,7 +21,7 @@
         {{ programDetail.title }}
       </div>
       <div class="show-info">
-        <i class="el-icon-time"/><span>{{ programDetail.time }} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        <i class="el-icon-time"/><span>{{ curField.slice(0, -3) }} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
         <i class="el-icon-location-outline"/>
         <MyMap :address="programDetail.address" :spotName="programDetail.spot" :big=false></MyMap>
         <!--<span class="venue-name">{{ programDetail.spot }}</span>-->
@@ -37,7 +37,7 @@
           <el-col :span="20" class="time-list">
             <div>
               <template v-for="field in programDetail.fields">
-                <el-radio v-model="curField" :label="field" border size="medium">{{ field }}</el-radio>
+                <el-radio v-model="curField" :label="field" border size="medium">{{ field.slice(0, -3) }}</el-radio>
               </template>
             </div>
           </el-col>

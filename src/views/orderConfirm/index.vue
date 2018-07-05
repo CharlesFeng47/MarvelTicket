@@ -30,7 +30,7 @@
                 </el-row>
                 <el-row class="text-item">
                   <el-col :span="5" class="label-text">时间：</el-col>
-                  <el-col :span="19">{{ order_detail.programTime }}</el-col>
+                  <el-col :span="19">{{ order_detail.programTime.slice(0, -3) }}</el-col>
                 </el-row>
               </el-col>
               <el-col :span="6" :offset="3" style="margin-top: 37px">

@@ -48,7 +48,7 @@
                     <p>演出时间：</p>
                   </el-col>
                   <el-col :span="14">
-                    <p>{{ order.programTime }}</p>
+                    <p>{{ order.programTime.slice(0, -3) }}</p>
                   </el-col>
                 </el-row>
                 <el-row>

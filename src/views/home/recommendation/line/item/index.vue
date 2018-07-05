@@ -6,7 +6,7 @@
       <div class="other-description">
         <div class="modal-panel">
           <div>{{ scheduleBrief.spot }}</div>
-          <div>{{ scheduleBrief.time }}</div>
+          <div>{{ scheduleBrief.time.slice(0, -3) }}</div>
         </div>
       </div>
     </div>
