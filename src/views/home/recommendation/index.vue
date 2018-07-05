@@ -8,6 +8,7 @@
 <script>
   import RecommendationLine from './line/index'
   import { recommend } from '../../../api/program'
+  import { getAllTypes } from '../../../utils/program_helper'
   import { mapGetters } from 'vuex'
 
   export default {
@@ -56,7 +57,11 @@
         // console.log(data);
 
         var allRecommendations = []
-        for (var key in data) {
+
+        const allTypes = getAllTypes()
+        for (let index = 0; index < allTypes.length; index++) {
+          const key = allTypes[index]
+
           var type = {}
           type.title = key
           type.recommendations = []

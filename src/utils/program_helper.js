@@ -1,4 +1,11 @@
 /**
+ * 获取系统中所有的节目类型
+ */
+export  function getAllTypes() {
+  return ['演唱会', '音乐会', '舞蹈芭蕾', '话剧歌剧', '曲艺杂谈', '体育赛事', '儿童亲子', '展览休闲']
+}
+
+/**
  * 根据路由的 type 号获取其枚举中文值
  */
 export function getProgramTypeEnum(type) {
