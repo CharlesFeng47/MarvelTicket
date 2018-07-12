@@ -73,7 +73,8 @@
                         <div v-for="seat in seatInfo">
                           {{ seat }}
                         </div>
-                        <span slot="reference" class="venue-name">{{ order.num}}张 | 共{{ order.totalPrice }}元 <i class="el-icon-view" style="color:#F56C6C"></i></span>
+                        <span slot="reference" class="venue-name">{{ order.num}}张 | 共{{ order.totalPrice }}元 <i
+                          class="el-icon-view" style="color:#F56C6C"></i></span>
                       </el-popover>
 
                     </p>
@@ -113,8 +114,8 @@
 </template>
 
 <script>
-  import { getOrder, payOrder } from '../../api/order'
-  import { mapGetters } from 'vuex'
+  import {getOrder, payOrder} from '../../api/order'
+  import {mapGetters} from 'vuex'
   import MyMap from '../map/index'
 
   export default {
@@ -126,13 +127,13 @@
       ...mapGetters([
         'token'
       ]),
-      orderid: function() {
+      orderid: function () {
         return this.$route.query.orderid
       }
     },
     watch: {
       orderid: {
-        handler: function(newVal, oldVal) {
+        handler: function (newVal, oldVal) {
           if (newVal) {
             this.initOrder()
           }
@@ -153,7 +154,7 @@
         seatInfo: []
       }
     },
-    mounted: function() {
+    mounted: function () {
       this.initOrder()
     },
     methods: {
@@ -186,13 +187,15 @@
         })
       },
       startClock(date) {
+        const createTime = this.$moment(date, 'YYYY-MM-DDTHH:mm:ss')
+        const now = this.$moment()
+
         if (this.interval !== -1) {
           window.clearInterval(this.interval)
         }
-        var order_time = new Date(date)
         // 定时器，计算剩余时间
-        var passed_second = (new Date().getTime() - order_time.getTime()) / 1000
-        this.left_second = 900 - Math.round(passed_second)
+        const passed_second = Math.floor(now.diff(createTime) / 1000)
+        this.left_second = 900 - passed_second
         this.handleTime()
         this.interval = setInterval(this.handleTime, 1000)
       },
@@ -243,7 +246,7 @@
       display: -webkit-box;
       margin: 8px 0 8px;
     }
-    .venue-name:hover{
+    .venue-name:hover {
       cursor: pointer;
     }
     .radio {

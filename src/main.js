@@ -19,6 +19,10 @@ import store from './store'
 import '@/icons' // icon
 import '@/permission' // permission control
 
+// moment
+import moment from 'moment'
+Vue.prototype.$moment = moment
+
 // 将全局函数当做插件来进行注册
 import charts from './utils/seat-charts'
 Vue.use(charts)
