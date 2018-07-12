@@ -7,6 +7,7 @@
           <div class="portrait" @click="modifyMyPortrait">
             <img :src="this.portrait"/>
           </div>
+
         </el-col>
       </div>
       <div v-show="modifyPortrait">
@@ -354,15 +355,26 @@
       width: 180px;
       height: 180px;
       margin: 0 auto;
+      border-radius: 50%;
+      border: white solid 2px;
       img {
         width: 100%;
         height: 100%;
         border-radius: 10px;
+        border-radius: 50%;
+        border: white solid 2px;
       }
       :hover {
+        border-radius: 50%;
         cursor: pointer;
+        border: #f78978 solid 2px;
       }
     }
+
+    .img-box:hover .other-description {
+      margin-top: -180px;
+    }
+
     .line {
       margin-top: 50px;
       .el-button--danger {
@@ -446,6 +458,9 @@
     .portrait-block {
       overflow: hidden;
       -webkit-animation: portrait 1s
+    }
+    .el-icon-edit-outline:hover{
+      color: #f78978;
     }
   }
 </style>

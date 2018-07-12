@@ -46,7 +46,7 @@
         ]
       }
     },
-    mounted: function () {
+    mounted: function() {
       this.initSowing()
     },
     methods: {
@@ -55,6 +55,9 @@
           getSowingMapUrl(this.cur_city).then(curPrograms => {
             console.log((curPrograms))
             for (var key in curPrograms) {
+              if (key === '56-1532772000000') {
+                continue
+              }
               var res = {}
               res.id = '/detail/' + key
               res.url = curPrograms[key]

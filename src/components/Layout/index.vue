@@ -6,7 +6,7 @@
     </keep-alive>
     <div class="quick-button">
       <el-tooltip class="item" effect="light" content="回到顶部" placement="left">
-        <el-button @click="backToTop"><i class="el-icon-arrow-up"></i></el-button>
+        <el-button plain @click="backToTop"><i class="el-icon-arrow-up"></i></el-button>
       </el-tooltip>
     </div>
     <MyFooter/>
@@ -68,6 +68,16 @@
       font-size: 30px;
       font-weight: 400;
     }
+    .el-button.is-plain:hover {
+      border-color: #dcdfe6;
+      color: #dcdfe6;
+    }
+    .el-button.is-plain:focus, .el-button.is-plain {
+      /*background: #dcdfe6;*/
+      border-color: #dcdfe6;
+      color: #dcdfe6;
+    }
+
   }
 
   .el-tooltip__popper.is-light {

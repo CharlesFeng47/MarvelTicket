@@ -9,7 +9,7 @@
       <div class="top">Marvel Ticket
       </div>
       <el-container class="confirm-body">
-        <el-aside width="200px" class="aside">
+        <el-aside width="200px" height="290px" class="aside">
           <a @click="$router.go(-1)" target="_blank"><img
             :src="order_detail.posterSrc" :alt="order_detail.programName"></a>
         </el-aside>
@@ -30,7 +30,7 @@
                 </el-row>
                 <el-row class="text-item">
                   <el-col :span="5" class="label-text">时间：</el-col>
-                  <el-col :span="19">{{ order_detail.programTime.slice(0, -3) }}</el-col>
+                  <el-col :span="19">{{ order_detail.curField.slice(0, -3) }}</el-col>
                 </el-row>
               </el-col>
               <el-col :span="6" :offset="3" style="margin-top: 37px">

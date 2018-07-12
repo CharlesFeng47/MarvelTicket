@@ -67,7 +67,7 @@
               <span v-show="buyNum===6" style="padding-top: 1px">+</span>
               <span v-show="buyNum!==6" style="color: #F78978;padding-top: 1px" @click="add">+</span>
             </div>
-            <div v-show="buyNum===6" style="color: red;font-size: 12px;margin-top: -28px;margin-left: 120px">
+            <div v-show="buyNum===6" style="color: #F78978;font-size: 14px;margin-top: -28px;margin-left: 120px">
               一次最多只能购买6张
             </div>
           </el-col>
@@ -189,14 +189,13 @@
             order.par = this.programDetail.pars[i]
           }
         }
-
         // 将order信息保存到store
         console.log(order)
         this.$store.dispatch('StoreOrderDetail', {
           order_detail: order
         }).then(() => {
           // 购票弹窗到另一窗口
-          window.open('/orderConfirm')
+          this.$router.push('/orderConfirm')
         }).catch(() => {
         })
       }

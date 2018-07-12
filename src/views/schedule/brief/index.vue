@@ -178,7 +178,7 @@
       margin-left: -25px;
       img {
         width: 100%;
-        height: 225px;
+       // height: 225px;
         border-radius: 8px;
         background-color: #fff;
         box-shadow: 0 4px 16px 0 #ccc;

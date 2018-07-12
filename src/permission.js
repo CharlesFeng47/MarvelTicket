@@ -50,7 +50,7 @@ router.beforeEach((to, from, next) => {
       // 未登录
       if (permissionList.indexOf(to.path) !== -1) {
         // 不可在未登录下直接访问的网址
-        this.$router.push('/loginAndRegister/login')
+        next( '/loginAndRegister/login')
         Message({
           message: '登录后才可以访问哦～已跳转至登录界面～',
           type: 'error',

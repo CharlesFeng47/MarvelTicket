@@ -33,10 +33,6 @@
       Carousel,
       MyFooter
     },
-    data(){
-      return{
-      }
-    },
   }
 </script>
 

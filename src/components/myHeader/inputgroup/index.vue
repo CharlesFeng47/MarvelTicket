@@ -3,7 +3,7 @@
     <el-form :inline="true">
       <el-form-item class="input-block">
         <div style="position: relative">
-          <el-input @input="search" placeholder="搜索演出信息"></el-input>
+          <el-input @input="search" v-bind="key" placeholder="搜索演出信息"></el-input>
         </div>
         <div id="search-panel" v-show="show_popover">
           <ul v-show="!searchIsLoading">
@@ -91,9 +91,10 @@
       //   }
       // },
       search(str) {
-        this.key = str
+        this.key = str.trim()
+        // alert(str.trim())
         this.searchResults = []
-        if (str !== '') {
+        if (str.trim() !== '') {
           // console.log(str)
           // this.$emit('showPanel')
           this.searchIsLoading = true

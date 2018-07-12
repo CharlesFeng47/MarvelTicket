@@ -1,5 +1,5 @@
 <template>
-  <div class="recommendation">
+  <div class="recommendation" v-if="line.recommendations.length!==0">
     <el-row>
       <el-col :span="12">
         <h1>{{ line.title }}</h1>
