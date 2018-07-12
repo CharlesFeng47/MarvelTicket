@@ -31,6 +31,9 @@ import Layout from '../components/Layout/index'
  **/
 export const constantRouterMap = [
   {
+    path: '/', redirect: '/home'
+  },
+  {
     path: '/home', component: Layout, hidden: true,
     children: [
       {
