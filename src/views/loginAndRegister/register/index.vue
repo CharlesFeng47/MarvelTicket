@@ -1,16 +1,32 @@
 <template>
   <el-form :model="registerForm" :rules="registerRules" ref="registerForm">
     <el-form-item prop="email" class="login-register-input">
-      <el-input name="email" v-model="registerForm.email" type="text" placeholder="请输入电子邮箱"/>
+      <el-input name="email" v-model="registerForm.email" type="text" placeholder="请输入电子邮箱">
+        <i slot="prefix">
+          <svg-icon icon-class="email"></svg-icon>
+        </i>
+      </el-input>
     </el-form-item>
     <el-form-item prop="username" class="login-register-input">
-      <el-input name="username" v-model="registerForm.username" type="text" placeholder="请输入用户名"/>
+      <el-input name="username" v-model="registerForm.username" type="text" placeholder="请输入用户名">
+        <i slot="prefix">
+          <svg-icon icon-class="user"></svg-icon>
+        </i>
+      </el-input>
     </el-form-item>
     <el-form-item prop="password" class="login-register-input">
-      <el-input name="password" v-model="registerForm.password" type="password" placeholder="请输入密码"/>
+      <el-input name="password" v-model="registerForm.password" type="password" placeholder="请输入密码">
+        <i slot="prefix">
+          <svg-icon icon-class="password"></svg-icon>
+        </i>
+      </el-input>
     </el-form-item>
     <el-form-item prop="checkPwd" class="login-register-input">
-      <el-input name="checkPwd" v-model="registerForm.checkPwd" type="password" placeholder="请确认密码"/>
+      <el-input name="checkPwd" v-model="registerForm.checkPwd" type="password" placeholder="请确认密码">
+        <i slot="prefix">
+          <svg-icon icon-class="password"></svg-icon>
+        </i>
+      </el-input>
     </el-form-item>
     <el-button type="danger" class="login-btn" :loading="loading" @click="handleSignUp">注册</el-button>
   </el-form>

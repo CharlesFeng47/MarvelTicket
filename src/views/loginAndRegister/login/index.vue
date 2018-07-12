@@ -1,11 +1,19 @@
 <template>
   <el-form :model="loginForm" :rules="loginRules" ref="loginForm">
     <el-form-item prop="email" class="login-register-input">
-      <el-input name="email" v-model="loginForm.email" type="text" placeholder="请输入电子邮箱"/>
+      <el-input name="email" v-model="loginForm.email" type="text" placeholder="请输入电子邮箱">
+        <i slot="prefix">
+          <svg-icon icon-class="email"></svg-icon>
+        </i>
+      </el-input>
     </el-form-item>
     <el-form-item prop="password" class="login-register-input">
 
-      <el-input name="password" type="password" v-model="loginForm.password" placeholder="请输入密码"/>
+      <el-input name="password" type="password" v-model="loginForm.password" placeholder="请输入密码">
+        <i slot="prefix">
+          <svg-icon icon-class="password"></svg-icon>
+        </i>
+      </el-input>
 
       <!--TODO gy 可查看密码-->
       <!--<el-input name="password" :type="pwdType" v-model="loginForm.password" placeholder="请输入密码"/>-->
