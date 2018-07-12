@@ -27,6 +27,7 @@ import Layout from '../components/Layout/index'
     isHome: true                 展示首页轮播图
     isSearch: true               搜索界面不展示二级导航
     isLike: true                 是否为我的收藏界面
+    isLogin true                 是否为登录界面
   }
  **/
 export const constantRouterMap = [
@@ -116,7 +117,7 @@ export const constantRouterMap = [
     path: '/loginAndRegister', component: Layout, hidden: true,
     children: [
       {
-        path: 'login', component: () => import('@/views/loginAndRegister/index'), hidden: true,
+        path: 'login', component: () => import('@/views/loginAndRegister/index'), hidden: true, meta: { isLogin: false },
         children: [{
           path: '', component: () => import('@/views/loginAndRegister/login/index'), hidden: true
         }]

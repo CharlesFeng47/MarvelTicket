@@ -43,23 +43,23 @@
   .backgroud {
     width: 100%;
     height: 599px;
-    background-color: #0c1130;
+    background-color: #010103;
   }
 
   .backgroud_photo {
     height: 599px;
-    background: url(../../../src/assets/background.jpg) no-repeat;
+    background: url(../../assets/back.png) no-repeat;
     background-size: 100% 599px;
     position: relative;
 
     margin: 0 auto;
-    width: 1200px !important;
+    width: 1250px !important;
   }
 
   .input_box {
     background-color: #ffffff;
     border-radius: 3px;
-    right: 55px;
+    right: 105px;
     top: 115px;
     min-height: 254px;
     padding: 21px;

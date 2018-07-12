@@ -4,7 +4,9 @@
     <keep-alive>
       <router-view/>
     </keep-alive>
-    <div class="quick-button">
+    <div v-if="$route.meta.isLogin">
+    </div>
+    <div class="quick-button" v-else>
       <el-tooltip class="item" effect="light" content="回到顶部" placement="left">
         <el-button plain @click="backToTop"><i class="el-icon-arrow-up"></i></el-button>
       </el-tooltip>
