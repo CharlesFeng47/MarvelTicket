@@ -17,7 +17,7 @@
           <el-header style="margin-left: 30px; height: 23px;">
             <h2 style="color: #323232; margin: 0; line-height: 100%">{{ order_detail.programName }}</h2>
           </el-header>
-          <el-main class="confirm-main">
+          <el-main class="confirm-main" style="overflow: hidden">
             <el-row>
               <el-col :span="12">
                 <el-row class="text-item" style="margin-top: 5%">
