@@ -117,15 +117,15 @@ export const constantRouterMap = [
     path: '/loginAndRegister', component: Layout, hidden: true,
     children: [
       {
-        path: 'login', component: () => import('@/views/loginAndRegister/index'), hidden: true, meta: { isLogin: false },
+        path: 'login', component: () => import('@/views/loginAndRegister/index'), hidden: true, meta: { isLogin: true },
         children: [{
-          path: '', component: () => import('@/views/loginAndRegister/login/index'), hidden: true
+          path: '', component: () => import('@/views/loginAndRegister/login/index'), hidden: true,  meta: { isLogin: true }
         }]
       },
       {
         path: 'register', component: () => import('@/views/loginAndRegister/index'), hidden: true,
         children: [{
-          path: '', component: () => import('@/views/loginAndRegister/register/index'), hidden: true
+          path: '', component: () => import('@/views/loginAndRegister/register/index'), hidden: true,  meta: { isLogin: true }
         }]
       }
     ]

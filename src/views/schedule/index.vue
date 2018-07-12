@@ -22,10 +22,10 @@
       <template v-if="showingBriefs.length === 0">
         <el-row>
           <el-col :span="11" style="text-align: right">
-          <img  src="../../assets/sad.png" style="margin-top: 60px" height="100" width="100"/>
+            <img  src="../../assets/sad.png" style="margin-top: 80px;margin-bottom: 60px" height="50" width="50"/>
           </el-col>
-          <el-col :span="13" style="text-align: left">
-            <div style="display: inline-block;margin-top: 100px"> 暂时没有此类节目的演出信息！</div>
+          <el-col :span="10" :offset="1" style="text-align: left">
+            <div style="display: inline-block;margin-top: 100px"> 无该类型演出信息</div>
           </el-col>
         </el-row>
       </template>

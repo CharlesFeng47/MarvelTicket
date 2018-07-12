@@ -35,6 +35,7 @@
 <script>
   import { isValidUsername, isValidateEmail } from '@/utils/validate'
   import { signUp } from '../../../api/login'
+  import { Message } from 'element-ui'
 
   export default {
     name: 'MyRegister',
@@ -102,6 +103,13 @@
                 // 注册成功，自动跳转到登录界面
                 this.$router.push('/loginAndRegister/login')
                 this.loading = false
+                Message({
+                  message: '注册成功，请验证后登录～',
+                  type: 'success',
+                  duration: 3 * 1000,
+                  center: true,
+                  showClose: true
+                })
                 resolve()
               }).catch(() => {
                 this.loading = false

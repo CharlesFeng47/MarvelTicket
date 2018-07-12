@@ -9,11 +9,11 @@
           <ul v-show="!searchIsLoading">
             <template v-if="searchResults.length === 0">
               <el-row>
-                <el-col :span="9" style="text-align: right">
+                <el-col :span="10" style="text-align: right">
                   <img  src="../../../assets/sad.png" style="margin-top: 20px;margin-bottom: 10px" height="50" width="50"/>
                 </el-col>
-                <el-col :span="13" style="text-align: left">
-                  <div style="display: inline-block;margin-top: 25px">  您的输入没有搜索结果！</div>
+                <el-col :span="13" :offset="1" style="text-align: left">
+                  <div style="display: inline-block;margin-top: 25px">  无搜索结果</div>
                 </el-col>
               </el-row>
             </template>

@@ -1,7 +1,7 @@
 <template>
   <div class="backgroud">
     <div class="backgroud_photo">
-      <div class="input_box">
+      <div class="input_box1">
         <el-row class="link-tab">
           <el-col :span="12" class="login-link link" :class="{'link-on': loginOn}">
             <router-link to="login">登录</router-link>
@@ -39,7 +39,15 @@
   }
 </script>
 
-<style scoped>
+<style rel="stylesheet/scss" lang="scss">
+
+
+  .el-input__prefix {
+    left: 7px;
+    -webkit-transition: all .3s;
+    transition: all .3s;
+    font-size: 20px;
+  }
   .backgroud {
     width: 100%;
     height: 599px;
@@ -56,11 +64,11 @@
     width: 1250px !important;
   }
 
-  .input_box {
+  .input_box1 {
     background-color: #ffffff;
     border-radius: 3px;
     right: 105px;
-    top: 115px;
+    top: 135px;
     min-height: 254px;
     padding: 21px;
     position: absolute;

@@ -13,10 +13,10 @@
     <template v-else>
       <el-row>
         <el-col :span="11" style="text-align: right">
-          <img  src="../../../assets/sad.png" style="margin-top: 80px;margin-bottom: 60px" height="100" width="100"/>
+          <img  src="../../../assets/sad.png" style="margin-top: 80px;margin-bottom: 60px" height="50" width="50"/>
         </el-col>
-        <el-col :span="13" style="text-align: left">
-          <div style="display: inline-block;margin-top: 120px"> 你还没有该类型的订单！</div>
+        <el-col :span="10" :offset="1" style="text-align: left">
+          <div style="display: inline-block;margin-top: 100px"> 无该类型的订单</div>
         </el-col>
       </el-row>
     </template>

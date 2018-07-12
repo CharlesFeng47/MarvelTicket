@@ -88,6 +88,9 @@
             new Promise((resolve, reject) => {
               cancelStar(this.programBrief.id, this.token).then(curMyFavoriteNum => {
                 this.star = false
+                if (this.$route.meta.isLike){
+                  location.reload();
+                }
                 resolve()
               }).catch(error => {
               })
