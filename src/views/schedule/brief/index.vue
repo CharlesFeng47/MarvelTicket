@@ -1,5 +1,5 @@
 <template>
-  <div class="brief_container" :class="$route.meta.isLike ? 'gap-small' : 'gap-large'"  @click="checkDetail">
+  <div class="brief_container" :class="$route.meta.isLike ? 'gap-small' : 'gap-large'" @click="checkDetail">
     <div class="poster" :class="$route.meta.isLike ? 'poster-small' : 'poster-large'">
       <img :src="programBrief.posterSrc">
       <div class="count">
@@ -88,8 +88,8 @@
             new Promise((resolve, reject) => {
               cancelStar(this.programBrief.id, this.token).then(curMyFavoriteNum => {
                 this.star = false
-                if (this.$route.meta.isLike){
-                  location.reload();
+                if (this.$route.meta.isLike) {
+                  location.reload()
                 }
                 resolve()
               }).catch(error => {
@@ -121,7 +121,8 @@
       // 查看详情
       checkDetail: function() {
         console.log(this.programBrief)
-        this.$router.push('/detail/' + this.programBrief.id)
+        const routeData = this.$router.resolve({ path: '/detail/' + this.programBrief.id })
+        window.open(routeData.href, '_blank')
       },
       // 获取此节目是否当前用户所喜欢
       initMyStarOfCurProgram() {
@@ -145,14 +146,16 @@
 
 <style rel="stylesheet/scss" lang="scss">
   $border-color: #f7f7f7;
-  .gap-small{
+  .gap-small {
     margin-bottom: 20px;
     margin-top: 30px;
   }
-  .gap-large{
+
+  .gap-large {
     margin-bottom: 40px;
     margin-top: 40px;
   }
+
   .brief_container {
     :hover {
       cursor: pointer;
@@ -181,7 +184,7 @@
       margin-left: -25px;
       img {
         width: 100%;
-       // height: 225px;
+        // height: 225px;
         border-radius: 8px;
         background-color: #fff;
         box-shadow: 0 4px 16px 0 #ccc;
@@ -194,10 +197,10 @@
         text-align: left;
         margin-left: 40px;
       }
-      .like-panel:hover{
+      .like-panel:hover {
         color: #FF5161;
       }
-      .like-panel{
+      .like-panel {
         max-height: 24px;
         height: 24px;
         overflow: hidden;

@@ -37,13 +37,7 @@
     },
     data() {
       return {
-        recommendList: [
-        //   { url: require('../../../assets/【上海站】《2018光辉岁月致敬黄家驹》逝世25周年纪念演唱会.jpg')},
-        //   { url: require('../../../assets/【南京站】2018德云社全国巡演》.jpg') },
-        //   { url: require('../../../assets/【南京站】喜剧《蒋公的面子》.jpg') },
-        //   { url: require('../../../assets/【南京站】2018谢天笑“那不是我”巡回演唱会.jpg') },
-        //   { url: require('../../../assets/【南京站】阿加莎推理巨作《谋杀启事》.jpg') },
-        ]
+        recommendList: []
       }
     },
     mounted: function() {
@@ -91,10 +85,12 @@
       height: 100%;
     }
   }
-  .carousel1 .el-carousel__container .is-active{
+
+  .carousel1 .el-carousel__container .is-active {
     margin-left: -5%;
     width: 60%;
   }
+
   .el-carousel__container {
     /*height: 250px;*/
     .el-icon-arrow-left {
@@ -112,6 +108,7 @@
     }
     .el-carousel__arrow {
       background-color: rgba(31, 45, 61, 0);
+      color: #e16349;
     }
     .el-carousel__arrow:hover {
       background-color: rgba(31, 45, 61, 0);

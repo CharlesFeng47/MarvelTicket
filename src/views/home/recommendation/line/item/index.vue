@@ -1,6 +1,6 @@
 <template>
   <div class="plan-panel">
-    <div class="img-box"  @click="checkDetail">
+    <div class="img-box" @click="checkDetail">
       <img alt="项目海报"
            :src="scheduleBrief.posterSrc">
       <div class="other-description">
@@ -10,8 +10,6 @@
         </div>
       </div>
     </div>
-
-
     <div class="plan-description">
       <div class="description">
         {{ scheduleBrief.name }}
@@ -20,7 +18,6 @@
         <label>¥ {{ scheduleBrief.basePrice }} </label>元起
         <span style="margin-top:1px ;float: right">{{ scheduleBrief.city }}</span>
       </div>
-
     </div>
   </div>
 </template>
@@ -36,7 +33,8 @@
     },
     methods: {
       checkDetail() {
-        this.$router.push('/detail/' + this.scheduleBrief.programID)
+        const routeData = this.$router.resolve({ path: '/detail/' + this.scheduleBrief.programID })
+        window.open(routeData.href, '_blank')
       }
     }
   }

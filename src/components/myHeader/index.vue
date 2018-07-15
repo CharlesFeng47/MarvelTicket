@@ -1,36 +1,25 @@
 <template>
-  <div class="my-header">
-    <el-row>
-      <el-col :span="20" :offset="2">
-        <el-row type="flex" justify="space-between">
-          <el-col :span="6" style="padding-left: 1.1%">
-            <a href="/home"  style="float: left">
-              <div class="logo">
-                <!--Marvel-->
-                <img src="../../assets/logo1.png" style="width: 110px">
-                <!--<img src="../../assets/logo2.png" style="width: 110px">-->
-                <!--<img src="../../assets/logo3.png" style="width: 110px">-->
-              </div>
-            </a>
-            <div class="location"  style="float: left">
-              <div class="location-choose">
-                <Popover v-on:changeCity=""></Popover>
-              </div>
-            </div>
-          </el-col>
-          <!--<el-col :span="2" class="location">-->
-
-          <!--</el-col>-->
-          <el-col :span="8"  class="search-group">
-            <InputGroup></InputGroup>
-          </el-col>
-          <el-col :span="3">
-                <LoginPanel></LoginPanel>
-          </el-col>
-        </el-row>
-      </el-col>
-    </el-row>
-  </div>
+  <el-row type="flex" justify="started" align="center" class="my-header">
+    <el-col :span="1" :offset="2" style="margin-left: 10.5%">
+      <a href="/home">
+        <div class="logo">
+          <!--Marvel-->
+          <img src="../../assets/logo1.png" style="width: 110px">
+        </div>
+      </a>
+    </el-col>
+    <el-col :span="3" style="margin-left: 2%">
+      <div class="location">
+        <Popover v-on:changeCity=""></Popover>
+      </div>
+    </el-col>
+    <el-col :span="8" offset="2" class="search-group">
+      <InputGroup></InputGroup>
+    </el-col>
+    <el-col :span="3" style="margin-left: 10.2%">
+      <LoginPanel></LoginPanel>
+    </el-col>
+  </el-row>
 </template>
 
 <script>
@@ -47,13 +36,9 @@
     },
 
     data() {
-      return {
-
-      }
+      return {}
     },
-    methods: {
-
-    }
+    methods: {}
   }
 </script>
 
@@ -76,7 +61,6 @@
   .search-group {
     margin-top: 25px;
   }
-
 
   .my-header {
     border-bottom: #E5EAEF solid 1px;

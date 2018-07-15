@@ -74,12 +74,12 @@
         </el-row>
         <el-row style="margin-top: 10px">
           <el-col :span="3">
-            <p>合计</p>
+            <p>合&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;计</p>
           </el-col>
           <el-col :span="20" class="price-list">
             <p class="money" style="margin-top: 4px">
               <span class="order-price">{{ price }}</span>
-              <span class="unit">元</span>
+              <span class="unit">&nbsp;元</span>
             </p>
           </el-col>
         </el-row>
@@ -347,8 +347,8 @@
         }
         .order-price{
           font-size: 30px;
-          color:red;
-          font-weight: 300;
+          color:#FD6857;
+          font-weight: 500;
         }
       }
     }

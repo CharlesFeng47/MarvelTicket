@@ -1,8 +1,8 @@
 <template>
   <div class="breadcrumb">
     <ul>
-      <li><span @click="gotoHome" class="first">首页</span>&gt;</li>
-      <li><span @click="checkProgramsOfSameType" class="second">{{ programDetail.typeEnum }}</span>&gt;</li>
+      <li><span @click="gotoHome" class="first">首页</span>&nbsp;&gt;&nbsp;</li>
+      <li><span @click="checkProgramsOfSameType" class="second">{{ programDetail.typeEnum }}</span>&nbsp;&gt;&nbsp;</li>
       <li class="active">{{ programDetail.title }}</li>
     </ul>
   </div>
@@ -23,9 +23,9 @@
 
       // 查看此类型的更多节目
       checkProgramsOfSameType() {
-        var type = getProgramTypeIdByEnum(this.programDetail.typeEnum);
+        var type = getProgramTypeIdByEnum(this.programDetail.typeEnum)
         this.$router.push({
-          path: "/schedule",
+          path: '/schedule',
           query: {
             type: type,
             isHome: false,

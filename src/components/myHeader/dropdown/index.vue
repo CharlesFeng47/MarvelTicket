@@ -25,23 +25,11 @@
             <el-col v-for="city in cityList" :key="city" :span="3">
               <div class="city" @click="current = city">{{ city }}</div>
             </el-col>
-            <!--<el-col :span="3">-->
-              <!--<div class="city" @click="current = '南京'">南京</div>-->
-            <!--</el-col>-->
-            <!--<el-col :span="3">-->
-              <!--<div class="city" @click="current = '无锡'">苏州</div>-->
-            <!--</el-col>-->
           </el-row>
           <el-row>
             <el-col v-for="city in cityDisableList" :key="city" :span="3">
               <div class="city disable">{{ city }}</div>
             </el-col>
-            <!--<el-col :span="3">-->
-              <!--<div class="city" @click="current = '南京'">南京</div>-->
-            <!--</el-col>-->
-            <!--<el-col :span="3">-->
-              <!--<div class="city" @click="current = '无锡'">苏州</div>-->
-            <!--</el-col>-->
           </el-row>
         </el-col>
       </el-row>
@@ -92,9 +80,11 @@
     text-align: center;
     padding: 0 2px 0 2px;
   }
-  .disable{
+
+  .disable {
     color: gainsboro;
   }
+
   .city:hover {
     cursor: pointer;
   }
