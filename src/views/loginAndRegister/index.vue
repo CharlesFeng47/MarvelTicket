@@ -56,7 +56,7 @@
 
   .backgroud_photo {
     height: 599px;
-    background: url(../../assets/back.png) no-repeat;
+    background: url(../../assets/login.png) no-repeat;
     background-size: 100% 599px;
     position: relative;
 

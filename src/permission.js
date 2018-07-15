@@ -49,6 +49,7 @@ router.beforeEach((to, from, next) => {
     } else {
       // 未登录
       if (permissionList.indexOf(to.path) !== -1) {
+        console.log('aaa')
         // 不可在未登录下直接访问的网址
         next( '/loginAndRegister/login')
         Message({
